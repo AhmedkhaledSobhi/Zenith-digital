@@ -1,6 +1,5 @@
-
 'use client'
-import React, { useState, useEffect, MouseEvent } from 'react'
+import React, { useState, useEffect, MouseEvent, KeyboardEvent } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -37,25 +36,33 @@ const Navbar: React.FC = () => {
   }
 
   useEffect(() => {
-    const currentPage = pages.find((page) => page.path === pathname)
-    setActivePage(currentPage ? currentPage.title : 'HOME')
+    let normalizedPath = pathname.replace(/\/+$/, '')
+    if (normalizedPath === '') normalizedPath = '/'
+
+    const currentPage = pages.find((page) => page.path === normalizedPath)
+    if (currentPage) {
+      setActivePage(currentPage.title)
+    }
   }, [pathname])
 
-  const toggleDrawer = (open: boolean) => (event: MouseEvent<HTMLElement>) => {
-    if (
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' ||
-        (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return
+  const toggleDrawer =
+    (open: boolean) =>
+    (event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>) => {
+      if (
+        event.type === 'keydown' &&
+        'key' in event &&
+        (event.key === 'Tab' || event.key === 'Shift')
+      ) {
+        return
+      }
+      setDrawerOpen(open)
     }
-    setDrawerOpen(open)
-  }
 
   const handleNavClick = (page: { title: string; path: string }) => {
-    setActivePage(page.title)
     setDrawerOpen(false)
-    router.push(page.path)
+    if (pathname !== page.path) {
+      router.push(page.path)
+    }
   }
 
   useEffect(() => {
@@ -111,7 +118,6 @@ const Navbar: React.FC = () => {
               >
                 {pages.map((page) => (
                   <ListItem
-                    button
                     key={page.title}
                     onClick={() => handleNavClick(page)}
                     sx={{
@@ -123,6 +129,7 @@ const Navbar: React.FC = () => {
                         border: '1px solid #0000FE',
                       },
                     }}
+                    component="div"
                   >
                     <ListItemText
                       primary={page.title}
