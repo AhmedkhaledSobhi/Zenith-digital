@@ -4,7 +4,8 @@ import React from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import { Box, Button, Grid, Card, CardContent, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Typography } from '@mui/material'
+import Grid from "@mui/material/Grid2"
 
 type Service = {
   icon: string
@@ -53,7 +54,7 @@ const Sliders: React.FC<SlidersProps> = ({ services }) => {
     >
       <Slider {...settings}>
         {services.map((service, i) => (
-          <Grid item xs={11} md={11} key={i}>
+          <Grid size={{ xs: 12, md: 11 }} key={i}>
             <Card
               sx={{
                 bgcolor: 'transparent',
@@ -63,6 +64,7 @@ const Sliders: React.FC<SlidersProps> = ({ services }) => {
                 borderImageSlice: 1,
                 color: '#fff',
                 py: {xs:0, md:3},
+                mx: {xs: 2},
                 boxSizing: 'border-box',
               }}
             >

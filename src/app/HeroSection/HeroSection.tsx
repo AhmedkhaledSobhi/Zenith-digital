@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Typography, Button } from '@mui/material'
-import { Grid } from '@mui/material'
+import Grid from "@mui/material/Grid2"
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
 
 export default function HeroSection() {
@@ -12,7 +12,7 @@ export default function HeroSection() {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Grid item xs={12} sm={6} md={6} sx={{ px: 2 }}>
+        <Grid size={{ xs: 12, sm: 6, md:6 }} sx={{ px: 2 }}>
           <Typography
             display="flex"
             alignItems="center"
@@ -58,7 +58,7 @@ export default function HeroSection() {
           </Button>
         </Grid>
 
-        <Grid item sm={6} md={5}>
+        <Grid size={{ sm: 6, md: 5 }} >
           <Box
             flex={1}
             display="flex"

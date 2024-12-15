@@ -6,10 +6,11 @@ import {
   Button,
   Card,
   CardContent,
-  Grid,
   Stack,
   Divider,
-} from '@mui/material'
+} from '@mui/material';
+import Grid from "@mui/material/Grid2"
+
 
 interface BlogProps {
   params: {
@@ -105,7 +106,7 @@ export default function BlogId({ params }: BlogProps) {
           <Typography variant="h6">Related Topics</Typography>
           <Grid container spacing={2}>
             {[1, 2, 3, 4].map((item) => (
-              <Grid item xs={12} sm={6} md={3} key={item}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}  key={item}>
                 <Card sx={{ bgcolor: 'darkslategray' }}>
                   <CardContent>
                     <Typography variant="h6">Related Topic Title</Typography>

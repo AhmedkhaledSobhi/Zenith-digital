@@ -1,4 +1,6 @@
-import { Box, Button, CardContent, Grid, Link, Typography } from '@mui/material'
+import { Box, Button, CardContent, Link, Typography } from '@mui/material'
+import Grid from "@mui/material/Grid2"
+
 import Navbar from '../Navbar/Navbar'
 import Footer from '../Footer/Footer'
 import styles from '../Header/Header.module.css'
@@ -193,7 +195,7 @@ export default function Technical() {
           sx={{width:{xs:'90%'}, spacing:{xs:2, md:8} ,mx:{xs:'auto'} , display:'flex', justifyContent: 'center', my: 2 }}
         >
           {services.map((service, i) => (
-            <Grid item md={6} key={i} sx={{ position: 'relative' }}>
+            <Grid size={{ md: 6 }} key={i} sx={{ position: 'relative' }}>
               <Box
                 sx={{
                   mx: 'auto',

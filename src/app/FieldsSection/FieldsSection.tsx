@@ -1,6 +1,8 @@
 'use client'
 
-import { Box, CardContent, Grid, Typography, Button } from '@mui/material'
+import { Box, CardContent, Typography, Button } from '@mui/material';
+import Grid from "@mui/material/Grid2"
+
 
 export default function FieldsSection() {
   const services = [
@@ -89,7 +91,7 @@ export default function FieldsSection() {
           sx={{width:{xs:'90%' },spacing:{xs:2, md:9},  mx:"auto", display:'flex', justifyContent:'center', my: 2 }}
         >
           {services.map((service, i) => (
-            <Grid item md={4} key={i} sx={{my:{xs:5}}} >
+            <Grid size={{ md:4 }}  key={i} sx={{my:{xs:5}}} >
               <Box
                 sx={{
                   position: 'relative',

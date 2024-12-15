@@ -11,10 +11,10 @@ import {
   Button,
   Card,
   CardContent,
-  Grid,
   Stack,
   Divider,
 } from '@mui/material';
+import Grid from "@mui/material/Grid2"
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import WestIcon from '@mui/icons-material/West';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -157,7 +157,7 @@ const ArticlePage = () => {
         <Typography variant="h6">Related Topics</Typography>
         <Grid container spacing={2} sx={{px:0, mx:'auto', width:'100%'}} >
           {[1, 2, 3, 4].map((item) => (
-            <Grid item xs={12} sm={6} md={4} key={item} sx={{}}>
+            <Grid size={{xs:2}} key={item} >
               <Card sx={{ bgcolor: 'transparent', width:'350px'}}>
                 <Typography variant="h6" sx={{color:'#fff', my:2}}>Lorem ipsum dolor sit amet consectetur diam</Typography>
                 <Box>

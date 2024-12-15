@@ -1,6 +1,8 @@
 import React from 'react'
-import { Box, Typography, Grid } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import Sliders from '../Slider/Slider'
+import Grid from "@mui/material/Grid2"
+
 
 const services = [
   {
@@ -66,7 +68,7 @@ export default function ServicesSection() {
         <Sliders services={services} />
 
         {/* {services.map((service, i) => (
-          <Grid item xs={12} md={3}  key={i}>
+          <Grid size={{ xs: 12, md: 3 }} key={i}>
             <Card sx={{ bgcolor: 'transparent', border:'1px solid', borderImageSource: 'linear-gradient(180deg, #8411E6 0%, #0000FE 100%)', borderImageSlice:1, color:'#fff', py:3, width:'350px'}}>
               <Box>
                 <img style={{width:'15%'}} src={service.icon} alt="" />

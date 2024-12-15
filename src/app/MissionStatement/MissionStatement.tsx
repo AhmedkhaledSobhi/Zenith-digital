@@ -1,5 +1,8 @@
 import React from 'react';
-import { Box, Typography, Grid, Container } from '@mui/material';
+import { Box, Typography, Container } from '@mui/material';
+
+import Grid from "@mui/material/Grid2"
+
 import MissionCard from '../MissionCardProps/MissionCardProps';
 
 const missions = [
@@ -48,7 +51,7 @@ export default function MissionStatement() {
             sx={{ display: 'flex', mt: 4 }}
           >
             {missions.map((mission, index) => (
-              <Grid item xs={12} sm={6} md={4} sx={{ px:{ md:5} }} key={index}>
+              <Grid size={{ xs:12, sm: 6, md: 4 }}  sx={{ px:{ md:5} }} key={index}>
                 <MissionCard
                   title={mission.title}
                   description={mission.description}

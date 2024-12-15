@@ -1,4 +1,6 @@
-import { Box, CardMedia, Grid, Typography } from '@mui/material'
+import { Box, CardMedia, Typography } from '@mui/material'
+import Grid from "@mui/material/Grid2"
+
 import React from 'react'
 
 export default function Leadership() {
@@ -64,7 +66,7 @@ export default function Leadership() {
               color: '#DAFF23',
             },
           ].map((member, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid size={{ xs:12, md:4 }} key={index}>
               <Box sx={{ color: 'red' }}>
                 <Box sx={{ position: 'relative' }}>
                   <CardMedia
