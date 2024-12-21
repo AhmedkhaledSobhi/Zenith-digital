@@ -18,9 +18,7 @@ const MissionCard: React.FC<MissionCardProps> = ({ title, description }) => {
       }}
     >
       <CardContent>
-        <Typography
-          variant="h6"
-          fontWeight="bold"
+        <Box
           sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -28,8 +26,8 @@ const MissionCard: React.FC<MissionCardProps> = ({ title, description }) => {
           }}
         >
           <svg
-            width="30"
-            height="30"
+            width="35"
+            height="35"
             viewBox="0 0 58 58"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -41,11 +39,12 @@ const MissionCard: React.FC<MissionCardProps> = ({ title, description }) => {
           </svg>
           <Typography
             variant="h6"
-            sx={{ margin: { xs: '0px 0px', md: '0px 10px' } }}
+            fontWeight="bold"
+            sx={{ margin: { xs: '0px 0px', md: '0px 2px' } }}
           >
             {title}
           </Typography>
-        </Typography>
+        </Box>
         <Typography variant="body2" my={1} color="gray">
           {description}
         </Typography>

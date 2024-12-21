@@ -1,47 +1,66 @@
 import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
-
 import Grid from "@mui/material/Grid2"
-
 import MissionCard from '../MissionCardProps/MissionCardProps';
 
-const missions = [
-  {
-    title: 'Deliver Comprehensive Services',
-    description:
-      'Provide digital marketing and programming solutions that ensure businesses maintain a robust online presence, adapt to technological changes, and meet evolving customer demands.',
-  },
-  {
-    title: 'Foster Continuous Innovation',
-    description:
-      'Offer customized solutions that enhance core business operations and create new revenue streams without incurring additional costs.',
-  },
-  {
-    title: 'Build Sustainable Partnerships',
-    description:
-      'Develop long-term relationships by delivering exceptional value, technical support, and strategic guidance to ensure clients’ market dominance and financial success.',
-  },
-]
+import { createDirectus, graphql } from '@directus/sdk'
 
-export default function MissionStatement() {
+interface Translations {
+  languages_code: { code: string }
+  title: string
+  text: string
+}
+
+interface Mission {
+  translations: Translations[]
+}
+
+interface Schema {
+  mission: Mission[]
+}
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
+const client = createDirectus<Schema>(BASE_URL).with(graphql())
+
+async function HomeData() {
+  return await client.query<Schema>(`
+    query{
+      mission {
+        translations {
+          title
+          text
+        }
+      }
+    }
+  `)
+}
+
+export default async function MissionStatement() {
+  // console.log("ahmed", JSON.stringify(await HomeData(), null,2) );
+  let data = await HomeData()
+
   return (
     <Box
       sx={{
         py: 8,
         backgroundColor: '#010715',
         textAlign: 'center',
-        height: {md:'75vh'},
+        maxHeight: { md: '75vh' },
         display: 'flex',
         alignItems: 'center',
       }}
     >
-      <Container maxWidth="xl" sx={{ mx: 'auto', px:{xs:0 }  }}>
+      <Container maxWidth="xl" sx={{ width: '95%', mx: 'auto', px: { xs: 0 } }}>
         <Box>
           <Typography
             variant="h4"
             component="h2"
             align="center"
-            sx={{ fontSize:{xs:'25px'}, fontWeight: 'bold', mx: 'auto', color: '#fff' }}
+            sx={{
+              fontSize: { xs: '25px' },
+              fontWeight: 'bold',
+              mx: 'auto',
+              color: '#fff',
+            }}
           >
             OUR MISSION STATEMENT
           </Typography>
@@ -50,11 +69,15 @@ export default function MissionStatement() {
             justifyContent="center"
             sx={{ display: 'flex', mt: 4 }}
           >
-            {missions.map((mission, index) => (
-              <Grid size={{ xs:12, sm: 6, md: 4 }}  sx={{ px:{ md:5} }} key={index}>
+            {data.mission.map((item, index) => (
+              <Grid
+                size={{ xs: 12, sm: 6, md: 4 }}
+                sx={{ px: { md: 5 } }}
+                key={index}
+              >
                 <MissionCard
-                  title={mission.title}
-                  description={mission.description}
+                  title={item.translations[0]?.title}
+                  description={item.translations[0]?.text}
                 />
               </Grid>
             ))}

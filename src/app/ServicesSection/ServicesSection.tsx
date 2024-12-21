@@ -2,35 +2,55 @@ import React from 'react'
 import { Box, Typography } from '@mui/material'
 import Sliders from '../Slider/Slider'
 import Grid from "@mui/material/Grid2"
+import { createDirectus, graphql } from '@directus/sdk'
 
+interface Translations {
+  languages_code: { code: string }
+  title: string
+  excerpt: string
+}
 
-const services = [
-  {
-    icon: '/Vector.png',
-    title: 'Digital Marketing & Branding',
-    description:
-      'Elevate your online presence and create a powerful brand identity.',
-  },
-  {
-    icon: '/Vector1.png',
-    title: 'Creative Design & Motion Graphics',
-    description:
-      'Elevate your online presence and create a powerful brand identity.',
-  },
-  {
-    icon: '/Vector1.png',
-    title: 'Programming & Development',
-    description:
-      'Elevate your online presence and create a powerful brand identity.',
-  },
-]
+interface Service {
+  translations: Translations[]
+  icon: { id: string }
+}
 
-export default function ServicesSection() {
+interface Schema {
+  services: Service[];
+}
+
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
+const client = createDirectus<Schema>(BASE_URL).with(graphql());
+
+async function HomeData() {
+  return await client.query<Schema>(`
+    query{
+      services {
+        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+          title
+          excerpt
+        }
+        icon{
+          id
+        }    
+      }
+    }
+  `)
+}
+
+export default async function ServicesSection() {
+  
+  let data = await HomeData()
+
+  const services = data?.services.map((item) => ({
+    icon: `${BASE_URL}/assets/${item.icon?.id}`,
+    title: item.translations[0]?.title,
+    description: item.translations[0]?.excerpt,
+  }))
+
   return (
     <Box py={8} bgcolor="#010715" color="white" textAlign="center">
-      <Typography
-        variant="h4"
-        gutterBottom
+      <Box
         sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         <Box mx={2}>
@@ -47,12 +67,13 @@ export default function ServicesSection() {
             />
           </svg>
         </Box>
-        Our Services
-      </Typography>
+        <Typography variant="h4">Our Services</Typography>
+      </Box>
+
       <Typography
         variant="body1"
         marginBottom={4}
-        sx={{ width: {xs:'90%', md:'42%'}, mx: 'auto' }}
+        sx={{ width: { xs: '90%', md: '42%' }, mx: 'auto' }}
       >
         ZENITH Digital Services, we go beyond being a mere service provider—we
         become your dedicated partner in achieving success. Whether your goal is

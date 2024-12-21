@@ -7,7 +7,8 @@ function VisionCard({ title, description }: VisionCardProps) {
   return (
     <Card
       sx={{
-        minHeight: { md: 350 },
+        minHeight: { md: 250 },
+        minWidth: { md: 350 },
         maxWidth: { md: 320 },
         backgroundColor: '#EEDBFF',
         borderRadius: '0px',
@@ -15,8 +16,8 @@ function VisionCard({ title, description }: VisionCardProps) {
     >
       <Box sx={{ padding: { md: '15px 0 0 15px' } }}>
         <svg
-          width="68"
-          height="68"
+          width="55"
+          height="55"
           viewBox="0 0 58 58"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,3 @@
-'use client'
 import React from 'react';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
@@ -12,9 +11,8 @@ import {
   Card,
   CardContent,
   Stack,
-  Divider,
 } from '@mui/material';
-import Grid from "@mui/material/Grid2"
+import Grid from '@mui/material/Grid2';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import WestIcon from '@mui/icons-material/West';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -41,7 +39,7 @@ const WhiteBorderTextField = styled(TextField)({
 const ArticlePage = () => {
   return (
     <>
-    <Navbar />
+    <Navbar/>
     <Box sx={{ bgcolor:'#010715', color: 'white' }}>
       <Box
         sx={{

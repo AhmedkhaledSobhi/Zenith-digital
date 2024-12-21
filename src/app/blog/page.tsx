@@ -1,10 +1,9 @@
 'use client'
-
-import Navbar from '../Navbar/Navbar'
-import Footer from '../Footer/Footer'
-import styles from '../Header/Header.module.css'
-import { useState } from 'react'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import Navbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
+import styles from '../Header/Header.module.css';
+import { useState } from 'react';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import {
   IconButton,
@@ -18,8 +17,8 @@ import {
   Pagination,
   Box,
   Link,
-} from '@mui/material'
-import Grid from "@mui/material/Grid2"
+} from '@mui/material';
+import Grid from "@mui/material/Grid2";
 
 export default function Blog() {
   const [filterDate, setFilterDate] = useState('')

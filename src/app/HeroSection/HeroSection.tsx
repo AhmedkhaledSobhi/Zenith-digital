@@ -1,24 +1,59 @@
-import React from 'react'
-import { Box, Typography, Button } from '@mui/material'
-import Grid from "@mui/material/Grid2"
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
+import React from 'react';
+import { Box, Typography, Button } from '@mui/material';
+import Grid from "@mui/material/Grid2";
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import {createDirectus, graphql} from '@directus/sdk';
 
-export default function HeroSection() {
+interface Video {
+  languages_code: { code: string };
+  headline: string;
+  text: string;
+  sub_headline: string;
+  button_text: string;
+}
+
+interface Schema {
+  home_page: { video: Video[]; video_url: string }
+}
+
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
+const client = createDirectus<Schema>(BASE_URL).with(graphql());
+
+async function HomeData(){
+  return await client.query<Schema>(`
+    query{
+      home_page {
+        video_url
+        video(filter: {languages_code: {code: {_eq: "ar"}}}) {
+          languages_code {
+            code
+          }
+          button_text
+          headline
+          text
+          sub_headline
+        }
+      }
+    }
+  `);
+}
+
+export default async function HeroSection() {
+  // console.log("ahmed", JSON.stringify(await HomeData(), null,2) );
+  let data = await HomeData()
   return (
     <Box sx={{ padding: { xs: '50px 20px', md: '50px 100px' } }}>
       <Grid
         container
+        sx={{ mx: 'auto' }}
         columnSpacing={12}
         alignItems="center"
         justifyContent="space-between"
       >
-        <Grid size={{ xs: 12, sm: 6, md:6 }} sx={{ px: 2 }}>
-          <Typography
+        <Grid size={{ xs: 12, sm: 6, md: 6 }} sx={{ px: 2 }}>
+          <Box
             display="flex"
             alignItems="center"
-            variant="h4"
-            fontWeight="bold"
-            gutterBottom
           >
             <svg
               width="40"
@@ -32,21 +67,20 @@ export default function HeroSection() {
                 fill="#0000FE"
               />
             </svg>
-            <Typography variant='h4' style={{ paddingLeft: '10px' }}>
-              Why Choose Zenith
+            <Typography
+              variant="h4"
+              gutterBottom
+              fontWeight="bold"
+              style={{ paddingLeft: '10px' }}
+            >
+              {data?.home_page?.video?.[0]?.headline ?? ''}
             </Typography>
-          </Typography>
+          </Box>
           <Typography sx={{ my: 3 }}>
-            At Zenith Digital Space, we focus on business development and
-            delivering cutting-edge technology solutions in digital marketing
-            and programming, to build your project as you envision it and
-            more. apart is our commitment to understand your needs and craft
-            solutions that match your aspirations and work with you step by step
-            to ensure the success of your project.
+            {data?.home_page?.video?.[0]?.text ?? ""}
           </Typography>
           <Typography variant="h5" component="h5">
-            Let’s be your partner in success, find out how we can help you
-            today.
+            {data?.home_page?.video?.[0]?.sub_headline ?? ''}
           </Typography>
           <Button
             endIcon={<ArrowRightAltIcon />}
@@ -54,22 +88,29 @@ export default function HeroSection() {
             sx={{ py: 2 }}
             href="#contact"
           >
-            Contact Us Now
+            {data?.home_page?.video?.[0]?.button_text?? ""}
           </Button>
         </Grid>
 
-        <Grid size={{ sm: 6, md: 5 }} >
+        <Grid size={{ sm: 6, md: 5 }}>
           <Box
             flex={1}
             display="flex"
             justifyContent="center"
             alignItems="center"
             bgcolor="grey.300"
-            sx={{ height: { xs: 300, md: 500 }, width: { xs: 300, md:500 } }}
+            sx={{ height: { xs: 300, md: 500 }, width: { xs: 300, md: 500 } }}
           >
-            <Button color="secondary" style={{ fontSize: '2rem' }}>
-              ▶
-            </Button>
+            <iframe
+              width="100%"
+              height="100%"
+              src={data?.home_page?.video_url}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
           </Box>
         </Grid>
       </Grid>

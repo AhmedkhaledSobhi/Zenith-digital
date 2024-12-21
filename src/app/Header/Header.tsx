@@ -1,24 +1,15 @@
-"use client";
-
-import { Box, Button, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import styles from '../Header/Header.module.css'
+import { Box, Button, Typography } from '@mui/material';
+import React from 'react';
+import styles from '../Header/Header.module.css';
 
 import {createDirectus, graphql} from '@directus/sdk';
-
-interface Post {
-  id: number;
-}
-
-// interface Schema {
-//   posts: Post[];
-// }
 
 interface Hero {
   languages_code: { code: string };
   headline: string;
   text: string;
   sub_headline: string;
+  button_text: string;
 }
 
 interface Service {
@@ -27,19 +18,21 @@ interface Service {
 }
 
 interface Schema {
-  home_page: { hero: Hero[] };
-  services: Service[];
+  home_page: { 
+    hero: Hero[];
+    hero_button_url: string
+  };
 }
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
+const client = createDirectus<Schema>(BASE_URL).with(graphql());
 
-const client = createDirectus<Schema>('https://cms-zenith.treasuredeal.com').with(graphql());
-
-
-// -------------------------------
+// const client = createDirectus<Schema>('https://cms-zenith.treasuredeal.com').with(graphql());
 
 async function HomeData(){
-  return await client.query<Post[]>(`
+  return await client.query<Schema>(`
     query{
       home_page {
+        hero_button_url
         hero(filter: {languages_code: {code: {_eq: "ar"}}}) {
           languages_code {
             code
@@ -47,87 +40,40 @@ async function HomeData(){
           headline
           text
           sub_headline
+          button_text
         }
-      }
-      services {
-        icon
-        user_updated
       }
     }
   `);
 }
 
-// ----------------------
-
 export default async function Header() {
 
-  // -------------------------
-  const [data, setData] = useState<Schema | null>(null);
-
-  console.log("ahmed", JSON.stringify(await HomeData(), null,2) );
-  let asx = JSON.stringify(await HomeData(), null,2) 
-  // setData( asx );
- console.log("ahmed asx", asx)
-
- 
+  // console.log("ahmed", JSON.stringify(await HomeData(), null,2) );
+  let data = await HomeData();
 // ==================================================
 
+  // useEffect(function () {
+  //   client.query<Post[]>(`
+  //     query{
+  //   home_page {
+  //     hero(filter: {languages_code: {code: {_eq: "ar"}}}) {
+  //       languages_code {
+  //         code
+  //       }
+  //       headline
+  //       text
+  //       sub_headline
+  //     }
+  //   }
+  //   services {
+  //     icon
+  //     user_updated
+  //   }
+  // }
+  //     `).then(console.log);
+  // },[])
 
-// useEffect(function () {
-//   client.query<Post[]>(`
-//     query{
-//   home_page {
-//     hero(filter: {languages_code: {code: {_eq: "ar"}}}) {
-//       languages_code {
-//         code
-//       }
-//       headline
-//       text
-//       sub_headline
-//     }
-//   }
-//   services {
-//     icon
-//     user_updated
-//   }
-// }
-//     `).then(console.log);
-// },[])
-
-// ---- error --
-// useEffect(() => {
-//     // Define the query string
-//     const query = `
-//       query {
-//         home_page {
-//           hero(filter: { languages_code: { code: { _eq: "ar" } } }) {
-//             languages_code {
-//               code
-//             }
-//             headline
-//             text
-//             sub_headline
-//           }
-//         }
-//         services {
-//           icon
-//           user_updated
-//         }
-//       }
-//     `;
-
-//     // Fetch the data
-//     client
-//       .query<Post[]>(query)  // Specify the type here
-//       .then((res) => {
-//         setData(res);
-//         console.log('ahmed', data)
-//             // Set the data in state
-//       })
-//       .catch((error) => {
-//         console.log('Failed to fetch data', error);
-//       });
-//   }, []);  
 // -------------------------
 
   return (
@@ -157,10 +103,9 @@ export default async function Header() {
             WebkitTextFillColor: 'transparent',
           }}
         >
-
-          Zenith digital space
+          {data?.home_page?.hero?.[0]?.headline ?? "" }
         </Typography>
-
+       
         <Typography
           variant="h6"
           sx={{
@@ -171,7 +116,7 @@ export default async function Header() {
             lineHeight: '56px',
           }}
         >
-          We Make Brands Shine
+          {data?.home_page?.hero?.[0]?.sub_headline ?? ""}
         </Typography>
 
         <Typography
@@ -185,11 +130,7 @@ export default async function Header() {
             lineHeight: '33.6px',
           }}
         >
-          Zenith Digital Space is your key to thriving in today’s business
-          world. With essential digital strategies, continuous support, and
-          innovative solutions, Zenith Digital Space enhances your online
-          presence, targets your ideal audience, and unlocks new growth
-          opportunities, giving you a distinct competitive advantage.
+          {data?.home_page?.hero?.[0]?.text ?? ""}
         </Typography>
 
         <Button
@@ -201,8 +142,10 @@ export default async function Header() {
             lineHeight: '22.4px',
             my: 5,
           }}
+          target='_blank'
+          href={data?.home_page?.hero_button_url}
         >
-          Get Started Now!
+          {data?.home_page?.hero?.[0]?.button_text ?? "" }
         </Button>
       </Box>
     </Box>

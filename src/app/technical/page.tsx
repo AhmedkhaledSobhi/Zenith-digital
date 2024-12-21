@@ -86,8 +86,12 @@ export default function Technical() {
       <Box
         display="flex"
         justifyContent="center"
-        
-        sx={{ height:{xs:'40vh', md:'100vh'}, pb:{xs:9}, alignItems:{xs:'end', md:"center"}, textAlign: 'center' }}
+        sx={{
+          height: { xs: '40vh', md: '100vh' },
+          pb: { xs: 9 },
+          alignItems: { xs: 'end', md: 'center' },
+          textAlign: 'center',
+        }}
         className={styles.headerPage}
       >
         <Box>
@@ -95,7 +99,7 @@ export default function Technical() {
             href="/about"
             sx={{
               color: '#fff',
-              fontSize: {xs:'30px', md:'50px'},
+              fontSize: { xs: '30px', md: '50px' },
               fontWeight: 600,
               lineHeight: '56px',
               position: 'relative',
@@ -130,9 +134,7 @@ export default function Technical() {
       </Box>
 
       <Box py={8} color="white" textAlign="center">
-        <Typography
-          variant="h4"
-          gutterBottom
+        <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -153,12 +155,14 @@ export default function Technical() {
               />
             </svg>
           </Box>
-          <span style={{ color: '#000' }}>Our Services</span>
-        </Typography>
+          <Typography variant="h4" gutterBottom sx={{ color: '#000' }}>
+            Our Services
+          </Typography>
+        </Box>
         <Typography
           variant="body1"
           marginBottom={3}
-          sx={{ width: {xs:'93', md:'40%'}, mx: 'auto', color: '#000' }}
+          sx={{ width: { xs: '93', md: '40%' }, mx: 'auto', color: '#000' }}
         >
           At Zenith Digital Space, we're enabling your business digitally by
           offering comprehensive solutions that help you succeed in a constantly
@@ -167,7 +171,7 @@ export default function Technical() {
         <Typography
           variant="body1"
           marginBottom={4}
-          sx={{ width: {xs:'93%', md:'43%'}, mx: 'auto', color: '#000' }}
+          sx={{ width: { xs: '93%', md: '43%' }, mx: 'auto', color: '#000' }}
         >
           We provide customized digital services aimed at enhancing your
           presence and attracting your target audience. Thanks to our team, we
@@ -179,7 +183,7 @@ export default function Technical() {
           variant="h5"
           marginBottom={4}
           sx={{
-            width: {xs:'95%', md:'68%'},
+            width: { xs: '95%', md: '68%' },
             textTransform: 'uppercase',
             mx: 'auto',
             color: '#000',
@@ -191,15 +195,21 @@ export default function Technical() {
 
         <Grid
           container
-          
-          sx={{width:{xs:'90%'}, spacing:{xs:2, md:8} ,mx:{xs:'auto'} , display:'flex', justifyContent: 'center', my: 2 }}
+          sx={{
+            width: { xs: '90%' },
+            spacing: { xs: 2, md: 8 },
+            mx: { xs: 'auto' },
+            display: 'flex',
+            justifyContent: 'center',
+            my: 2,
+          }}
         >
           {services.map((service, i) => (
             <Grid size={{ md: 6 }} key={i} sx={{ position: 'relative' }}>
               <Box
                 sx={{
                   mx: 'auto',
-                  my:{xs:2},
+                  my: { xs: 2 },
                   textAlign: 'center',
                   bgcolor: 'transparent',
                   border: '1px solid',
@@ -209,7 +219,7 @@ export default function Technical() {
                   color: '#fff',
                   px: 2,
                   py: 3,
-                  width:{xs:'300px', md:'400px'},
+                  width: { xs: '300px', md: '400px' },
                   height: '420px',
                 }}
               >
@@ -230,7 +240,7 @@ export default function Technical() {
                   </Typography>
                   <Typography
                     variant="body2"
-                    sx={{ px: {xs:1, md:4}, }}
+                    sx={{ px: { xs: 1, md: 4 } }}
                     color="gray"
                     gutterBottom
                   >
@@ -238,7 +248,7 @@ export default function Technical() {
                   </Typography>
                   <Box
                     sx={{
-                      width:{xs:'300px', md:"350px"},
+                      width: { xs: '300px', md: '350px' },
                       mx: 'auto',
                       justifyContent: 'center',
                       position: 'absolute',
@@ -250,7 +260,7 @@ export default function Technical() {
                     <Link
                       sx={{
                         // width:{xs:'100%'},
-                        mx:{xs:2, md:4},
+                        mx: { xs: 2, md: 4 },
                         display: 'block',
                         textDecoration: 'none',
                       }}
@@ -275,11 +285,11 @@ export default function Technical() {
           ))}
         </Grid>
 
-        <Box sx={{ my:{xs:1, md:5 }}}>
+        <Box sx={{ my: { xs: 1, md: 5 } }}>
           <Typography
             variant="body1"
             marginBottom={4}
-            sx={{ width:{xs:'90%', md:'52%'} , mx: 'auto', color: '#000' }}
+            sx={{ width: { xs: '90%', md: '52%' }, mx: 'auto', color: '#000' }}
           >
             Your partnership with Zenith Digital Space is your first step
             towards remarkable digital transformation that ensures you excel in
@@ -290,11 +300,11 @@ export default function Technical() {
             variant="body1"
             // marginBottom={4}
             sx={{
-              width:{xs:'90%', md:'52%'},
+              width: { xs: '90%', md: '52%' },
               textTransform: 'uppercase',
               mx: 'auto',
               color: '#000',
-              mb:{xs:1, md:4}
+              mb: { xs: 1, md: 4 },
             }}
           >
             With us, you will reach new heights of success and innovation, as we

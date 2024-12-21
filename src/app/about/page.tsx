@@ -1,4 +1,4 @@
-'use client'
+// 'use client'
 import { Box, Link } from '@mui/material'
 import VisionSection from '../VisionSection/VisionSection'
 import MissionStatement from '../MissionStatement/MissionStatement'

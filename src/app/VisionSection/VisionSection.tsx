@@ -1,44 +1,56 @@
 import React from 'react'
-import { Box, Typography, Grid, Button } from '@mui/material'
+import { Box, Typography, Button } from '@mui/material';
+import Grid from "@mui/material/Grid2"
 import VisionCard from '../VisionCard/VisionCard'
-// import VisionCard from './VisionCard';
 
-const visions = [
-  {
-    title: 'Lead the Digital Revolution',
-    description:
-      'To be the foremost partner for businesses striving for success in the digital era by providing comprehensive and innovative digital marketing and programming solutions.',
-  },
-  {
-    title: 'Empower with Excellence',
-    description:
-      'To equip our clients with advanced technologies and strategies that foster sustainable growth, boost market presence, and ensure a competitive advantage.',
-  },
-  {
-    title: 'Foster a Thriving Digita Ecosystem',
-    description:
-      'To create a digital environment where businesses of all sizes can flourish through ongoing innovation, strategic collaboration, and a steadfast commitment to excellence.',
-  },
-]
+import {createDirectus, graphql} from '@directus/sdk';
 
-export default function VisionSection() {
+interface Translations {
+  languages_code: { code: string }
+  title: string
+  text: string
+}
+
+interface Vision {
+  translations: Translations[]
+}
+
+interface Schema {
+  vision: Vision[]
+}
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
+const client = createDirectus<Schema>(BASE_URL).with(graphql());
+
+ async function HomeData(){
+  return await client.query<Schema>(`
+    query{
+      vision{
+        translations{
+          title
+          text
+        }
+      }
+    }
+  `)
+}
+
+export default async function VisionSection() {
+  let data = await HomeData()
+
   return (
     <Box
       sx={{
         width: '100%',
-        height: {md:'95vh'},
+        maxHeight: { md: '90vh' },
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        p: {xs:4, md:6},
+        p: { xs: 4, md: 6 },
       }}
     >
       <Box sx={{ width: '100%' }}>
-        <Typography
-          variant="h4"
-          fontWeight="bold"
-          textAlign="center"
+        <Box
           mb={4}
           sx={{
             display: 'flex',
@@ -47,8 +59,8 @@ export default function VisionSection() {
           }}
         >
           <svg
-            width="40"
-            height="40"
+            width="45"
+            height="45"
             viewBox="0 0 58 58"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -58,21 +70,27 @@ export default function VisionSection() {
               fill="#8411E6"
             />
           </svg>
-          <span style={{ margin: '0px 10px' }}>Our Vision</span>
-        </Typography>
+          <Typography
+            sx={{ margin: '0px 10px' }}
+            variant="h4"
+            fontWeight="bold"
+            textAlign="center"
+          >
+            Our Vision
+          </Typography>
+        </Box>
 
-        <Grid container spacing={5}>
-          {visions.map((vision, index) => (
+        <Grid container sx={{ mx: 'auto' }} spacing={0}>
+          {data?.vision.map((item, i) => (
             <Grid
-              item
-              xs={12}
-              md={4}
-              key={index}
+              size={{ xs: 12, md: 4 }}
+              key={i}
               sx={{ display: 'flex', justifyContent: 'center' }}
             >
               <VisionCard
-                title={vision.title}
-                description={vision.description}
+                title={item.translations[0]?.title}
+                description={item.translations[0]?.text}
+                // description={item.translations[0]?.title}
               />
             </Grid>
           ))}

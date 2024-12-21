@@ -4,7 +4,7 @@ import React from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import { Box, Button, Card, CardContent, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, TableFooter, Typography } from '@mui/material'
 import Grid from "@mui/material/Grid2"
 
 type Service = {
@@ -33,11 +33,11 @@ const Sliders: React.FC<SlidersProps> = ({ services }) => {
         },
       },
       {
-        breakpoint: 600, // Small screens (mobile)
+        breakpoint: 600,
         settings: {
-          slidesToShow: 1, // 1 slide on mobile
-          arrows: false, // Hide arrows on small screens
-          dots: true, // Show dots for navigation on mobile
+          slidesToShow: 1,
+          arrows: false,
+          dots: true,
         },
       },
     ],
@@ -46,7 +46,7 @@ const Sliders: React.FC<SlidersProps> = ({ services }) => {
   return (
     <Box
       sx={{
-        width: {xs:'90%', md:'75%'},
+        width: { xs: '90%', md: '80%' },
         margin: 'auto',
         overflow: 'hidden',
         padding: { xs: 2, sm: 3, md: 4 },
@@ -63,22 +63,24 @@ const Sliders: React.FC<SlidersProps> = ({ services }) => {
                   'linear-gradient(180deg, #8411E6 0%, #0000FE 100%)',
                 borderImageSlice: 1,
                 color: '#fff',
-                py: {xs:0, md:3},
-                mx: {xs: 2},
+                py: { xs: 0, md: 3 },
+                mx: { xs: 2 },
                 boxSizing: 'border-box',
+                minHeight: { md: '320px' },
+                // maxHeight: {md: '290px'},
               }}
             >
               <Box>
                 <img
                   style={{
-                    width: '25%',
+                    width: '20%',
                     margin: '8px auto',
                   }}
                   src={service.icon}
                   alt=""
                 />
               </Box>
-              <CardContent>
+              <CardContent sx={{ px: 0 }}>
                 <Typography variant="h6" gutterBottom sx={{ fontSize: '16px' }}>
                   {service.title}
                 </Typography>
@@ -95,13 +97,15 @@ const Sliders: React.FC<SlidersProps> = ({ services }) => {
                     bgcolor: '#0000EF',
                     color: '#fff',
                     px: 3,
-                    py: 1,
-                    my: 3,
+                    // py: 1,
+                    // my: 3,
+                    pt: 1,
+                    mt: 3,
                     textTransform: 'none',
                   }}
                 >
                   Explore More
-                </Button>
+                </Button>                
               </CardContent>
             </Card>
           </Grid>

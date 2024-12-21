@@ -2,11 +2,48 @@ import { Box, CardMedia, Typography } from '@mui/material'
 import Grid from "@mui/material/Grid2"
 
 import React from 'react'
+import { createDirectus, graphql } from '@directus/sdk'
 
-export default function Leadership() {
+interface Translations {
+  languages_code: { code: string }
+  name: string
+  position: string
+}
+
+interface Team {
+  translations: Translations[]
+  image: { id: string }
+}
+
+interface Schema {
+  team: Team[]
+}
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
+const client = createDirectus<Schema>(BASE_URL).with(graphql())
+async function HomeData() {
+  return await client.query<Schema>(`
+    query{
+      team{
+        translations{
+          name
+          position
+        }
+        image{
+          storage
+          filesize
+          embed
+          id
+        }
+      }
+    }
+  `)
+}
+export default async function Leadership() {
+  // console.log("ahmed", JSON.stringify(await HomeData(), null,2) );
+  let data = await HomeData();
   return (
-    <Box display="flex" sx={{ p: {xs:2, md:9} }}>
-      <Box sx={{ width: '80%', mx:{xs:"auto"} }}>
+    <Box display="flex" sx={{ p: { xs: 2, md: 9 },}}>
+      <Box sx={{ width: '85%', mx: { xs: 'auto', md:'auto' } }}>
         <Typography
           variant="h5"
           sx={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}
@@ -26,7 +63,58 @@ export default function Leadership() {
           <span style={{ marginLeft: '15px' }}>LEADERSHIP TEAM</span>
         </Typography>
 
-        <Grid container spacing={3} sx={{ mt: 2, justifyContent: 'center' }}>
+        <Grid container spacing={5} sx={{ mt: 2, justifyContent: 'center', mx:"auto",}}>
+          {data.team.map((member, index) =>{
+            const wrapColors = ['#DAFF23', '#8411E6', '#0000FE'];
+            const bgColor = wrapColors[index % wrapColors.length]; 
+            return (
+              <Grid
+                size={{ xs: 12, md: 4 }}
+                sx={{ mx: 'auto', justifyContent: 'center' }}
+                key={index}
+              >
+                <Box sx={{ color: 'red' }}>
+                  <Box sx={{ position: 'relative' }}>
+                    <CardMedia
+                      component="img"
+                      image={`${BASE_URL}/assets/${member.image.id}`}
+                      alt={member.translations[0].name}
+                      // height="320"
+                      sx={{ width: '250px' }}
+                    />
+                    <Box
+                      sx={{
+                        width: '250px',
+                        height: '250px',
+                        bgcolor: bgColor,
+                        position: 'absolute',
+                        left: '-15px',
+                        bottom: '-15px',
+                        zIndex: '-1',
+                      }}
+                    ></Box>
+                  </Box>
+
+                  <Box sx={{ mt: 5 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{ fontWeight: 600, color: '#000' }}
+                    >
+                      {member.translations[0].name}
+                    </Typography>
+                    <Typography variant="body2" color="gray">
+                      {member.translations[0].position}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Grid>
+            )
+
+          }
+          )}
+        </Grid>
+
+        {/* <Grid container spacing={3} sx={{ mt: 2, justifyContent: 'center' }}>
           {[
             {
               name: 'NOURA ALI',
@@ -66,7 +154,7 @@ export default function Leadership() {
               color: '#DAFF23',
             },
           ].map((member, index) => (
-            <Grid size={{ xs:12, md:4 }} key={index}>
+            <Grid size={{ xs: 12, md: 4 }} key={index}>
               <Box sx={{ color: 'red' }}>
                 <Box sx={{ position: 'relative' }}>
                   <CardMedia
@@ -103,7 +191,7 @@ export default function Leadership() {
               </Box>
             </Grid>
           ))}
-        </Grid>
+        </Grid> */}
       </Box>
     </Box>
   )
