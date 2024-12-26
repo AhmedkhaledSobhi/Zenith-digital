@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 // import { Poppins } from '@next/font/google';
 import './globals.css'
+import { AppProvider } from '@/context'
 
 const poppins = localFont({
   src: './fonts/poppins/poppins-regular-webfont.woff2',
@@ -33,7 +34,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable}`}>{children}</body>
+      <body className={`${poppins.variable}`}>
+        <AppProvider>
+          {children}
+        </AppProvider>
+      </body>
     </html>
   )
 }

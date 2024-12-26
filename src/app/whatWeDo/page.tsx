@@ -1,6 +1,6 @@
 import { Box, Typography, Link } from '@mui/material'
-import Navbar from '../Navbar/Navbar'
-import Footer from '../Footer/Footer'
+import Navbar from '../component/Navbar/Navbar'
+import Footer from '../component/Footer/Footer'
 import styles from '../Header/Header.module.css'
 import ServicesSection from '../ServicesSection/ServicesSection'
 import FieldsSection from '../FieldsSection/FieldsSection'
@@ -15,16 +15,16 @@ export default function whatWeDo() {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        sx={{ height: {md:'100vh'}, textAlign: 'center', pt:{xs:9} }}
+        sx={{ height: { md: '100vh' }, textAlign: 'center', pt: { xs: 9 } }}
         className={styles.headerPage}
       >
-        <Box sx={{pt:{xs:9}}}>
+        <Box sx={{ pt: { xs: 9 } }}>
           <Link
             href="/about"
             sx={{
               my: 9,
               color: '#fff',
-              fontSize:{xs:'40px', md:'50px'},
+              fontSize: { xs: '40px', md: '50px' },
               fontWeight: 600,
               lineHeight: '56px',
               position: 'relative',
@@ -59,10 +59,10 @@ export default function whatWeDo() {
             variant="body2"
             sx={{
               my: 5,
-              width: {xs:'95%', md:'70%'},
+              width: { xs: '95%', md: '70%' },
               mx: 'auto',
               color: 'rgba(179,185,198,1)',
-              fontSize: {xs:'16px', md:'24px'},
+              fontSize: { xs: '16px', md: '24px' },
               fontWeight: 400,
               lineHeight: '33.6px',
             }}

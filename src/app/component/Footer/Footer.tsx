@@ -30,8 +30,16 @@ interface SiteSettings {
   translations: Translation[]
 }
 
+interface Page {
+  translations: {
+    title: string
+    content: string
+  }[]
+}
+
 interface Schema {
   site_settings: SiteSettings
+  pages: Page[];
 }
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
@@ -52,13 +60,20 @@ async function HomeData() {
           contact_us_text
         }
       }
+      pages{
+        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+          title
+          content
+          
+        }
+      }
     }
   `)
 }
 
 export default async function Footer() {
   let data = await HomeData()
-  console.log('ahmed Footer', data?.site_settings?.socials)
+  // console.log('ahmed Footer', data?.site_settings?.socials)
   function capitalizeFirstLetter(str: string): string {
     if (!str) return str // Return empty string if input is empty
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
@@ -205,7 +220,8 @@ export default async function Footer() {
             }}
           >
             <Link href="#" style={{ textDecoration: 'none', color: '#fff' }}>
-              Terms & Conditions
+              {data?.pages[1]?.translations?.[0]?.title}
+              {/* Terms & Conditions */}
             </Link>
           </Typography>
 
@@ -217,7 +233,8 @@ export default async function Footer() {
             }}
           >
             <Link href="#" style={{ textDecoration: 'none', color: '#fff' }}>
-              Privacy Policies
+              {data?.pages?.[0]?.translations[0]?.title}
+              {/* Privacy Policies */}
             </Link>
           </Typography>
 
@@ -229,7 +246,8 @@ export default async function Footer() {
             }}
           >
             <Link href="#" style={{ textDecoration: 'none', color: '#fff' }}>
-              Cookies Policy
+              {data?.pages[3]?.translations?.[0]?.title}
+              {/* Cookies Policy */}
             </Link>
           </Typography>
         </Box>

@@ -1,15 +1,50 @@
 // 'use client'
 import { Box, Link } from '@mui/material'
-import VisionSection from '../VisionSection/VisionSection'
-import MissionStatement from '../MissionStatement/MissionStatement'
-import Leadership from '../Leadership/Leadership'
+import VisionSection from '../component/VisionSection/VisionSection'
+import MissionStatement from '../component/MissionStatement/MissionStatement'
+import Leadership from '../component/Leadership/Leadership'
 
 import styles from '../Header/Header.module.css'
-import Navbar from '../Navbar/Navbar'
-import Footer from '../Footer/Footer'
+import Navbar from '../component/Navbar/Navbar'
+import Footer from '../component/Footer/Footer'
 import Innovation from '../Innovation/Innovation'
 
-export default function About() {
+import { createDirectus, graphql } from '@directus/sdk'
+
+interface Translations {
+  languages_code: { code: string }
+  title: string
+}
+
+interface Pages {
+  translations: Translations[]
+}
+
+interface Schema {
+  pages: Pages[]
+}
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
+const client = createDirectus<Schema>(BASE_URL).with(graphql())
+
+async function HomeData() {
+  return await client.query<Schema>(`
+    query{
+      pages{
+        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+          title
+        }
+      }
+    }
+  `)
+}
+
+export default async function About() {
+  let data = await HomeData()
+  console.log(
+    'ahmed data data',
+    JSON.stringify(data?.pages[2]?.translations?.[0]?.title)
+  )
+
   return (
     <>
       <Navbar />
@@ -54,7 +89,8 @@ export default function About() {
               },
             }}
           >
-            About Us
+            {data?.pages[2]?.translations?.[0]?.title}
+            {/* About Us */}
           </Link>
         </Box>
       </Box>

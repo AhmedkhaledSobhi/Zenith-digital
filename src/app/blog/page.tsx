@@ -1,10 +1,8 @@
 'use client'
-import Navbar from '../Navbar/Navbar';
-import Footer from '../Footer/Footer';
-import styles from '../Header/Header.module.css';
-import { useState } from 'react';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
+import Navbar from '../component/Navbar/Navbar'
+import styles from '../Header/Header.module.css'
+import { useState } from 'react'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import {
   IconButton,
   CardMedia,
@@ -17,8 +15,9 @@ import {
   Pagination,
   Box,
   Link,
-} from '@mui/material';
-import Grid from "@mui/material/Grid2";
+} from '@mui/material'
+import Grid from '@mui/material/Grid2'
+import Footer from '../component/Footer/Footer'
 
 export default function Blog() {
   const [filterDate, setFilterDate] = useState('')
@@ -54,8 +53,11 @@ export default function Blog() {
       <Box
         display="flex"
         justifyContent="center"
-        
-        sx={{ height:{xs:'30vh', md:'100vh'}, alignItems:{xs:'end',md:"center"}, textAlign: 'center' }}
+        sx={{
+          height: { xs: '30vh', md: '100vh' },
+          alignItems: { xs: 'end', md: 'center' },
+          textAlign: 'center',
+        }}
         className={styles.headerPage}
       >
         <Box>
@@ -63,7 +65,7 @@ export default function Blog() {
             href="/about"
             sx={{
               color: '#fff',
-              fontSize: {xs:'35px', md:'50px'},
+              fontSize: { xs: '35px', md: '50px' },
               fontWeight: 600,
               lineHeight: '56px',
               position: 'relative',
@@ -106,7 +108,7 @@ export default function Blog() {
         }}
       >
         {/* Filter Section */}
-        <Box sx={{ display: 'flex', gap: {xs:1,md:2}, mb: 4 }}>
+        <Box sx={{ display: 'flex', gap: { xs: 1, md: 2 }, mb: 4 }}>
           <FormControl fullWidth>
             <InputLabel sx={{ color: '#FFF' }}>Filter by Date</InputLabel>
             <Select
@@ -147,9 +149,18 @@ export default function Blog() {
         </Box>
 
         {/* Card Grid Section */}
-        <Grid container m="auto" width="99%" sx={{ spacing:{md:6} ,pl:{xs:0}}}>
+        <Grid
+          container
+          m="auto"
+          width="99%"
+          sx={{ spacing: { md: 6 }, pl: { xs: 0 } }}
+        >
           {[...Array(9)].map((_, index) => (
-            <Grid size={{ xs:12, sm:6, md:4, }} key={index} sx={{borderRadius: 10,}}>
+            <Grid
+              size={{ xs: 12, sm: 6, md: 4 }}
+              key={index}
+              sx={{ borderRadius: 10 }}
+            >
               <Box
                 style={{
                   backgroundColor: 'transparent',

@@ -1,9 +1,9 @@
 import React from 'react'
-import { Box, Typography, Button } from '@mui/material';
-import Grid from "@mui/material/Grid2"
+import { Box, Typography, Button } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 import VisionCard from '../VisionCard/VisionCard'
 
-import {createDirectus, graphql} from '@directus/sdk';
+import { createDirectus, graphql } from '@directus/sdk'
 
 interface Translations {
   languages_code: { code: string }
@@ -19,9 +19,9 @@ interface Schema {
   vision: Vision[]
 }
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
-const client = createDirectus<Schema>(BASE_URL).with(graphql());
+const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
- async function HomeData(){
+async function HomeData() {
   return await client.query<Schema>(`
     query{
       vision{
@@ -36,7 +36,6 @@ const client = createDirectus<Schema>(BASE_URL).with(graphql());
 
 export default async function VisionSection() {
   let data = await HomeData()
-
   return (
     <Box
       sx={{
@@ -107,6 +106,7 @@ export default async function VisionSection() {
           px: 5,
           my: 5,
         }}
+        // onClick={}
       >
         About Zenith
       </Button>

@@ -14,25 +14,45 @@ import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import { FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material'
 import { useRouter, usePathname } from 'next/navigation'
+import { useAppContext } from '@/context'
+import { i18n, useTranslation } from 'next-i18next'
 
-const pages = [
-  { title: 'HOME', path: '/' },
-  { title: 'ABOUT US', path: '/about' },
-  { title: 'What we do', path: '/whatWeDo' },
-  { title: 'Technical expertise', path: '/technical' },
-  { title: 'Blog', path: '/blog' },
-]
 
 const Navbar: React.FC = () => {
+  const { t } = useTranslation()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [activePage, setActivePage] = useState<string>('')
   const [bgColor, setBgColor] = useState<string>('transparent')
   const [language, setLanguage] = useState<string>('en')
   const pathname = usePathname()
   const router = useRouter()
+  
+  const pages = [
+    { title: "HOME", path: '/' },
+    { title: "ABOUT US", path: '/about' },
+    { title: "What we do", path: '/whatWeDo' },
+    { title: "Technical expertise", path: '/technical' },
+    { title: "Blog", path: '/blog' },
+  ]
+  // const pages = [
+  //   { title: t('Navbar.HOME'), path: '/' },
+  //   { title: t('Navbar.ABOUT US'), path: '/about' },
+  //   { title: t('Navbar.What we do'), path: '/whatWeDo' },
+  //   { title: t('Navbar.Technical expertise'), path: '/technical' },
+  //   { title: t('Navbar.Blog'), path: '/blog' },
+  // ]
+  // const handleLanguageChange = (event: SelectChangeEvent) => {
+  //   setLanguage(event.target.value as string)
+  // }
 
-  const handleLanguageChange = (event: SelectChangeEvent) => {
-    setLanguage(event.target.value as string)
+  const { lang, setLang } = useAppContext()
+
+  const handleLanguageChange = (event: SelectChangeEvent<string>) => {
+    const selectedLang = event.target.value as string
+    setLang(selectedLang)
+      // if (i18n.language !== selectedLang) {
+      //   i18n.changeLanguage(selectedLang) // Update language dynamically
+      // }
   }
 
   useEffect(() => {
@@ -191,12 +211,13 @@ const Navbar: React.FC = () => {
                 display: { xs: 'none', md: 'flex' },
               }}
             >
-              Contact Us
+              {t("Navbar.Contact Us")}
+              {/* Contact Us */}
             </Button>
 
             <FormControl sx={{ minWidth: 60 }}>
               <Select
-                value={language}
+                value={lang}
                 onChange={handleLanguageChange}
                 displayEmpty
                 sx={{

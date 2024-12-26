@@ -1,7 +1,7 @@
-import React from 'react';
-import { Box, Typography, Container } from '@mui/material';
-import Grid from "@mui/material/Grid2"
-import MissionCard from '../MissionCardProps/MissionCardProps';
+import React from 'react'
+import { Box, Typography, Container } from '@mui/material'
+import Grid from '@mui/material/Grid2'
+import MissionCard from '../../MissionCardProps/MissionCardProps'
 
 import { createDirectus, graphql } from '@directus/sdk'
 
@@ -25,7 +25,7 @@ async function HomeData() {
   return await client.query<Schema>(`
     query{
       mission {
-        translations {
+        translations(filter: {languages_code: {code: {_eq: "en"}}}) {
           title
           text
         }

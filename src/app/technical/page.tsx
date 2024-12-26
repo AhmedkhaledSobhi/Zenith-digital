@@ -1,84 +1,59 @@
-import { Box, Button, CardContent, Link, Typography } from '@mui/material'
-import Grid from "@mui/material/Grid2"
+import { Box, Button, Card, CardContent, Link, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 
-import Navbar from '../Navbar/Navbar'
-import Footer from '../Footer/Footer'
-import styles from '../Header/Header.module.css'
+import Navbar from '../component/Navbar/Navbar';
+import Footer from '../component/Footer/Footer';
+import styles from '../Header/Header.module.css';
 
-export default function Technical() {
-  const services = [
-    {
-      icon: '/Vector1.png',
-      title: 'Programming & Development',
-      description:
-        'Elevate your online presence and create a powerful brand identity.',
-      link: 'Are you ready to upgrade your digital presence? Let s build the future website for you today!',
-    },
+import { createDirectus, graphql } from '@directus/sdk';
+import { link } from 'fs'
 
-    {
-      icon: '/Vector1.png',
-      title: 'Social Media Marketing',
-      description:
-        'We develop customized marketing strategies that Enhance your business success through social media.',
-      link: 'Transform your marketing strategy today!',
-    },
+interface Translations {
+  languages_code: { code: string }
+  title: string
+  excerpt: string
+  content: string
+}
 
-    {
-      icon: '/Vector1.png',
-      title: 'Cybersecurity Solutions',
-      description:
-        'We offer multi-layered solutions to protect your digital assets.',
-      link: 'Keep your data safe - Contact us today!',
-    },
+interface Service {
+  translations: Translations[]
+  icon: { id: string }
+}
 
-    {
-      icon: '/Vector1.png',
-      title: 'Content Writing',
-      description:
-        'Our content writing services ensure that your message reaches your audience and ranks high on search engine results.',
-      link: 'Ready to tell your story? Let’s Write Together!',
-    },
+interface Schema {
+  services: Service[]
+}
 
-    {
-      icon: '/Vector1.png',
-      title: '(UI/UX) Design',
-      description:
-        'We focus on designing innovative interfaces and user experience that enhance interaction and increase user retention.',
-      link: 'Are you ready to offer a great user experience? Let s help you with that!',
-    },
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
+const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
-    {
-      icon: '/Vector1.png',
-      title: 'Digital Marketing',
-      description:
-        'We provide thoughtful digital marketing strategies that deliver tangible results.',
-      link: 'We help you taking your brand to the next level!',
-    },
+async function HomeData() {
+  return await client.query<Schema>(`
+    query{
+      services {
+        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+          title
+          excerpt
+          content
+        }
+        icon{
+          id
+        }    
+      }
+    }
+  `)
+}
 
-    {
-      icon: '/Vector1.png',
-      title: 'Search Engine Optimization (SEO)',
-      description:
-        'We help you enhance your online visibility and increase organic visits.',
-      link: 'Achieve better results on search engines! let s start improving your site now.',
-    },
 
-    {
-      icon: '/Vector1.png',
-      title: 'Graphic Design',
-      description:
-        'Stunning design is key to capturing your audience’s attention. We specialize in creating visuals that speak to your brand’s essence and engage your audience.',
-      link: 'Let’s bring your vision to life through design. Contact Us!',
-    },
+export default async function Technical() {
 
-    {
-      icon: '/Vector1.png',
-      title: 'Artificial Intelligence',
-      description:
-        'Leverage the power of AI to innovate and stay ahead of the competition.',
-      link: 'Harness the power of AI with us—Start today!',
-    },
-  ]
+  let data = await HomeData()
+  const service = data?.services.map((item) => ({
+    icon: `${BASE_URL}/assets/${item.icon?.id}`,
+    title: item.translations[0]?.title,
+    description: item.translations[0]?.excerpt,
+    link: item.translations[0]?.content,
+  }))
 
   return (
     <>
@@ -195,92 +170,88 @@ export default function Technical() {
 
         <Grid
           container
+          spacing={3}
           sx={{
-            width: { xs: '90%' },
-            spacing: { xs: 2, md: 8 },
-            mx: { xs: 'auto' },
+            width: '80%',
+            mx: 'auto',
             display: 'flex',
             justifyContent: 'center',
             my: 2,
           }}
         >
-          {services.map((service, i) => (
-            <Grid size={{ md: 6 }} key={i} sx={{ position: 'relative' }}>
-              <Box
+          {service.map((service, i) => (
+            <Grid size={{ xs: 12, md: 4 }} key={i}>
+              <Card
                 sx={{
-                  mx: 'auto',
-                  my: { xs: 2 },
-                  textAlign: 'center',
                   bgcolor: 'transparent',
                   border: '1px solid',
                   borderImageSource:
                     'linear-gradient(180deg, #8411E6 0%, #0000FE 100%)',
                   borderImageSlice: 1,
                   color: '#fff',
-                  px: 2,
-                  py: 3,
-                  width: { xs: '300px', md: '400px' },
-                  height: '420px',
+                  py: { xs: 0, md: 3 },
+                  mx: { xs: 2 },
+                  boxSizing: 'border-box',
+                  minHeight: { md: '390px' },
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  justifyContent: 'space-between',
                 }}
               >
                 <Box>
                   <img
-                    style={{ width: '20%', margin: 'auto' }}
+                    style={{
+                      width: '18%',
+                      margin: '8px auto',
+                    }}
                     src={service.icon}
                     alt=""
                   />
                 </Box>
-                <CardContent>
+                <CardContent sx={{ px: 0, flexGrow: 1 }}>
                   <Typography
-                    variant="h5"
+                    variant="h6"
                     gutterBottom
-                    sx={{ fontSize: '18px', fontWeight: 600, color: '#000' }}
+                    sx={{ fontSize: '16px' }}
+                    color="black"
                   >
                     {service.title}
                   </Typography>
                   <Typography
                     variant="body2"
-                    sx={{ px: { xs: 1, md: 4 } }}
+                    sx={{ px: 2 }}
                     color="gray"
                     gutterBottom
                   >
                     {service.description}
                   </Typography>
-                  <Box
+
+                </CardContent>
+                <Box sx={{ textAlign: 'center', mt: 'auto',  }}>
+                  <Link
                     sx={{
-                      width: { xs: '300px', md: '350px' },
-                      mx: 'auto',
-                      justifyContent: 'center',
-                      position: 'absolute',
-                      bottom: '25px',
-                      left: '56%',
-                      transform: 'translateX(-53%)',
+                      mx: { xs: 2, md: 4 },
+                      display: 'block',
+                      textDecoration: 'none',
                     }}
                   >
-                    <Link
-                      sx={{
-                        // width:{xs:'100%'},
-                        mx: { xs: 2, md: 4 },
-                        display: 'block',
-                        textDecoration: 'none',
-                      }}
-                    >
-                      {service.link}
-                    </Link>
-                    <Button
-                      sx={{
-                        bgcolor: '#0000EF',
-                        color: '#fff',
-                        px: 3,
-                        py: 1,
-                        mt: 3,
-                      }}
-                    >
-                      Explore More
-                    </Button>
-                  </Box>
-                </CardContent>
-              </Box>
+                    {service.link}
+                  </Link>
+                  <Button
+                    sx={{
+                      bgcolor: '#0000EF',
+                      color: '#fff',
+                      px: 3,
+                      my: 1,
+                      pt: 1,
+                      mt: 3,
+                      textTransform: 'none',
+                    }}
+                  >
+                    Explore More
+                  </Button>
+                </Box>
+              </Card>
             </Grid>
           ))}
         </Grid>

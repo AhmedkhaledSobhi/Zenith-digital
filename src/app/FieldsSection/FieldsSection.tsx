@@ -1,10 +1,62 @@
-'use client'
+// 'use client'
 
 import { Box, CardContent, Typography, Button } from '@mui/material';
 import Grid from "@mui/material/Grid2"
 
+import { createDirectus, graphql } from '@directus/sdk';
 
-export default function FieldsSection() {
+
+interface Translations {
+  languages_code: { code: string }
+  title: string
+  excerpt: string
+  content: string
+}
+
+interface Service {
+  translations: Translations[]
+  icon: { id: string }
+}
+
+interface Schema {
+  services: Service[]
+}
+
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
+const client = createDirectus<Schema>(BASE_URL).with(graphql())
+
+async function HomeData() {
+  return await client.query<Schema>(`
+    query{
+      services {
+        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+          title
+          excerpt
+          content
+        }
+        icon{
+          id
+        }    
+      }
+      fields{
+        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+          content
+          title
+          excerpt
+        }
+        image{
+          id
+        }
+      }
+    }
+  `)
+}
+
+
+export default async function FieldsSection() {
+  let data = await HomeData()
+
+
   const services = [
     {
       icon: '/image2.png',
