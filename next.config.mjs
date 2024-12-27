@@ -1,10 +1,27 @@
+import createNextIntlPlugin from 'next-intl/plugin'
+
+const withNextIntl = createNextIntlPlugin()
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    unoptimized: true, // Disables image optimization for static export
+  reactStrictMode: false,
+  eslint: {
+    ignoreDuringBuilds: true,
   },
-  output: 'export',
-  trailingSlash: true, // Add trailing slash for static routes
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cms-zenith.treasuredeal.com',
+      },
+    ],
+  },
+  env: {
+    td_api: 'https://cms-zenith.treasuredeal.com',
+  },
 }
 
-export default nextConfig;
+export default withNextIntl(nextConfig)

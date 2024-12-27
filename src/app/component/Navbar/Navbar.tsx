@@ -15,24 +15,24 @@ import ListItemText from '@mui/material/ListItemText'
 import { FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material'
 import { useRouter, usePathname } from 'next/navigation'
 import { useAppContext } from '@/context'
-import { i18n, useTranslation } from 'next-i18next'
-
+import { useTranslations } from 'next-intl'
+import LocaleSwitcherSelect from './LocaleSwitcherSelect'
 
 const Navbar: React.FC = () => {
-  const { t } = useTranslation()
+  const t = useTranslations()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [activePage, setActivePage] = useState<string>('')
   const [bgColor, setBgColor] = useState<string>('transparent')
   const [language, setLanguage] = useState<string>('en')
   const pathname = usePathname()
   const router = useRouter()
-  
+
   const pages = [
-    { title: "HOME", path: '/' },
-    { title: "ABOUT US", path: '/about' },
-    { title: "What we do", path: '/whatWeDo' },
-    { title: "Technical expertise", path: '/technical' },
-    { title: "Blog", path: '/blog' },
+    { title: 'HOME', path: '/' },
+    { title: 'ABOUT US', path: '/about' },
+    { title: 'What we do', path: '/whatWeDo' },
+    { title: 'Technical expertise', path: '/technical' },
+    { title: 'Blog', path: '/blog' },
   ]
   // const pages = [
   //   { title: t('Navbar.HOME'), path: '/' },
@@ -50,9 +50,9 @@ const Navbar: React.FC = () => {
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     const selectedLang = event.target.value as string
     setLang(selectedLang)
-      // if (i18n.language !== selectedLang) {
-      //   i18n.changeLanguage(selectedLang) // Update language dynamically
-      // }
+    // if (i18n.language !== selectedLang) {
+    //   i18n.changeLanguage(selectedLang) // Update language dynamically
+    // }
   }
 
   useEffect(() => {
@@ -211,11 +211,11 @@ const Navbar: React.FC = () => {
                 display: { xs: 'none', md: 'flex' },
               }}
             >
-              {t("Navbar.Contact Us")}
+              {t('Navbar.Contact Us')}
               {/* Contact Us */}
             </Button>
 
-            <FormControl sx={{ minWidth: 60 }}>
+            {/* <FormControl sx={{ minWidth: 60 }}>
               <Select
                 value={lang}
                 onChange={handleLanguageChange}
@@ -232,7 +232,9 @@ const Navbar: React.FC = () => {
                 <MenuItem value="en">EN</MenuItem>
                 <MenuItem value="ar">AR</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
+
+            <LocaleSwitcherSelect />
           </Box>
         </Toolbar>
       </Container>
