@@ -2,7 +2,8 @@
 import { GetServerSideProps } from 'next'
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { createDirectus, graphql } from '@directus/sdk'
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
+import ContactFormText from '../component/ContactFormText/ContactFormText';
 
 interface Post {
   contact_us_text: string
@@ -65,12 +66,7 @@ export default function ContactForm() {
       padding={4}
       textAlign="center"
     >
-      <Typography variant="h3" gutterBottom sx={{ fontSize: { xs: '32px' } }}>
-        {/* {contactUsText} */}
-      </Typography>
-      <Typography variant="h6" sx={{ my: { xs: 2 } }}>
-        {/* {contactUsTitle} */}
-      </Typography>
+      <ContactFormText/>   
 
       <form onSubmit={handleSubmit}>
         <TextField

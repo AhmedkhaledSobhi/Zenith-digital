@@ -237,7 +237,7 @@ export default function Blog() {
           />
         </Box>
       </Box>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
