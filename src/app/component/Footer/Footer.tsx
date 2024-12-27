@@ -72,59 +72,22 @@ async function HomeData() {
 }
 
 export default async function Footer() {
-  let data = await HomeData()
-  // console.log('ahmed Footer', data?.site_settings?.socials)
-  function capitalizeFirstLetter(str: string): string {
-    if (!str) return str // Return empty string if input is empty
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
-  }
+  let data = await HomeData();
 
-  // const nameIcon = data?.site_settings?.socials.map((item) => {
-  //   return capitalizeFirstLetter(item.name)
-  // })
-  // console.log('ahmed nameIcon', nameIcon) 
-
-  // async function SocialIcon({ name }: { name: string }) {
-  //   if (!name) {
-  //     console.error('Icon name is undefined or empty.')
-  //     return null
-  //   }
-  //   try {
-  //     const IconComponent = await import(`@mui/icons-material/${name}`).then(
-  //       (module) => module.default
-  //     )
-  //     return IconComponent
-  //   } catch (error) {
-  //     console.error(`Icon for ${name} not found:`, error)
-  //     return null
-  //   }
-  // }
-
-  // if (nameIcon) {
-  //   nameIcon.forEach((iconName) => {
-  //     SocialIcon({ name: iconName }).then((IconComponent) => {
-  //       console.log(`Icon for ${iconName}:`, IconComponent)
-  //     })
-  //   })
-  // }
-  //  async function SocialIcon({name}: {name: string}) {
-  //   return  (await import(`@mui/icons-material/${name}`)).default
-  // }
-
-    function getSocialIcon(name: string) {
-      switch (name.toLowerCase()) {
-        case 'facebook':
-          return <Facebook />
-        case 'instagram':
-          return <Instagram />
-        case 'twitter':
-          return <Twitter />
-        case 'linkedin':
-          return <LinkedIn />
-        default:
-          return null
-      }
+  function getSocialIcon(name: string) {
+    switch (name.toLowerCase()) {
+      case 'facebook':
+        return <Facebook />
+      case 'instagram':
+        return <Instagram />
+      case 'twitter':
+        return <Twitter />
+      case 'linkedin':
+        return <LinkedIn />
+      default:
+        return null
     }
+  }
   return (
     <Box
       component="footer"

@@ -43,12 +43,7 @@ async function HomeData() {
 export default async function whatWeDo() {
     let data = await HomeData();
     const staticContent =
-      data?.static_content_texts?.[0]?.translations?.[0] || {}
-
-    // console.log(
-    //   'ahmed  whatWeDo',
-    //   data?.static_content_texts?.translations[0].what_we_do_title
-    // )
+      data?.static_content_texts?.translations?.[0] || {}
     
   return (
     <>

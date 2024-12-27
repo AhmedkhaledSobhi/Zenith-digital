@@ -1,22 +1,22 @@
 'use client'
-import { GetServerSideProps } from 'next'
+// import { GetServerSideProps } from 'next'
 import { Box, Button, TextField, Typography } from '@mui/material'
-import { createDirectus, graphql } from '@directus/sdk'
-import { useEffect, useState } from 'react';
-import ContactFormText from '../component/ContactFormText/ContactFormText';
+// import { createDirectus, graphql } from '@directus/sdk'
+import { useState } from 'react';
+import Grid from '@mui/material/Grid2';
 
-interface Post {
-  contact_us_text: string
-  contact_us_title: string
-  contact_us_form_note: string
-}
+// interface Post {
+//   contact_us_text: string
+//   contact_us_title: string
+//   contact_us_form_note: string
+// }
 
-interface ContactPageProps {
-  contactUsText: string
-  contactUsTitle: string
-  contactUsFormNote: string
-  response: string
-}
+// interface ContactPageProps {
+//   contactUsText: string
+//   contactUsTitle: string
+//   contactUsFormNote: string
+//   response: string
+// }
 
 export default function ContactForm() {
   const [email, setEmail] = useState('')
@@ -61,30 +61,38 @@ export default function ContactForm() {
   }
 
   return (
-    <Box
-      sx={{ width: { md: '60%' }, mx: 'auto' }}
-      padding={4}
-      textAlign="center"
-    >
-      <ContactFormText/>   
-
+    <Box>
       <form onSubmit={handleSubmit}>
-        <TextField
-          label="First Name"
-          fullWidth
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Last Name"
-          fullWidth
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-          sx={{ mb: 2 }}
-        />
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextField
+              label="First Name"
+              fullWidth
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              sx={{ mb: 2 }}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 6}}>
+            <TextField
+              label="Last Name"
+              fullWidth
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              sx={{ mb: 2 }}
+            />
+          </Grid>
+        </Grid>
         <TextField
           label="Email"
           fullWidth
@@ -108,9 +116,9 @@ export default function ContactForm() {
         <Button
           variant="contained"
           type="submit"
-          sx={{ backgroundColor: '#DAFF23', px: 4 }}
+          sx={{ backgroundColor: '#DAFF23', color: 'black', px: 4 }}
         >
-          Send Message
+          Submit
         </Button>
       </form>
 

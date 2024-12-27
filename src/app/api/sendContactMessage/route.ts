@@ -8,19 +8,19 @@ const client = new ApolloClient({
 export async function POST(req: Request) {
   try {
     const data = await req.json()
-    console.log(data, 'datadata')
+    // console.log(data, 'datadata')
     const query = gql`
-    mutation {
-      create_contact_us_messages_item(
-        data: {
-          email: "${data.email}"
-          message: "${data.message}"
-          first_name: "${data.first_name}"
-          last_name: "${data.last_name}"
-        }
-      )
-    }
-  `
+      mutation {
+        create_contact_us_messages_item(
+          data: {
+            email: "${data.email}"
+            message: "${data.message}"
+            first_name: "${data.first_name}"
+            last_name: "${data.last_name}"
+          }
+        )
+      }
+    `
 
     const result = await client.mutate({
       mutation: query,

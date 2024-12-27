@@ -18,6 +18,7 @@ import {
 } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import Footer from '../component/Footer/Footer'
+import Posts from '../component/Posts/posts'
 
 export default function Blog() {
   const [filterDate, setFilterDate] = useState('')
@@ -155,6 +156,7 @@ export default function Blog() {
           width="83%"
           sx={{ spacing: { md: 4}, pl: { xs: 0 } }}
         >
+          {/* <Posts/> */}
           {[...Array(9)].map((_, index) => (
             <Grid
               size={{ xs: 12, sm: 6, md: 4 }}

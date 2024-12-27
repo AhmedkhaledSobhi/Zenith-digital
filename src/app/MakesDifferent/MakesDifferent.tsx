@@ -34,8 +34,7 @@ async function HomeData() {
 
 export default async function MakesDifferent() {
   let data = await HomeData();
-  const staticContent =
-    data?.static_content_texts?.[0]?.translations?.[0] || {}
+  const staticContent = data?.static_content_texts?.translations?.[0] || {}
 
 
   return (
