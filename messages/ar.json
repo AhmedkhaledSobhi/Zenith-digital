@@ -9,5 +9,13 @@
     "Technical expertise": "الخبرة التقنية",
     "Blog": "مدونة",
     "Contact_Us": "اتصل بنا"
+  },
+  "form": {
+    "FirstName": "الاسم الأول",
+    "LastName": "الاسم الأخير",
+    "Email": "البريد الإلكتروني",
+    "Message": "الرسالة",
+    "Submit": "إرسال",
+    "MessageSentSuccessfully": "تم إرسال الرسالة بنجاح!"
   }
 }

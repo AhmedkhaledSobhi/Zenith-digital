@@ -4,6 +4,7 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 // import { createDirectus, graphql } from '@directus/sdk'
 import { useState } from 'react';
 import Grid from '@mui/material/Grid2';
+import { useTranslations } from 'next-intl';
 
 // interface Post {
 //   contact_us_text: string
@@ -19,6 +20,8 @@ import Grid from '@mui/material/Grid2';
 // }
 
 export default function ContactForm() {
+  const t = useTranslations()
+  
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [firstName, setFirstName] = useState('')
@@ -73,7 +76,7 @@ export default function ContactForm() {
         >
           <Grid size={{ xs: 12, md: 6 }}>
             <TextField
-              label="First Name"
+              label={t("form.FirstName")}
               fullWidth
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
@@ -84,7 +87,7 @@ export default function ContactForm() {
 
           <Grid size={{ xs: 12, md: 6}}>
             <TextField
-              label="Last Name"
+              label={t("form.LastName")}
               fullWidth
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
@@ -94,7 +97,7 @@ export default function ContactForm() {
           </Grid>
         </Grid>
         <TextField
-          label="Email"
+          label={t("form.Email")}
           fullWidth
           type="email"
           value={email}
@@ -103,7 +106,7 @@ export default function ContactForm() {
           sx={{ mb: 2 }}
         />
         <TextField
-          label="Message"
+          label={t("form.Message")}
           fullWidth
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -118,7 +121,7 @@ export default function ContactForm() {
           type="submit"
           sx={{ backgroundColor: '#DAFF23', color: 'black', px: 4 }}
         >
-          Submit
+          {t("form.Submit")}
         </Button>
       </form>
 

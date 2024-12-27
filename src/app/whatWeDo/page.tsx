@@ -8,6 +8,8 @@ import FieldsSection from '../component/FieldsSection/FieldsSection'
 import MakesDifferent from '../component/MakesDifferent/MakesDifferent'
 
 import { createDirectus, graphql } from '@directus/sdk'
+import { getCookie } from '../utils/helper/helper'
+import { getLocale } from 'next-intl/server'
 
 interface Translations {
   languages_code: { code: string }
@@ -27,11 +29,11 @@ const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
 // const client = createDirectus<Schema>(BASE_URL).with(graphql({onrequset}))
 
-async function HomeData() {
+async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       static_content_texts{ 
-        translations(filter: {languages_code: {code: {_eq: "ar"}}}){
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}){
           what_we_do_title  
           what_we_do_text 
         }
@@ -41,7 +43,9 @@ async function HomeData() {
 }
 
 export default async function whatWeDo() {
-  let data = await HomeData()
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
+  let data = await HomeData(lang) 
   const staticContent = data?.static_content_texts?.translations?.[0] || {}
 
   return (

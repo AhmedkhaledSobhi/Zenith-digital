@@ -6,17 +6,21 @@ import Footer from '../component/Footer/Footer';
 import styles from '../component/Header/Header.module.css';
 
 import { createDirectus, graphql } from '@directus/sdk';
+import { getCookie } from '../utils/helper/helper';
+import { getLocale } from 'next-intl/server';
 
 interface Translations {
   languages_code: { code: string }
   title: string
   excerpt: string
   content: string
+  our_services_page_title: string
   our_services_title: string
   our_services_text: string
-  our_services_page_discover_text_3: string
-  our_services_page_discover_text_2: string
+  our_services_page_description: string
   our_services_page_discover_text_1: string
+  our_services_page_discover_text_2: string
+  our_services_page_discover_text_3: string
 }
 
 interface Service {
@@ -36,20 +40,22 @@ interface Schema {
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
-async function HomeData() {
+async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       static_content_texts{ 
-        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
+          our_services_page_title
           our_services_title
           our_services_text
-          our_services_page_discover_text_3
-          our_services_page_discover_text_2
+          our_services_page_description
           our_services_page_discover_text_1
+          our_services_page_discover_text_2
+          our_services_page_discover_text_3
         }
       }
       services {
-        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           title
           excerpt
           content
@@ -65,7 +71,9 @@ async function HomeData() {
 
 export default async function Technical() {
 
-  let data = await HomeData();
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
+  let data = await HomeData(lang)
   const staticContent = data?.static_content_texts?.translations?.[0] || {}
 
   const service = data?.services.map((item) => ({
@@ -123,7 +131,7 @@ export default async function Technical() {
               },
             }}
           >
-            Technical expertise
+            {staticContent.our_services_page_title}
           </Link>
         </Box>
       </Box>
@@ -167,11 +175,11 @@ export default async function Technical() {
           marginBottom={4}
           sx={{ width: { xs: '93%', md: '43%' }, mx: 'auto', color: '#000' }}
         >
-          {/* {staticContent.our_services_title} */}
-          We provide customized digital services aimed at enhancing your
+          {staticContent.our_services_page_description}
+          {/* We provide customized digital services aimed at enhancing your
           presence and attracting your target audience. Thanks to our team, we
           are committed to providing the support to help you achieve a
-          successful digital future.
+          successful digital future. */}
         </Typography>
 
         <Typography
@@ -185,8 +193,6 @@ export default async function Technical() {
           }}
         >
           {staticContent.our_services_page_discover_text_1}
-          Discover our range of services and start developing your digital
-          strategy to reach your business goals.
         </Typography>
 
         <Grid
@@ -283,9 +289,6 @@ export default async function Technical() {
             sx={{ width: { xs: '90%', md: '52%' }, mx: 'auto', color: '#000' }}
           >
             {staticContent.our_services_page_discover_text_2}
-            Your partnership with Zenith Digital Space is your first step
-            towards remarkable digital transformation that ensures you excel in
-            the in the tech world.
           </Typography>
 
           <Typography
@@ -300,9 +303,6 @@ export default async function Technical() {
             }}
           >
             {staticContent.our_services_page_discover_text_3}
-            With us, you will reach new heights of success and innovation, as we
-            pave the way for you to achieve your digital vision with the highest
-            standards of quality and creativity.
           </Typography>
         </Box>
       </Box>

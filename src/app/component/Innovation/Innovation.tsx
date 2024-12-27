@@ -3,6 +3,8 @@ import { Box, Typography } from '@mui/material';
 
 import { createDirectus, graphql } from '@directus/sdk'
 import ReactMarkdown from 'react-markdown';
+import { getCookie } from '@/app/utils/helper/helper';
+import { getLocale } from 'next-intl/server';
 
 interface Translations {
   languages_code: { code: string }
@@ -20,11 +22,11 @@ interface Schema {
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
-async function HomeData() {
+async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       about: pages_by_id(id: "fe1a2319-93dc-4d04-9785-38fdc53dec3d") {
-        translations(filter: {languages_code: {code: {_eq: "en"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           title
           content
         }
@@ -34,7 +36,9 @@ async function HomeData() {
 }
 
 export default async function Innovation() {
-  let data = await HomeData();
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
+  let data = await HomeData(lang) 
   const title = data?.about?.translations[0]?.title;
   const content = data?.about?.translations[0]?.content;
   

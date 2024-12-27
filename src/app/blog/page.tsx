@@ -19,6 +19,7 @@ import {
 import Grid from '@mui/material/Grid2'
 import Footer from '../component/Footer/Footer'
 import Posts from '../component/Post/Post'
+import HeadBlog from '../component/HeadBlog/HeadBlog'
 
 export default function Blog() {
   const [filterDate, setFilterDate] = useState('')
@@ -100,6 +101,7 @@ export default function Blog() {
         </Box>
       </Box>
 
+      {/* <HeadBlog/> */}
       <Box
         sx={{
           color: '#fff',

@@ -7,6 +7,7 @@ import { getCookie } from '@/app/utils/helper/helper';
 interface Translations {
   languages_code: { code: string }
   contact_us_title: string
+  contact_us_subtitle: string
   contact_us_text: string
   contact_us_form_note: string
 }
@@ -26,8 +27,9 @@ async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       static_content_texts{ 
-        translations(filter: {languages_code: {code: {_eq: "${locale}}"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           contact_us_title
+          contact_us_subtitle
           contact_us_text
           contact_us_form_note
         }
@@ -49,7 +51,7 @@ export default async function ContactFormText() {
           {staticContent.contact_us_title}
         </Typography>
         <Typography variant="h6" sx={{ my: { xs: 2 } }}>
-          We’d love to hear from you!
+          {staticContent.contact_us_subtitle}
         </Typography>
         <Typography
           variant="body1"

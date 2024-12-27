@@ -11,6 +11,8 @@ import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 import React from 'react';
 import {createDirectus, graphql} from '@directus/sdk';
+import { getCookie } from '@/app/utils/helper/helper';
+import { getLocale } from 'next-intl/server';
 
 interface Social {
   url: string
@@ -45,7 +47,7 @@ interface Schema {
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
-async function HomeData() {
+async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       site_settings{
@@ -55,16 +57,15 @@ async function HomeData() {
         phone
         email
         socials
-        translations{
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           footer_statement
           contact_us_text
         }
       }
       pages{
-        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           title
           content
-          
         }
       }
     }
@@ -72,7 +73,9 @@ async function HomeData() {
 }
 
 export default async function Footer() {
-  let data = await HomeData();
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
+  let data = await HomeData(lang) 
 
   function getSocialIcon(name: string) {
     switch (name.toLowerCase()) {
