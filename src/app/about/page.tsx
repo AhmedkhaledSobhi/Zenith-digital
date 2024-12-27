@@ -1,15 +1,13 @@
-// 'use client'
-import { Box, Link } from '@mui/material'
-import VisionSection from '../component/VisionSection/VisionSection'
-import MissionStatement from '../component/MissionStatement/MissionStatement'
-import Leadership from '../component/Leadership/Leadership'
+import { Box, Link } from '@mui/material';
+import VisionSection from '../component/VisionSection/VisionSection';
+import MissionStatement from '../component/MissionStatement/MissionStatement';
+import Leadership from '../component/Leadership/Leadership';
+import styles from '../component/Header/Header.module.css';
+import Navbar from '../component/Navbar/Navbar';
+import Footer from '../component/Footer/Footer';
+import Innovation from '../component/Innovation/Innovation';
 
-import styles from '../Header/Header.module.css'
-import Navbar from '../component/Navbar/Navbar'
-import Footer from '../component/Footer/Footer'
-import Innovation from '../Innovation/Innovation'
-
-import { createDirectus, graphql } from '@directus/sdk'
+import { createDirectus, graphql } from '@directus/sdk';
 
 interface Translations {
   languages_code: { code: string }

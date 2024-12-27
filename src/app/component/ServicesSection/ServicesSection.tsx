@@ -1,15 +1,17 @@
 import React from 'react'
 import { Box, Typography } from '@mui/material'
-import Sliders from '../component/Slider/Slider'
-import Grid from "@mui/material/Grid2"
+import Sliders from '../Slider/Slider'
+import Grid from '@mui/material/Grid2'
 import { createDirectus, graphql } from '@directus/sdk'
+import { getCookie } from '@/app/utils/helper/helper'
+import { getLocale } from 'next-intl/server'
 
 interface Translations {
   languages_code: { code: string }
   title: string
   excerpt: string
   our_services_title: string
-  our_services_text:string
+  our_services_text: string
 }
 
 interface Service {
@@ -21,20 +23,19 @@ interface StaticContentTexts {
   translations: Translations[]
 }
 
-
 interface Schema {
   services: Service[]
   static_content_texts: StaticContentTexts[]
 }
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
-const client = createDirectus<Schema>(BASE_URL).with(graphql());
+const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
-async function HomeData() {
+async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       services {
-        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           title
           excerpt
         }
@@ -43,7 +44,7 @@ async function HomeData() {
         }    
       }
       static_content_texts{ 
-        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           our_services_title
           our_services_text
         }
@@ -53,10 +54,10 @@ async function HomeData() {
 }
 
 export default async function ServicesSection() {
-  
-  let data = await HomeData();
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale());
+  const lang = locale === 'ar' ? 'ar' : 'en';
+  let data = await HomeData(lang);
   const staticContent = data?.static_content_texts?.translations?.[0] || {}
-
 
   const services = data?.services.map((item) => ({
     icon: `${BASE_URL}/assets/${item.icon?.id}`,

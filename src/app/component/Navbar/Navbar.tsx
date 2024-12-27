@@ -1,22 +1,22 @@
 'use client'
-import React, { useState, useEffect, MouseEvent, KeyboardEvent } from 'react'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import MenuIcon from '@mui/icons-material/Menu'
-import Container from '@mui/material/Container'
-import Button from '@mui/material/Button'
-import Drawer from '@mui/material/Drawer'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemText from '@mui/material/ListItemText'
-import { FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material'
-import { useRouter, usePathname } from 'next/navigation'
-import { useAppContext } from '@/context'
-import { useTranslations } from 'next-intl'
-import LocaleSwitcherSelect from './LocaleSwitcherSelect'
+import React, { useState, useEffect, MouseEvent, KeyboardEvent } from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import { FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import { useRouter, usePathname } from 'next/navigation';
+import { useAppContext } from '@/context';
+import LocaleSwitcherSelect from './LocaleSwitcherSelect';
+import { useTranslations } from 'next-intl';
 
 const Navbar: React.FC = () => {
   const t = useTranslations()
@@ -27,20 +27,20 @@ const Navbar: React.FC = () => {
   const pathname = usePathname()
   const router = useRouter()
 
-  const pages = [
-    { title: 'HOME', path: '/' },
-    { title: 'ABOUT US', path: '/about' },
-    { title: 'What we do', path: '/whatWeDo' },
-    { title: 'Technical expertise', path: '/technical' },
-    { title: 'Blog', path: '/blog' },
-  ]
   // const pages = [
-  //   { title: t('Navbar.HOME'), path: '/' },
-  //   { title: t('Navbar.ABOUT US'), path: '/about' },
-  //   { title: t('Navbar.What we do'), path: '/whatWeDo' },
-  //   { title: t('Navbar.Technical expertise'), path: '/technical' },
-  //   { title: t('Navbar.Blog'), path: '/blog' },
+  //   { title: 'HOME', path: '/' },
+  //   { title: 'ABOUT US', path: '/about' },
+  //   { title: 'What we do', path: '/whatWeDo' },
+  //   { title: 'Technical expertise', path: '/technical' },
+  //   { title: 'Blog', path: '/blog' },
   // ]
+  const pages = [
+    { title: t('navbar.HOME'), path: '/' },
+    { title: t('navbar.ABOUT US'), path: '/about' },
+    { title: t('navbar.What we do'), path: '/whatWeDo' },
+    { title: t('navbar.Technical expertise'), path: '/technical' },
+    { title: t('navbar.Blog'), path: '/blog' },
+  ]
   // const handleLanguageChange = (event: SelectChangeEvent) => {
   //   setLanguage(event.target.value as string)
   // }
@@ -211,8 +211,7 @@ const Navbar: React.FC = () => {
                 display: { xs: 'none', md: 'flex' },
               }}
             >
-              {t('Navbar.Contact Us')}
-              {/* Contact Us */}
+              {t('navbar.Contact_Us')}
             </Button>
 
             {/* <FormControl sx={{ minWidth: 60 }}>

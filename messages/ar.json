@@ -1,5 +1,13 @@
 {
   "general": {
     "hello": "اهلا"
+  },
+  "navbar":{
+    "HOME": "الرئيسية",
+    "ABOUT US": "من نحن",
+    "What we do": "ماذا نفعل",
+    "Technical expertise": "الخبرة التقنية",
+    "Blog": "مدونة",
+    "Contact_Us": "اتصل بنا"
   }
 }

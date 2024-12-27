@@ -1,6 +1,6 @@
 'use client'
 import Navbar from '../component/Navbar/Navbar'
-import styles from '../Header/Header.module.css'
+import styles from '../component/Header/Header.module.css'
 import { useState } from 'react'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import {
@@ -18,7 +18,7 @@ import {
 } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import Footer from '../component/Footer/Footer'
-import Posts from '../component/Posts/posts'
+import Posts from '../component/Post/Post'
 
 export default function Blog() {
   const [filterDate, setFilterDate] = useState('')
@@ -109,7 +109,15 @@ export default function Blog() {
         }}
       >
         {/* Filter Section */}
-        <Box sx={{ display: 'flex',width: "80%", mx:'auto', gap: { xs: 1, md: 2 }, mb: 4 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            width: '80%',
+            mx: 'auto',
+            gap: { xs: 1, md: 2 },
+            mb: 4,
+          }}
+        >
           <FormControl fullWidth>
             <InputLabel sx={{ color: '#FFF' }}>Filter by Date</InputLabel>
             <Select
@@ -154,7 +162,7 @@ export default function Blog() {
           container
           m="auto"
           width="83%"
-          sx={{ spacing: { md: 4}, pl: { xs: 0 } }}
+          sx={{ spacing: { md: 4 }, pl: { xs: 0 } }}
         >
           {/* <Posts/> */}
           {[...Array(9)].map((_, index) => (

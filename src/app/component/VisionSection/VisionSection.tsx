@@ -4,30 +4,43 @@ import Grid from '@mui/material/Grid2'
 import VisionCard from '../VisionCard/VisionCard'
 
 import { createDirectus, graphql } from '@directus/sdk'
+import { getCookie } from '@/app/utils/helper/helper'
+import { getLocale } from 'next-intl/server'
 
 interface Translations {
   languages_code: { code: string }
   title: string
   text: string
+  our_vision_title: string
 }
 
 interface Vision {
   translations: Translations[]
 }
 
+interface StaticContentTexts {
+  translations: Translations[]
+}
+
 interface Schema {
   vision: Vision[]
+  static_content_texts: StaticContentTexts[]
 }
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
-async function HomeData() {
+async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
-      vision{
-        translations{
+      vision {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           title
           text
+        }
+      }
+      static_content_texts{ 
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
+        our_vision_title
         }
       }
     }
@@ -35,7 +48,11 @@ async function HomeData() {
 }
 
 export default async function VisionSection() {
-  let data = await HomeData()
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale());
+  const lang = locale === 'ar' ? 'ar' : 'en';
+  let data = await HomeData(lang);
+  const staticContent = data?.static_content_texts?.translations?.[0] || {};
+
   return (
     <Box
       sx={{
@@ -75,7 +92,7 @@ export default async function VisionSection() {
             fontWeight="bold"
             textAlign="center"
           >
-            Our Vision
+            {staticContent.our_vision_title}
           </Typography>
         </Box>
 

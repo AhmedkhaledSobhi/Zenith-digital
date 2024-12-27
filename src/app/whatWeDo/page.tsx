@@ -1,10 +1,11 @@
 import { Box, Typography, Link } from '@mui/material'
 import Navbar from '../component/Navbar/Navbar'
 import Footer from '../component/Footer/Footer'
-import styles from '../Header/Header.module.css'
-import ServicesSection from '../ServicesSection/ServicesSection'
-import FieldsSection from '../FieldsSection/FieldsSection'
-import MakesDifferent from '../MakesDifferent/MakesDifferent'
+import styles from '../component/Header/Header.module.css'
+
+import ServicesSection from '../component/ServicesSection/ServicesSection'
+import FieldsSection from '../component/FieldsSection/FieldsSection'
+import MakesDifferent from '../component/MakesDifferent/MakesDifferent'
 
 import { createDirectus, graphql } from '@directus/sdk'
 
@@ -21,7 +22,6 @@ interface StaticContentTexts {
 interface Schema {
   static_content_texts: StaticContentTexts[]
 }
-
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
@@ -41,10 +41,9 @@ async function HomeData() {
 }
 
 export default async function whatWeDo() {
-    let data = await HomeData();
-    const staticContent =
-      data?.static_content_texts?.translations?.[0] || {}
-    
+  let data = await HomeData()
+  const staticContent = data?.static_content_texts?.translations?.[0] || {}
+
   return (
     <>
       <Navbar />

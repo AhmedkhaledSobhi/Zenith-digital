@@ -3,6 +3,8 @@ import { createDirectus, graphql } from '@directus/sdk';
 import Grid from '@mui/material/Grid2';
 import { Box, Button, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { getCookie } from '@/app/utils/helper/helper';
+import { getLocale } from 'next-intl/server';
 
 
 interface Translations {
@@ -12,8 +14,13 @@ interface Translations {
   excerpt: string
 }
 
+interface Image {
+  id: string
+}
 interface Posts {
   translations: Translations[]
+  image: Image
+  date_created: string
 }
 
 interface Schema {
@@ -23,11 +30,15 @@ interface Schema {
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
-async function HomeData() {
+async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       posts{ 
-        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+        image{
+          id
+        }
+        date_created
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           title
           content
           excerpt
@@ -38,11 +49,13 @@ async function HomeData() {
 }
 
 export default async function Posts() {
-  let data = await HomeData();  
-  // const staticContent = data?.posts?.translations?.[0] || {}
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
+  let data = await HomeData(lang) 
 
   const posts = data?.posts.map((item) => ({
-    // icon: `${BASE_URL}/assets/${item.icon?.id}`,
+    image: `${BASE_URL}/assets/${item.image?.id}`,
+    dateCreated: item?.date_created,
     title: item.translations[0]?.title,
     description: item.translations[0]?.content,
     excerpt: item.translations[0]?.excerpt
@@ -54,6 +67,20 @@ export default async function Posts() {
     return words.length > wordLimit
       ? words.slice(0, wordLimit).join(' ') + ' . . . '
       : text
+  }
+
+  function formatDate(isoDateString: string): string {
+    const date = new Date(isoDateString)
+
+    if (isNaN(date.getTime())) {
+      throw new Error('Invalid date value')
+    }
+
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0') // Months are 0-based
+    const year = date.getFullYear()
+
+    return `${day}-${month}-${year}`
   }
   return (
     <Box
@@ -86,16 +113,14 @@ export default async function Posts() {
               <CardMedia
                 component="img"
                 height="140"
-                image="/image2.png"
+                image={item?.image}
                 alt="Article Image"
               />
 
               <CardContent sx={{ px: 0 }}>
-                <Typography variant="h6">
-                  {item.title}
-                </Typography>
+                <Typography variant="h6">{item.title}</Typography>
                 <Typography variant="caption" color="white">
-                  20-12-2023
+                  {formatDate(item.dateCreated)}
                 </Typography>
 
                 <Box
@@ -106,29 +131,24 @@ export default async function Posts() {
                   }}
                 >
                   <Typography variant="body2" sx={{ mt: 1 }}>
-                    {truncateText(
-                      item.excerpt,
-                      22
-                    )}
+                    {truncateText(item.excerpt, 22)}
                   </Typography>
 
-                  <Button>
-                    <IconButton
-                      sx={{
-                        color: '#fff',
-                        backgroundColor: '#8411E6',
-                        borderRadius: '50%',
-                        width: '25px',
-                        height: '25px',
-                        ml: 1,
-                        '&:hover': {
-                          backgroundColor: '#0000C7',
-                        },
-                      }}
-                    >
-                      <ArrowForwardIcon fontSize="small" />
-                    </IconButton>
-                  </Button>
+                  <IconButton
+                    sx={{
+                      color: '#fff',
+                      backgroundColor: '#8411E6',
+                      borderRadius: '50%',
+                      width: '25px',
+                      height: '25px',
+                      ml: 1,
+                      '&:hover': {
+                        backgroundColor: '#0000C7',
+                      },
+                    }}
+                  >
+                    <ArrowForwardIcon fontSize="small" />
+                  </IconButton>
                 </Box>
               </CardContent>
             </Box>
