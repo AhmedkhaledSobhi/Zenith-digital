@@ -20,6 +20,7 @@ export async function POST(req: Request) {
     const query = gql`
       query PostsFilter($date: String!) {
         posts(filter: { date_created: { _gte: $date } }) {
+          id
           slug
           image {
             id

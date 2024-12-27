@@ -114,6 +114,7 @@ function Blog() {
 
               <CardContent sx={{ px: 0 }}>
                 <Typography variant="h6">{item.slug}</Typography>
+                <Typography variant="h6">{item.id}</Typography>
                 <Typography variant="caption" color="white">
                   {formatDate(item.date_created)}
                 </Typography>
