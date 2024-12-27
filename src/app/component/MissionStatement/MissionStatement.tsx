@@ -34,10 +34,24 @@ async function HomeData() {
   `)
 }
 
+async function HomeDatas() {
+  return await client.query(`
+    query{
+      static_content_texts {
+        translations(filter: {languages_code: {code: {_eq: "en"}}}) {
+          contact_us_text
+          contact_us_title
+          contact_us_form_note
+        }
+      }
+    }
+  `)
+}
+
 export default async function MissionStatement() {
   // console.log("ahmed", JSON.stringify(await HomeData(), null,2) );
   let data = await HomeData()
-
+  let datas = await HomeDatas()
   return (
     <Box
       sx={{
@@ -62,6 +76,7 @@ export default async function MissionStatement() {
               color: '#fff',
             }}
           >
+            {datas.static_content_texts?.translations[0].contact_us_text}
             OUR MISSION STATEMENT
           </Typography>
           <Grid
