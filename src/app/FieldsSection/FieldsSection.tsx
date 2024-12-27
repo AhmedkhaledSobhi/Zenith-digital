@@ -2,6 +2,7 @@ import { Box, CardContent, Typography, Button } from '@mui/material';
 import Grid from "@mui/material/Grid2"
 
 import { createDirectus, graphql } from '@directus/sdk';
+
 interface Translations {
   languages_code: { code: string }
   title: string
