@@ -79,7 +79,7 @@ export default async function VisionSection() {
           </Typography>
         </Box>
 
-        <Grid container sx={{ mx: 'auto' }} spacing={0}>
+        <Grid container sx={{ mx: 'auto', width: '85%' }} spacing={1}>
           {data?.vision.map((item, i) => (
             <Grid
               size={{ xs: 12, md: 4 }}

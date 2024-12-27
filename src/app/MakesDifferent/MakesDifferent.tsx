@@ -1,14 +1,50 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
+import { createDirectus, graphql } from '@directus/sdk'
 
-export default function MakesDifferent() {
+interface Translations {
+  languages_code: { code: string }
+  what_we_do_fields_content_title: string
+  what_we_do_fields_content_text: string
+}
+
+interface StaticContentTexts {
+  translations: Translations[]
+}
+
+interface Schema {
+  static_content_texts: StaticContentTexts[]
+}
+
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
+const client = createDirectus<Schema>(BASE_URL).with(graphql())
+
+async function HomeData() {
+  return await client.query<Schema>(`
+    query{
+      static_content_texts{ 
+        translations(filter: {languages_code: {code: {_eq: "ar"}}}){
+          what_we_do_fields_content_title
+          what_we_do_fields_content_text
+        }
+      }
+    }
+  `)
+}
+
+export default async function MakesDifferent() {
+  let data = await HomeData();
+  const staticContent =
+    data?.static_content_texts?.[0]?.translations?.[0] || {}
+
+
   return (
     <Box
       display="flex"
       bgcolor="#010715"
       justifyContent="center"
       alignItems="center"
-      sx={{ height: {xs:'auto', md:'80vh'}, textAlign: 'center' }}
+      sx={{ height: { xs: 'auto', md: '80vh' }, textAlign: 'center' }}
     >
       <Box>
         <Typography
@@ -36,7 +72,10 @@ export default function MakesDifferent() {
               fill="#DAFF23"
             />
           </svg>
-        <Box   sx={{ margin:{xs:'0px 5px', md: '0px 10px' }}}>What Makes Us Different</Box>
+          <Box sx={{ margin: { xs: '0px 5px', md: '0px 10px' } }}>
+            {staticContent.what_we_do_fields_content_title}
+            {/* What Makes Us Different */}
+          </Box>
           <svg
             width="48"
             height="48"
@@ -54,15 +93,16 @@ export default function MakesDifferent() {
         <Typography
           variant="body2"
           sx={{
-            width: {xs:'95%', md:'70%'},
+            width: { xs: '95%', md: '70%' },
             mx: 'auto',
             my: 4,
             color: 'rgba(179,185,198,1)',
-            fontSize:{xs:'18px', md:'24px'},
+            fontSize: { xs: '18px', md: '24px' },
             fontWeight: 400,
             lineHeight: '33.6px',
           }}
         >
+          {staticContent.what_we_do_fields_content_text}
           At Zenith Digital Space, we bring together the best in technical
           expertise and a deep understanding of business needs. What sets us
           apart is our ability to not only deliver exceptional solutions, but
@@ -72,10 +112,10 @@ export default function MakesDifferent() {
         <Typography
           variant="body2"
           sx={{
-            width: {xs:'95%', md:'70%'},
+            width: { xs: '95%', md: '70%' },
             mx: 'auto',
             color: 'rgba(179,185,198,1)',
-            fontSize: {xs:'18px',md:'24px'},
+            fontSize: { xs: '18px', md: '24px' },
             fontWeight: 400,
             lineHeight: '33.6px',
           }}

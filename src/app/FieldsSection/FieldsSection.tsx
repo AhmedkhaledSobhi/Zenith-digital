@@ -1,5 +1,3 @@
-// 'use client'
-
 import { Box, CardContent, Typography, Button } from '@mui/material';
 import Grid from "@mui/material/Grid2"
 
@@ -12,13 +10,24 @@ interface Translations {
   content: string
 }
 
+interface Translation {
+  languages_code: { code: string }
+  what_we_do_fields_title: string
+  what_we_do_fields_text: string
+}
+
 interface Service {
   translations: Translations[]
-  icon: { id: string }
+  image: { id: string }
+}
+
+interface StaticContentTexts {
+  translations: Translation[]
 }
 
 interface Schema {
-  services: Service[]
+  fields: Service[]
+  static_content_texts: StaticContentTexts[]
 }
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
@@ -27,15 +36,11 @@ const client = createDirectus<Schema>(BASE_URL).with(graphql())
 async function HomeData() {
   return await client.query<Schema>(`
     query{
-      services {
-        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
-          title
-          excerpt
-          content
+      static_content_texts{ 
+        translations{
+          what_we_do_fields_title
+          what_we_do_fields_text
         }
-        icon{
-          id
-        }    
       }
       fields{
         translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
@@ -53,50 +58,21 @@ async function HomeData() {
 
 
 export default async function FieldsSection() {
-  let data = await HomeData()
+  let data = await HomeData();
+  const staticContent = data?.static_content_texts?.[0]?.translations?.[0] || {}
 
 
-  const services = [
-    {
-      icon: '/image2.png',
-      title: 'Custom Development & Integration',
-      description:
-        'We provide custom software development and integrate with systems like CRM (Customer Relationship Management), CMMS (Computerized Maintenance Management Systems), and ERP (Enterprise Resource Planning).',
-    },
-    {
-      icon: '/image2.png',
-      title: 'Custom Development & Integration',
-      description:
-        'We provide custom software development and integrate with systems like CRM (Customer Relationship Management), CMMS (Computerized Maintenance Management Systems), and ERP (Enterprise Resource Planning).',
-    },
-    {
-      icon: '/image2.png',
-      title: 'Custom Development & Integration',
-      description:
-        'We provide custom software development and integrate with systems like CRM (Customer Relationship Management), CMMS (Computerized Maintenance Management Systems), and ERP (Enterprise Resource Planning).',
-    },
-    {
-      icon: '/image2.png',
-      title: 'Custom Development & Integration',
-      description:
-        'We provide custom software development and integrate with systems like CRM (Customer Relationship Management), CMMS (Computerized Maintenance Management Systems), and ERP (Enterprise Resource Planning).',
-    },
-    {
-      icon: '/image2.png',
-      title: 'Custom Development & Integration',
-      description:
-        'We provide custom software development and integrate with systems like CRM (Customer Relationship Management), CMMS (Computerized Maintenance Management Systems), and ERP (Enterprise Resource Planning).',
-    },
-    {
-      icon: '/image2.png',
-      title: 'Custom Development & Integration',
-      description:
-        'We provide custom software development and integrate with systems like CRM (Customer Relationship Management), CMMS (Computerized Maintenance Management Systems), and ERP (Enterprise Resource Planning).',
-    },
-  ]
+// console.log('ahmed data data', data.fields?.translations?.title)
+
+ const fields = data?.fields.map((item) => ({
+   icon: `${BASE_URL}/assets/${item.image?.id}`,
+   title: item.translations[0]?.title,
+   description: item.translations[0]?.excerpt,
+ }))
+
   return (
-    <Box display="flex" sx={{ my: 7}}>
-      <Box sx={{ width: '85%', mx: 'auto', textAlign: 'center'}}>
+    <Box display="flex" sx={{ my: 7 }}>
+      <Box sx={{ width: '85%', mx: 'auto', textAlign: 'center' }}>
         <Typography
           variant="h5"
           sx={{
@@ -118,35 +94,42 @@ export default async function FieldsSection() {
               fill="#0000FE"
             />
           </svg>
-          <span style={{ marginLeft: '15px' }}>Fields we care about</span>
+          <span style={{ marginLeft: '15px' }}>
+            {staticContent.what_we_do_fields_title}
+          </span>
         </Typography>
 
         <Typography
           variant="body2"
           sx={{
             my: 3,
-            width:{xs:'95%', md:'70%'},
+            width: { xs: '95%', md: '70%' },
             mx: 'auto',
-            fontSize: {xs:'17px',md:'24px'},
+            fontSize: { xs: '17px', md: '24px' },
             fontWeight: 400,
             lineHeight: '33.6px',
           }}
         >
-          Zenith Digital has extensive experience in delivering high quality
-          solutions across a variety of industries thanks to our team of experts
-          and specialists. We cover many areas, including, but not limited to:
+          {staticContent.what_we_do_fields_text}
         </Typography>
         <Grid
           container
           // spacing={2}
-          sx={{width:{xs:'90%' },spacing:{xs:2, md:9},  mx:"auto", display:'flex', justifyContent:'center', my: 2 }}
+          sx={{
+            width: { xs: '90%' },
+            spacing: { xs: 2, md: 9 },
+            mx: 'auto',
+            display: 'flex',
+            justifyContent: 'center',
+            my: 2,
+          }}
         >
-          {services.map((service, i) => (
-            <Grid size={{ md:4 }}  key={i} sx={{my:{xs:5}}} >
+          {fields.map((field, i) => (
+            <Grid size={{ md: 4 }} key={i} sx={{ my: { xs: 5 } }}>
               <Box
                 sx={{
                   position: 'relative',
-                  mx:{ md:'auto'},                  
+                  mx: { md: 'auto' },
                   textAlign: 'center',
                   bgcolor: 'transparent',
                   border: '1px solid',
@@ -154,11 +137,17 @@ export default async function FieldsSection() {
                     'linear-gradient(180deg, #8411E6 0%, #0000FE 100%)',
                   borderImageSlice: 1,
                   color: '#fff',
-                  py: 3,                
-                  width: {xs:'300px',  md:'350px'},
+                  py: 3,
+                  width: { xs: '300px', md: '350px' },
                 }}
               >
-                <Box height="150px" sx={{width:{xs:'300px', md:"350px"}, mx:{xs:"auto"}}}>
+                <Box
+                  height="150px"
+                  sx={{
+                    width: { xs: '300px', md: '350px' },
+                    mx: { xs: 'auto' },
+                  }}
+                >
                   <img
                     style={{
                       position: 'absolute',
@@ -166,10 +155,10 @@ export default async function FieldsSection() {
                       left: '50%',
                       transform: 'translateX(-50%)',
                       zIndex: '99',
-                      width:'80%',
+                      width: '80%',
                       margin: 'auto',
                     }}
-                    src={service.icon}
+                    src={field.icon}
                     alt=""
                   />
                 </Box>
@@ -179,7 +168,7 @@ export default async function FieldsSection() {
                     gutterBottom
                     sx={{ fontSize: '18px', fontWeight: 600, color: '#000' }}
                   >
-                    {service.title}
+                    {field.title}
                   </Typography>
                   <Typography
                     variant="body2"
@@ -187,7 +176,7 @@ export default async function FieldsSection() {
                     color="gray"
                     gutterBottom
                   >
-                    {service.description}
+                    {field.description}
                   </Typography>
                   <Button
                     sx={{

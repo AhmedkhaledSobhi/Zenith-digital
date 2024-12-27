@@ -40,10 +40,10 @@ async function HomeData() {
 
 export default async function About() {
   let data = await HomeData()
-  console.log(
-    'ahmed data data',
-    JSON.stringify(data?.pages[2]?.translations?.[0]?.title)
-  )
+  // console.log(
+  //   'ahmed data data',
+  //   JSON.stringify(data?.pages[2]?.translations?.[0]?.title)
+  // )
 
   return (
     <>

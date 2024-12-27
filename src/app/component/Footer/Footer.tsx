@@ -110,6 +110,21 @@ export default async function Footer() {
   //  async function SocialIcon({name}: {name: string}) {
   //   return  (await import(`@mui/icons-material/${name}`)).default
   // }
+
+    function getSocialIcon(name: string) {
+      switch (name.toLowerCase()) {
+        case 'facebook':
+          return <Facebook />
+        case 'instagram':
+          return <Instagram />
+        case 'twitter':
+          return <Twitter />
+        case 'linkedin':
+          return <LinkedIn />
+        default:
+          return null
+      }
+    }
   return (
     <Box
       component="footer"
@@ -145,7 +160,20 @@ export default async function Footer() {
           </Box>
 
           <Stack direction="row" spacing={1} justifyContent="center" mb={2}>
-            <Button
+            {data?.site_settings?.socials.map((social, index) => (
+              <Button
+                key={index}
+                href={social.url}
+                target='_blank'
+                sx={{ color: 'white', padding: '0px', margin: '0px' }}
+              >
+                <IconButton aria-label={social.name} color="inherit">
+                  {getSocialIcon(social.name)}
+                </IconButton>
+              </Button>
+            ))}
+            
+            {/* <Button
               href={`${data?.site_settings?.phone}`}
               sx={{ color: 'white', padding: '0px', margin: '0px' }}
             >
@@ -169,6 +197,7 @@ export default async function Footer() {
                 <Instagram />
               </IconButton>
             </Button>
+
             <Button
               href={`${data?.site_settings?.phone}`}
               sx={{ color: 'white', padding: '0px', margin: '0px' }}
@@ -176,7 +205,7 @@ export default async function Footer() {
               <IconButton aria-label="Facebook" color="inherit">
                 <Facebook />
               </IconButton>
-            </Button>
+            </Button> */}
           </Stack>
 
           <Box display="flex" flexDirection="column" alignItems="center">
