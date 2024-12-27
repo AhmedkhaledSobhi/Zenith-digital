@@ -108,7 +108,7 @@ export default function Blog() {
         }}
       >
         {/* Filter Section */}
-        <Box sx={{ display: 'flex', gap: { xs: 1, md: 2 }, mb: 4 }}>
+        <Box sx={{ display: 'flex',width: "80%", mx:'auto', gap: { xs: 1, md: 2 }, mb: 4 }}>
           <FormControl fullWidth>
             <InputLabel sx={{ color: '#FFF' }}>Filter by Date</InputLabel>
             <Select
@@ -152,8 +152,8 @@ export default function Blog() {
         <Grid
           container
           m="auto"
-          width="99%"
-          sx={{ spacing: { md: 6 }, pl: { xs: 0 } }}
+          width="83%"
+          sx={{ spacing: { md: 4}, pl: { xs: 0 } }}
         >
           {[...Array(9)].map((_, index) => (
             <Grid
@@ -166,7 +166,7 @@ export default function Blog() {
                   backgroundColor: 'transparent',
                   color: '#fff',
                   borderRadius: 2,
-                  width: '270px',
+                  width: '350px',
                 }}
                 mx="auto"
               >
@@ -237,7 +237,7 @@ export default function Blog() {
           />
         </Box>
       </Box>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }

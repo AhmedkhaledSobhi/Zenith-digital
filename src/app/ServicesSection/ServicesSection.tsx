@@ -8,6 +8,9 @@ interface Translations {
   languages_code: { code: string }
   title: string
   excerpt: string
+  our_services_title: string
+  our_services_text:string
+
 }
 
 interface Service {
@@ -15,8 +18,14 @@ interface Service {
   icon: { id: string }
 }
 
+interface StaticContentTexts {
+  translations: Translations[]
+}
+
+
 interface Schema {
-  services: Service[];
+  services: Service[]
+  static_content_texts: StaticContentTexts[]
 }
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
@@ -34,13 +43,22 @@ async function HomeData() {
           id
         }    
       }
+      static_content_texts{ 
+        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+          our_services_title
+          our_services_text
+        }
+      }
     }
   `)
 }
 
 export default async function ServicesSection() {
   
-  let data = await HomeData()
+  let data = await HomeData();
+  const staticContent =
+    data?.static_content_texts?.[0]?.translations?.[0] || {}
+
 
   const services = data?.services.map((item) => ({
     icon: `${BASE_URL}/assets/${item.icon?.id}`,
@@ -67,7 +85,7 @@ export default async function ServicesSection() {
             />
           </svg>
         </Box>
-        <Typography variant="h4">Our Services</Typography>
+        <Typography variant="h4">{staticContent.our_services_title}</Typography>
       </Box>
 
       <Typography
@@ -75,10 +93,7 @@ export default async function ServicesSection() {
         marginBottom={4}
         sx={{ width: { xs: '90%', md: '42%' }, mx: 'auto' }}
       >
-        ZENITH Digital Services, we go beyond being a mere service provider—we
-        become your dedicated partner in achieving success. Whether your goal is
-        to enhance your digital presence, harness the power of AI, or safeguard
-        your data, we have the expertise to support you
+        {staticContent.our_services_text}
       </Typography>
 
       <Grid
@@ -88,7 +103,7 @@ export default async function ServicesSection() {
       >
         <Sliders services={services} />
 
-      {/* {services.map((service, i) => (
+        {/* {services.map((service, i) => (
           <Grid size={{ xs: 12, md: 3 }} key={i}>
             <Card sx={{ bgcolor: 'transparent', border:'1px solid', borderImageSource: 'linear-gradient(180deg, #8411E6 0%, #0000FE 100%)', borderImageSlice:1, color:'#fff', py:3, width:'350px'}}>
               <Box>

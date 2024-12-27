@@ -6,7 +6,50 @@ import ServicesSection from '../ServicesSection/ServicesSection'
 import FieldsSection from '../FieldsSection/FieldsSection'
 import MakesDifferent from '../MakesDifferent/MakesDifferent'
 
-export default function whatWeDo() {
+import { createDirectus, graphql } from '@directus/sdk'
+
+interface Translations {
+  languages_code: { code: string }
+  what_we_do_title: string
+  what_we_do_text: string
+}
+
+interface StaticContentTexts {
+  translations: Translations[]
+}
+
+interface Schema {
+  static_content_texts: StaticContentTexts[]
+}
+
+
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
+const client = createDirectus<Schema>(BASE_URL).with(graphql())
+// const client = createDirectus<Schema>(BASE_URL).with(graphql({onrequset}))
+
+async function HomeData() {
+  return await client.query<Schema>(`
+    query{
+      static_content_texts{ 
+        translations(filter: {languages_code: {code: {_eq: "ar"}}}){
+          what_we_do_title  
+          what_we_do_text 
+        }
+      }
+    }
+  `)
+}
+
+export default async function whatWeDo() {
+    let data = await HomeData();
+    const staticContent =
+      data?.static_content_texts?.[0]?.translations?.[0] || {}
+
+    // console.log(
+    //   'ahmed  whatWeDo',
+    //   data?.static_content_texts?.translations[0].what_we_do_title
+    // )
+    
   return (
     <>
       <Navbar />
@@ -53,7 +96,8 @@ export default function whatWeDo() {
               },
             }}
           >
-            What We Do
+            {staticContent.what_we_do_title}
+            {/* What We Do */}
           </Link>
           <Typography
             variant="body2"
@@ -67,11 +111,12 @@ export default function whatWeDo() {
               lineHeight: '33.6px',
             }}
           >
-            At the Zenith digital space, we believe that every project starts
+            {staticContent.what_we_do_text}
+            {/* At the Zenith digital space, we believe that every project starts
             with a clear understanding of your vision. Thanks to our extensive
             experience in programming, digital marketing, design, cybersecurity,
             artificial intelligence and more, we specialize in helping our
-            clients bring their ideas to life.
+            clients bring their ideas to life. */}
           </Typography>
         </Box>
       </Box>
