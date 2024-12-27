@@ -1,253 +1,162 @@
 'use client'
-import Navbar from '../component/Navbar/Navbar'
-import styles from '../component/Header/Header.module.css'
+
 import { useState } from 'react'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import {
-  IconButton,
-  CardMedia,
-  CardContent,
-  Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Pagination,
   Box,
-  Link,
+  CardContent,
+  CardMedia,
+  Grid,
+  IconButton,
+  Typography,
 } from '@mui/material'
-import Grid from '@mui/material/Grid2'
-import Footer from '../component/Footer/Footer'
-import Posts from '../component/Post/Post'
+import dayjs, { Dayjs } from 'dayjs'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
-export default function Blog() {
-  const [filterDate, setFilterDate] = useState('')
-  const [filterCategory, setFilterCategory] = useState('')
-  const [filterStatus, setFilterStatus] = useState('')
-  const [page, setPage] = useState(1)
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
-    setPage(value)
-  }
+function Blog() {
+  const [filterDate, setFilterDate] = useState<Dayjs | null>(null)
+  const [posts, setPosts] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  // Common styles for filter Select components
-  const filterSelectSx = {
-    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#FFF' },
-    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#FFF' },
-    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#FFF' },
-    color: '#FFF',
-  }
+  const handleDateChange = async (newValue: Dayjs | null) => {
+    setFilterDate(newValue)
 
-  function truncateText(text: string, wordLimit: number): string {
-    const words = text.split(' ')
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(' ') + ' . . . '
-      : text
+    if (newValue) {
+      const formattedDate = dayjs(newValue.toISOString()).format('YYYY-MM-DD')
+      setLoading(true)
+      setError(null)
+      try {
+        const res = await fetch('/api/getPosts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ date: formattedDate }),
+        })
+
+        const data = await res.json()
+
+        if (res.ok) {
+          setPosts(data.posts)
+        } else {
+          setError(data.message || 'Error fetching posts')
+        }
+      } catch (err) {
+      } finally {
+        setLoading(false)
+      }
+    }
   }
 
   return (
-    <>
-      <Navbar />
+    <Box
+      sx={{
+        color: '#fff',
+        px: { xs: 1, sm: 6 },
+        py: 9,
+        backgroundColor: '#010715',
+      }}
+    >
+      {/* Filter Section */}
       <Box
-        display="flex"
-        justifyContent="center"
         sx={{
-          height: { xs: '30vh', md: '100vh' },
-          alignItems: { xs: 'end', md: 'center' },
-          textAlign: 'center',
+          display: 'flex',
+          width: '80%',
+          mx: 'auto',
+          gap: { xs: 1, md: 2 },
+          mb: 4,
         }}
-        className={styles.headerPage}
       >
-        <Box>
-          <Link
-            href="/about"
-            sx={{
-              color: '#fff',
-              fontSize: { xs: '35px', md: '50px' },
-              fontWeight: 600,
-              lineHeight: '56px',
-              position: 'relative',
-              textDecoration: 'none',
-              textTransform: 'uppercase',
-              background:
-                'linear-gradient(to right, #FDFDFD, #FDFDFD, #0000FE, #0000FE )',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                left: 0,
-                bottom: '-5px',
-                width: '100%',
-                height: '2px',
-                backgroundColor: '#DAFF23',
-                transform: 'scaleX(0)',
-                transformOrigin: 'bottom right',
-                transition: 'transform 0.3s ease',
-              },
-              '&:hover::after': {
-                transform: 'scaleX(1)',
-                transformOrigin: 'bottom left',
-              },
-            }}
-          >
-            Articles & News
-          </Link>
-        </Box>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Select a date"
+            value={filterDate}
+            onChange={handleDateChange}
+          />
+        </LocalizationProvider>
       </Box>
 
-      <Box
-        sx={{
-          color: '#fff',
-          backgroundColor: '#010715',
-          px: { xs: 1, sm: 6 },
-          py: 9,
-        }}
+      {/* Card Grid Section */}
+      <Grid
+        container
+        m="auto"
+        width="83%"
+        sx={{ spacing: { md: 4 }, pl: { xs: 0 } }}
       >
-        {/* Filter Section */}
-        <Box
-          sx={{
-            display: 'flex',
-            width: '80%',
-            mx: 'auto',
-            gap: { xs: 1, md: 2 },
-            mb: 4,
-          }}
-        >
-          <FormControl fullWidth>
-            <InputLabel sx={{ color: '#FFF' }}>Filter by Date</InputLabel>
-            <Select
-              value={filterDate}
-              onChange={(e) => setFilterDate(e.target.value as string)}
-              sx={filterSelectSx}
+        {loading && <Typography variant="h6">Loading...</Typography>}
+        {error && (
+          <Typography variant="h6" color="error">
+            Error: {error}
+          </Typography>
+        )}
+        {posts.map((item, index) => (
+          <Grid key={index} item xs={12} md={4}>
+            <Box
+              style={{
+                backgroundColor: 'transparent',
+                color: '#fff',
+                borderRadius: 2,
+                width: '350px',
+              }}
+              mx="auto"
             >
-              <MenuItem value="newest">Newest</MenuItem>
-              <MenuItem value="oldest">Oldest</MenuItem>
-            </Select>
-          </FormControl>
+              <CardMedia
+                component="img"
+                height="140"
+                image={`${BASE_URL}/assets/${item.image?.id}`}
+                alt="Article Image"
+              />
 
-          <FormControl fullWidth>
-            <InputLabel sx={{ color: '#FFF' }}>Filter by Category</InputLabel>
-            <Select
-              value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value as string)}
-              sx={filterSelectSx}
-            >
-              <MenuItem value="all">All Categories</MenuItem>
-              <MenuItem value="category1">Category 1</MenuItem>
-              <MenuItem value="category2">Category 2</MenuItem>
-            </Select>
-          </FormControl>
+              <CardContent sx={{ px: 0 }}>
+                <Typography variant="h6">{item.slug}</Typography>
+                <Typography variant="caption" color="white">
+                  {formatDate(item.date_created)}
+                </Typography>
 
-          <FormControl fullWidth>
-            <InputLabel sx={{ color: '#FFF' }}>Filter by Status</InputLabel>
-            <Select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value as string)}
-              sx={filterSelectSx}
-            >
-              <MenuItem value="all">All Status</MenuItem>
-              <MenuItem value="published">Published</MenuItem>
-              <MenuItem value="draft">Draft</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-
-        {/* Card Grid Section */}
-        <Grid
-          container
-          m="auto"
-          width="83%"
-          sx={{ spacing: { md: 4 }, pl: { xs: 0 } }}
-        >
-          {/* <Posts/> */}
-          {[...Array(9)].map((_, index) => (
-            <Grid
-              size={{ xs: 12, sm: 6, md: 4 }}
-              key={index}
-              sx={{ borderRadius: 10 }}
-            >
-              <Box
-                style={{
-                  backgroundColor: 'transparent',
-                  color: '#fff',
-                  borderRadius: 2,
-                  width: '350px',
-                }}
-                mx="auto"
-              >
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image="/image2.png"
-                  alt="Article Image"
-                />
-
-                <CardContent sx={{ px: 0 }}>
-                  <Typography variant="h6">Article Title</Typography>
-                  <Typography variant="caption" color="white">
-                    20-12-2023
-                  </Typography>
-
-                  <Box
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'end',
+                    justifyContent: 'start',
+                  }}
+                >
+                  <IconButton
                     sx={{
-                      display: 'flex',
-                      alignItems: 'end',
-                      justifyContent: 'start',
+                      color: '#fff',
+                      backgroundColor: '#8411E6',
+                      borderRadius: '50%',
+                      width: '25px',
+                      height: '25px',
+                      ml: 1,
+                      '&:hover': {
+                        backgroundColor: '#0000C7',
+                      },
                     }}
                   >
-                    <Typography variant="body2" sx={{ mt: 1 }}>
-                      {truncateText(
-                        'Lorem ipsum dolor sit amet consectetur Diam bibendum ut diam tempus sociis lectus ltus in? Lorem ipsum dolor sit amet consectetur Diam',
-                        22
-                      )}
-                    </Typography>
-
-                    <IconButton
-                      sx={{
-                        color: '#fff',
-                        backgroundColor: '#8411E6',
-                        borderRadius: '50%',
-                        width: '25px',
-                        height: '25px',
-                        ml: 1,
-                        '&:hover': {
-                          backgroundColor: '#0000C7',
-                        },
-                      }}
-                    >
-                      <ArrowForwardIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
-                </CardContent>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-
-        {/* Pagination */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-          <Pagination
-            count={5}
-            page={page}
-            onChange={handlePageChange}
-            sx={{
-              '& .MuiPaginationItem-root': {
-                color: '#FFF',
-              },
-              '& .Mui-selected': {
-                color: '#DAFF23',
-                backgroundColor: '#0000FE',
-              },
-            }}
-          />
-        </Box>
-      </Box>
-      {/* <Footer /> */}
-    </>
+                    <ArrowForwardIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+              </CardContent>
+            </Box>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   )
 }
+
+function formatDate(isoDateString: string): string {
+  const date = new Date(isoDateString)
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+
+  return `${day}-${month}-${year}`
+}
+
+export default Blog
