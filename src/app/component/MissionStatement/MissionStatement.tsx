@@ -9,14 +9,19 @@ interface Translations {
   languages_code: { code: string }
   title: string
   text: string
+  contact_us_text:string
 }
 
 interface Mission {
   translations: Translations[]
 }
+interface StaticContentTexts {
+  translations: Translations[]
+}
 
 interface Schema {
   mission: Mission[]
+  static_content_texts: StaticContentTexts[]
 }
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
@@ -30,28 +35,20 @@ async function HomeData() {
           text
         }
       }
-    }
-  `)
-}
-
-async function HomeDatas() {
-  return await client.query(`
-    query{
       static_content_texts {
         translations(filter: {languages_code: {code: {_eq: "en"}}}) {
           contact_us_text
-          contact_us_title
-          contact_us_form_note
         }
       }
     }
   `)
 }
 
+
 export default async function MissionStatement() {
   // console.log("ahmed", JSON.stringify(await HomeData(), null,2) );
   let data = await HomeData()
-  let datas = await HomeDatas()
+  const staticContent = data?.static_content_texts?.translations?.[0] || {}
   return (
     <Box
       sx={{
@@ -76,19 +73,19 @@ export default async function MissionStatement() {
               color: '#fff',
             }}
           >
-            {datas.static_content_texts?.translations[0].contact_us_text}
+            {/* {staticContent.contact_us_text} */}
             OUR MISSION STATEMENT
           </Typography>
           <Grid
             container
             justifyContent="center"
-            sx={{ display: 'flex', mt: 4, width: '85%' , mx:'auto' }}
+            sx={{ display: 'flex', mt: 4, width: '85%', mx: 'auto' }}
             spacing={1}
           >
             {data.mission.map((item, index) => (
               <Grid
                 size={{ xs: 12, sm: 6, md: 4 }}
-                sx={{ px: { md:0 } }}
+                sx={{ px: { md: 0 } }}
                 key={index}
               >
                 <MissionCard

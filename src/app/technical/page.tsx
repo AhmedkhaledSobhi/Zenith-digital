@@ -6,13 +6,17 @@ import Footer from '../component/Footer/Footer';
 import styles from '../Header/Header.module.css';
 
 import { createDirectus, graphql } from '@directus/sdk';
-import { link } from 'fs'
 
 interface Translations {
   languages_code: { code: string }
   title: string
   excerpt: string
   content: string
+  our_services_title: string
+  our_services_text: string
+  our_services_page_discover_text_3: string
+  our_services_page_discover_text_2: string
+  our_services_page_discover_text_1: string
 }
 
 interface Service {
@@ -20,8 +24,14 @@ interface Service {
   icon: { id: string }
 }
 
+interface StaticContentTexts {
+  translations: Translations[]
+}
+
+
 interface Schema {
   services: Service[]
+  static_content_texts: StaticContentTexts[]
 }
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
@@ -30,6 +40,15 @@ const client = createDirectus<Schema>(BASE_URL).with(graphql())
 async function HomeData() {
   return await client.query<Schema>(`
     query{
+      static_content_texts{ 
+        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+          our_services_title
+          our_services_text
+          our_services_page_discover_text_3
+          our_services_page_discover_text_2
+          our_services_page_discover_text_1
+        }
+      }
       services {
         translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
           title
@@ -47,7 +66,9 @@ async function HomeData() {
 
 export default async function Technical() {
 
-  let data = await HomeData()
+  let data = await HomeData();
+  const staticContent = data?.static_content_texts?.translations?.[0] || {}
+
   const service = data?.services.map((item) => ({
     icon: `${BASE_URL}/assets/${item.icon?.id}`,
     title: item.translations[0]?.title,
@@ -131,7 +152,8 @@ export default async function Technical() {
             </svg>
           </Box>
           <Typography variant="h4" gutterBottom sx={{ color: '#000' }}>
-            Our Services
+            {/* Our Services */}
+            {staticContent.our_services_title}
           </Typography>
         </Box>
         <Typography
@@ -139,15 +161,14 @@ export default async function Technical() {
           marginBottom={3}
           sx={{ width: { xs: '93', md: '40%' }, mx: 'auto', color: '#000' }}
         >
-          At Zenith Digital Space, we're enabling your business digitally by
-          offering comprehensive solutions that help you succeed in a constantly
-          changing online world.
+          {staticContent.our_services_text}
         </Typography>
         <Typography
           variant="body1"
           marginBottom={4}
           sx={{ width: { xs: '93%', md: '43%' }, mx: 'auto', color: '#000' }}
         >
+          {/* {staticContent.our_services_title} */}
           We provide customized digital services aimed at enhancing your
           presence and attracting your target audience. Thanks to our team, we
           are committed to providing the support to help you achieve a
@@ -164,6 +185,7 @@ export default async function Technical() {
             color: '#000',
           }}
         >
+          {/* {staticContent.our_services_title} */}
           Discover our range of services and start developing your digital
           strategy to reach your business goals.
         </Typography>
@@ -193,8 +215,8 @@ export default async function Technical() {
                   mx: { xs: 2 },
                   boxSizing: 'border-box',
                   minHeight: { md: '390px' },
-                  display: 'flex', 
-                  flexDirection: 'column', 
+                  display: 'flex',
+                  flexDirection: 'column',
                   justifyContent: 'space-between',
                 }}
               >
@@ -225,9 +247,8 @@ export default async function Technical() {
                   >
                     {service.description}
                   </Typography>
-
                 </CardContent>
-                <Box sx={{ textAlign: 'center', mt: 'auto',  }}>
+                <Box sx={{ textAlign: 'center', mt: 'auto' }}>
                   <Link
                     sx={{
                       mx: { xs: 2, md: 4 },
@@ -262,6 +283,7 @@ export default async function Technical() {
             marginBottom={4}
             sx={{ width: { xs: '90%', md: '52%' }, mx: 'auto', color: '#000' }}
           >
+            {/* {staticContent.our_services_title} */}
             Your partnership with Zenith Digital Space is your first step
             towards remarkable digital transformation that ensures you excel in
             the in the tech world.
@@ -278,6 +300,7 @@ export default async function Technical() {
               mb: { xs: 1, md: 4 },
             }}
           >
+            {/* {staticContent.our_services_title} */}
             With us, you will reach new heights of success and innovation, as we
             pave the way for you to achieve your digital vision with the highest
             standards of quality and creativity.

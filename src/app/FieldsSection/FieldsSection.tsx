@@ -59,16 +59,13 @@ async function HomeData() {
 
 export default async function FieldsSection() {
   let data = await HomeData();
-  const staticContent = data?.static_content_texts?.[0]?.translations?.[0] || {}
+  const staticContent = data?.static_content_texts?.translations?.[0] || {}
 
-
-// console.log('ahmed data data', data.fields?.translations?.title)
-
- const fields = data?.fields.map((item) => ({
-   icon: `${BASE_URL}/assets/${item.image?.id}`,
-   title: item.translations[0]?.title,
-   description: item.translations[0]?.excerpt,
- }))
+  const fields = data?.fields.map((item) => ({
+    icon: `${BASE_URL}/assets/${item.image?.id}`,
+    title: item.translations[0]?.title,
+    description: item.translations[0]?.excerpt,
+  }))
 
   return (
     <Box display="flex" sx={{ my: 7 }}>

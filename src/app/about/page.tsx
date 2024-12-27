@@ -39,11 +39,7 @@ async function HomeData() {
 }
 
 export default async function About() {
-  let data = await HomeData()
-  // console.log(
-  //   'ahmed data data',
-  //   JSON.stringify(data?.pages[2]?.translations?.[0]?.title)
-  // )
+  let data = await HomeData();
 
   return (
     <>
@@ -96,7 +92,7 @@ export default async function About() {
       </Box>
       <VisionSection />
       <MissionStatement />
-      <Box
+      {/* <Box
         display="flex"
         justifyContent="center"
         sx={{ height: '60vh', pt: 9, textAlign: 'center' }}
@@ -132,7 +128,9 @@ export default async function About() {
             Our value
           </Link>
         </Box>
-      </Box>
+      </Box> */}
+
+      
       <Innovation />
       <Leadership />
       <Footer />
