@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import Link from 'next/link'
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 
@@ -126,21 +127,23 @@ function Blog() {
                     justifyContent: 'start',
                   }}
                 >
-                  <IconButton
-                    sx={{
-                      color: '#fff',
-                      backgroundColor: '#8411E6',
-                      borderRadius: '50%',
-                      width: '25px',
-                      height: '25px',
-                      ml: 1,
-                      '&:hover': {
-                        backgroundColor: '#0000C7',
-                      },
-                    }}
-                  >
-                    <ArrowForwardIcon fontSize="small" />
-                  </IconButton>
+                  <Link href={`/blog/${item.id}`} passHref>
+                    <IconButton
+                      sx={{
+                        color: '#fff',
+                        backgroundColor: '#8411E6',
+                        borderRadius: '50%',
+                        width: '25px',
+                        height: '25px',
+                        ml: 1,
+                        '&:hover': {
+                          backgroundColor: '#0000C7',
+                        },
+                      }}
+                    >
+                      <ArrowForwardIcon fontSize="small" />
+                    </IconButton>
+                  </Link>
                 </Box>
               </CardContent>
             </Box>
