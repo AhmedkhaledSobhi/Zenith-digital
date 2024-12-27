@@ -7,7 +7,7 @@ import { AppProvider } from '@/context'
 const poppins = localFont({
   src: './fonts/poppins/poppins-regular-webfont.woff2',
   variable: '--font-poppins',
-  weight: '400 500 600 700', 
+  weight: '400 500 600 700',
 })
 
 const geistSans = localFont({
@@ -35,9 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable}`}>
-        <AppProvider>
-          {children}
-        </AppProvider>
+        <AppProvider>{children}</AppProvider>
       </body>
     </html>
   )
