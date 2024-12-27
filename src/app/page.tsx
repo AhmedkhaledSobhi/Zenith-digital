@@ -1,16 +1,16 @@
-import Image from 'next/image';
-import styles from './page.module.css';
-import Navbar from './component/Navbar/Navbar';
-import Footer from './component/Footer/Footer';
-import Header from './Header/Header';
-import HeroSection from './HeroSection/HeroSection';
-import ContactForm from './ContactForm/ContactForm';
-import ServicesSection from './ServicesSection/ServicesSection';
-import MissionStatement from './component/MissionStatement/MissionStatement';
-import VisionSection from './component/VisionSection/VisionSection';
-import { Box } from '@mui/material';
-import ContactFormText from './component/ContactFormText/ContactFormText';
-import Posts from './component/Posts/posts';
+import Image from 'next/image'
+import styles from './page.module.css'
+import Navbar from './component/Navbar/Navbar'
+import Footer from './component/Footer/Footer'
+import Header from './component/Header/Header'
+import HeroSection from './component/HeroSection/HeroSection'
+import ContactForm from './component/ContactForm/ContactForm'
+import ServicesSection from './component/ServicesSection/ServicesSection'
+import MissionStatement from './component/MissionStatement/MissionStatement'
+import VisionSection from './component/VisionSection/VisionSection'
+import { Box } from '@mui/material'
+import ContactFormText from './component/ContactFormText/ContactFormText'
+import Posts from './component/Post/Post'
 
 export default function Home() {
   return (
@@ -27,11 +27,11 @@ export default function Home() {
         padding={4}
         textAlign="center"
       >
-        <ContactFormText/>   
+        <ContactFormText />
         <ContactForm />
       </Box>
 
-      <Posts/>
+      <Posts />
 
       <Footer />
     </>

@@ -3,6 +3,8 @@ import React from 'react';
 import styles from '../Header/Header.module.css';
 
 import {createDirectus, graphql} from '@directus/sdk';
+import { getCookie } from '@/app/utils/helper/helper';
+import { getLocale } from 'next-intl/server';
 
 interface Hero {
   languages_code: { code: string };
@@ -28,12 +30,13 @@ const client = createDirectus<Schema>(BASE_URL).with(graphql());
 
 // const client = createDirectus<Schema>('https://cms-zenith.treasuredeal.com').with(graphql());
 
-async function HomeData(){
+async function HomeData(locale: string){
+
   return await client.query<Schema>(`
     query{
       home_page {
         hero_button_url
-        hero(filter: {languages_code: {code: {_eq: "ar"}}}) {
+        hero(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           languages_code {
             code
           }
@@ -44,13 +47,15 @@ async function HomeData(){
         }
       }
     }
-  `);
+  `)
 }
 
 export default async function Header() {
 
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
   // console.log("ahmed", JSON.stringify(await HomeData(), null,2) );
-  let data = await HomeData();
+  let data = await HomeData(lang)
 // ==================================================
 
   // useEffect(function () {

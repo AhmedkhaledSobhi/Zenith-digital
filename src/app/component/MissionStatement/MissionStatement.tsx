@@ -4,6 +4,8 @@ import Grid from '@mui/material/Grid2'
 import MissionCard from '../../MissionCardProps/MissionCardProps'
 
 import { createDirectus, graphql } from '@directus/sdk'
+import { getCookie } from '@/app/utils/helper/helper'
+import { getLocale } from 'next-intl/server'
 
 interface Translations {
   languages_code: { code: string }
@@ -26,17 +28,17 @@ interface Schema {
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
-async function HomeData() {
+async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       mission {
-        translations(filter: {languages_code: {code: {_eq: "en"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           title
           text
         }
       }
       static_content_texts {
-        translations(filter: {languages_code: {code: {_eq: "en"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           contact_us_text
         }
       }
@@ -47,7 +49,9 @@ async function HomeData() {
 
 export default async function MissionStatement() {
   // console.log("ahmed", JSON.stringify(await HomeData(), null,2) );
-  let data = await HomeData()
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
+  let data = await HomeData(lang)
   const staticContent = data?.static_content_texts?.translations?.[0] || {}
   return (
     <Box

@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid2';
 
 import Navbar from '../component/Navbar/Navbar';
 import Footer from '../component/Footer/Footer';
-import styles from '../Header/Header.module.css';
+import styles from '../component/Header/Header.module.css';
 
 import { createDirectus, graphql } from '@directus/sdk';
 
@@ -27,7 +27,6 @@ interface Service {
 interface StaticContentTexts {
   translations: Translations[]
 }
-
 
 interface Schema {
   services: Service[]
@@ -185,7 +184,7 @@ export default async function Technical() {
             color: '#000',
           }}
         >
-          {/* {staticContent.our_services_title} */}
+          {staticContent.our_services_page_discover_text_1}
           Discover our range of services and start developing your digital
           strategy to reach your business goals.
         </Typography>
@@ -283,7 +282,7 @@ export default async function Technical() {
             marginBottom={4}
             sx={{ width: { xs: '90%', md: '52%' }, mx: 'auto', color: '#000' }}
           >
-            {/* {staticContent.our_services_title} */}
+            {staticContent.our_services_page_discover_text_2}
             Your partnership with Zenith Digital Space is your first step
             towards remarkable digital transformation that ensures you excel in
             the in the tech world.
@@ -300,7 +299,7 @@ export default async function Technical() {
               mb: { xs: 1, md: 4 },
             }}
           >
-            {/* {staticContent.our_services_title} */}
+            {staticContent.our_services_page_discover_text_3}
             With us, you will reach new heights of success and innovation, as we
             pave the way for you to achieve your digital vision with the highest
             standards of quality and creativity.
