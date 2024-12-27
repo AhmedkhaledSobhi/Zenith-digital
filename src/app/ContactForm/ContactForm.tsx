@@ -1,7 +1,6 @@
   'use client'
   import React, { useState, useEffect } from 'react';
   import { Box, TextField, Button, Typography, Link } from '@mui/material';
-
   // -------------
   import { createDirectus, graphql } from '@directus/sdk';
 
@@ -15,19 +14,7 @@
     }
   }
 
-type Mutation {
-  create_contact_us_messages_item(data: CreateContactMessageInput!): Boolean
-}
-
-input CreateContactMessageInput {
-  email: String!
-  message: String!
-  first_name: String!
-  last_name: String!
-}
-  const client = createDirectus<Post>('https://cms-zenith.treasuredeal.com').with(
-    graphql()
-  )
+  const client = createDirectus<Post>('https://cms-zenith.treasuredeal.com').with(graphql())
   // -------------------------
 
   interface FormData {
@@ -36,32 +23,16 @@ input CreateContactMessageInput {
     email: string
     message: string
   }
-
   interface FormErrors {
     [key: string]: string 
   }
 
   const ContactForm: React.FC = () => {
-    // useEffect( function() {
-    //   clinet.query<Post[]>(`
-    //     query{
-    //       site_settings{
-    //         translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
-    //           contact_us_text
-    //           contact_us_title
-    //           contact_us_form_note
-    //         }
-    //       }
-    //     }
-    //   `).then(console.log)
-
-    // }, [])
-    // const [data, setData] = useState<Post | null>(null) // Store fetched data
+    const clients = createDirectus('https://cms-zenith.treasuredeal.com');
 
     useEffect(() => {
       client
-        .query<Post[]>(
-          `
+        .query<Post[]>(`
           query {
             site_settings {
               translations(filter: { languages_code: { code: {_eq: "ar"} } }) {
@@ -71,11 +42,9 @@ input CreateContactMessageInput {
               }
             }
           }
-        `
-        )
+        `)
         .then((response) => {
-          // console.log('Fetched data:', response)
-          // setData(response)
+        // console.log('Fetched data:', response)
         })
         .catch((error) => console.error('Error fetching data:', error))
     }, [])
@@ -86,9 +55,6 @@ input CreateContactMessageInput {
       email: '',
       message: '',
     })
-
-    const [successMessage, setSuccessMessage] = useState<string>('')
-    const [errors, setErrors] = useState<FormErrors>({})
 
     const handleChange = (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -101,6 +67,11 @@ input CreateContactMessageInput {
       }
     }
 
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [successMessage, setSuccessMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
     const validateForm = (): FormErrors => {
       const validationErrors: FormErrors = {}
       if (!formData.firstName)
@@ -112,8 +83,7 @@ input CreateContactMessageInput {
       } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
         validationErrors.email = 'Email address is invalid'
       }
-      if (!formData.message)
-        validationErrors.message = 'Message is required'
+      if (!formData.message) validationErrors.message = 'Message is required'
       return validationErrors
     }
 
@@ -132,101 +102,43 @@ input CreateContactMessageInput {
     //   setErrors({})
     // }
 
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault()
 
-    const [isLoading, setIsLoading] = useState(false)
+      const validationErrors = validateForm()
+      if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors)
+        return
+      }
 
+      setIsSubmitting(true)
+      try {
+        const mutation = `
+        mutation CreateContactMessage($data: CreateContactMessageInput!) {
+          create_contact_us_messages_item(data: $data)
+        }
+      `
+        const variables = {
+          data: {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            email: formData.email,
+            message: formData.message,
+          },
+        }
+        // console.log("ahmed variables", variables.data);
 
-    // Inside handleSubmit
-    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): void => {
-    //   e.preventDefault()
-    //   const validationErrors = validateForm()
-    //   if (Object.keys(validationErrors).length > 0) {
-    //     setErrors(validationErrors)
-    //     return
-    //   }
-
-    //   setIsLoading(true) // Set loading state
-
-    //   const mutation = `
-    //    mutation {
-    //     create_contact_us_messages_item(data: {
-    //       email: "ahmed665@mail.com"
-    //       message: "asdads"
-    //       first_name: "ahmed"
-    //       last_name: "kh"
-    //     })
-    //   }`
-
-    //   const variables = {
-    //     data: {
-    //       email: formData.email,
-    //       message: formData.message,
-    //       first_name: formData.firstName,
-    //       last_name: formData.lastName,
-    //     },
-    //   }
-
-    //   try {
-    //     const response = await client.request(mutation, variables)
-    //     console.log('Message sent successfully:', response)
-    //     setSuccessMessage(
-    //       'Thank you for your message! We will get back to you soon.'
-    //     )
-    //     setFormData({ firstName: '', lastName: '', email: '', message: '' })
-    //     setErrors({})
-    //   } catch (error) {
-    //     console.error('Error creating contact message:', error)
-    //   } finally {
-    //     setIsLoading(false) // Reset loading state
-    //   }
-    // }
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-  e.preventDefault();
-
-  // Validate the form
-  const validationErrors = validateForm();
-  if (Object.keys(validationErrors).length > 0) {
-    setErrors(validationErrors);
-    return;
-  }
-
-  setIsLoading(true); // Set loading state
-
-  const mutation = `
-    mutation CreateContactMessage($data: CreateContactMessageInput!) {
-      create_contact_us_messages_item(data: $data)
+        await clients.graphql(mutation, variables)
+        setSuccessMessage('Your message has been sent successfully.')
+        setFormData({ firstName: '', lastName: '', email: '', message: '' })
+        setErrors({})
+      } catch (error) {
+        setErrorMessage('Failed to send your message. Please try again.')
+        console.error('Error submitting form:', error)
+      } finally {
+        setIsSubmitting(false)
+      }
     }
-  `;
-
-  const variables = {
-    data: {
-      email: formData.email,
-      message: formData.message,
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-    },
-  };
-
-  try {
-    // Send GraphQL request
-    const response = await client.graphql(mutation, variables);
-    console.log('Message sent successfully:', response);
-
-    setSuccessMessage(
-      'Thank you for your message! We will get back to you soon.'
-    );
-
-    // Reset form
-    setFormData({ firstName: '', lastName: '', email: '', message: '' });
-    setErrors({});
-  } catch (error) {
-    console.error('Error creating contact message:', error);
-  } finally {
-    setIsLoading(false); // Reset loading state
- }
-};
-
 
     return (
       <Box
@@ -234,12 +146,21 @@ input CreateContactMessageInput {
         padding={4}
         textAlign="center"
       >
-        <Typography
-          variant="h3"
-          gutterBottom
-          sx={{ fontSize: { xs: '32px' } }}
-        >
+
+        {successMessage && (
+          <Typography variant="body1" color="green" marginBottom={2}>
+            {successMessage}
+          </Typography>
+        )}
+        {errorMessage && (
+          <Typography variant="body1" color="red" marginBottom={2}>
+            {errorMessage}
+          </Typography>
+        )}
+
+        <Typography variant="h3" gutterBottom sx={{ fontSize: { xs: '32px' } }}>
           Let’s Get In Touch
+          {/* {data?.site_settings.translations[0].contact_us_title} */}
         </Typography>
         <Typography variant="h6" sx={{ my: { xs: 2 } }}>
           We’d love to hear from you!
@@ -252,15 +173,16 @@ input CreateContactMessageInput {
             px: { md: 4 },
           }}
         >
-          {/* Whether you have questions about our services, want to discuss a
+          Whether you have questions about our services, want to discuss a
           potential project, or need more information, our team at Zenith Digital
-          Space is here to help. */}
-          {/* {data.site_settings.translations.[0].contact_us_text} */}
+          Space is here to help.
+          {/* {data?.site_settings.translations[0].contact_us_text} */}
         </Typography>
         <Typography sx={{ mb: 4 }}>
           <Link sx={{ textDecoration: 'none' }}>
-            Please fill out the form below, and we’ll get back to you as
-            soon as possible.
+            Please fill out the form below, and we’ll get back to you as soon as
+            possible.
+            {/* {data?.site_settings.translations[0].contact_us_form_note} */}
           </Link>
         </Typography>
         {successMessage && (
@@ -282,7 +204,7 @@ input CreateContactMessageInput {
               name="firstName"
               variant="outlined"
               onChange={handleChange}
-              value={formData.firstName} // Controlled input
+              value={formData.firstName}
               fullWidth
               error={!!errors.firstName}
               helperText={errors.firstName}
@@ -292,7 +214,7 @@ input CreateContactMessageInput {
               name="lastName"
               variant="outlined"
               onChange={handleChange}
-              value={formData.lastName} // Controlled input
+              value={formData.lastName}
               fullWidth
               error={!!errors.lastName}
               helperText={errors.lastName}
@@ -304,7 +226,7 @@ input CreateContactMessageInput {
             type="email"
             variant="outlined"
             onChange={handleChange}
-            value={formData.email} // Controlled input
+            value={formData.email}
             fullWidth
             margin="normal"
             error={!!errors.email}
@@ -315,7 +237,7 @@ input CreateContactMessageInput {
             name="message"
             variant="outlined"
             onChange={handleChange}
-            value={formData.message} // Controlled input
+            value={formData.message}
             fullWidth
             multiline
             rows={4}

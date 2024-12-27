@@ -67,12 +67,13 @@ export default async function MissionStatement() {
           <Grid
             container
             justifyContent="center"
-            sx={{ display: 'flex', mt: 4 }}
+            sx={{ display: 'flex', mt: 4, width: '85%' , mx:'auto' }}
+            spacing={1}
           >
             {data.mission.map((item, index) => (
               <Grid
                 size={{ xs: 12, sm: 6, md: 4 }}
-                sx={{ px: { md: 5 } }}
+                sx={{ px: { md:0 } }}
                 key={index}
               >
                 <MissionCard
