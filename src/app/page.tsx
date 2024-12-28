@@ -31,7 +31,7 @@ export default function Home() {
         <ContactForm />
       </Box>
 
-      <Posts />
+      {/* <Posts /> */}
 
       <Footer />
     </>
