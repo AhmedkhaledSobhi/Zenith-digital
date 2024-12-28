@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from '../../component/Header/Header.module.css'
-import { Box, Link } from '@mui/material'
+import { Box, Link } from '@mui/material';
 
 import { createDirectus, graphql } from '@directus/sdk'
 

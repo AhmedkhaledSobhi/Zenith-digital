@@ -7,7 +7,9 @@ import Navbar from '../component/Navbar/Navbar'
 import Footer from '../component/Footer/Footer'
 import Innovation from '../component/Innovation/Innovation'
 
-import { createDirectus, graphql } from '@directus/sdk'
+import { createDirectus, graphql } from '@directus/sdk';
+import { getCookie } from '../utils/helper/helper';
+import { getLocale } from 'next-intl/server';
 
 interface Translations {
   languages_code: { code: string }
@@ -24,11 +26,11 @@ interface Schema {
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
-async function HomeData() {
+async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       pages{
-        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           title
         }
       }
@@ -37,8 +39,9 @@ async function HomeData() {
 }
 
 export default async function About() {
-  let data = await HomeData()
-
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
+  let data = await HomeData(lang) 
   return (
     <>
       <Navbar />
@@ -84,7 +87,6 @@ export default async function About() {
             }}
           >
             {data?.pages[2]?.translations?.[0]?.title}
-            {/* About Us */}
           </Link>
         </Box>
       </Box>
