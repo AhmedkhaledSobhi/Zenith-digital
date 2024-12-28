@@ -1,48 +1,51 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+// import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import { Typography, Box, Stack, Avatar, Button, IconButton,  } from '@mui/material';
-import WestIcon from '@mui/icons-material/West'
+import { Typography, Box, Stack, Avatar, Button, IconButton, Link,  } from '@mui/material';
+import WestIcon from '@mui/icons-material/West';
 
-import ArticlePage from '@/app/articlePage/page'
 import { DateRangeIcon } from '@mui/x-date-pickers';
-// import { ThumbUpIcon } from '@mui/icons-material/ThumbUp';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import RelatedTopics from '@/app/component/RelatedTopics/RelatedTopics';
+import LeaveReply from '@/app/component/LeaveReply/LeaveReply';
+import Contents from '@/app/component/Content/Contents';
 import Footer from '@/app/component/Footer/Footer';
+import Navbar from '@/app/component/Navbar/Navbar';
 
 const BlogDetail = () => {
   const { id } = useParams()
-  const [post, setPost] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  // const [post, setPost] = useState<any>(null)
+  // const [loading, setLoading] = useState(true)
+  // const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (!id) return
+  // useEffect(() => {
+  //   if (!id) return
 
-    const fetchPostDetail = async () => {
-      try {
-        const response = await fetch(`/api/posts/${id}`)
-        const data = await response.json()
-        setPost(data)
-      } catch (err) {
-        setError('Failed to fetch post details: ')
-      } finally {
-        setLoading(false)
-      }
-    }
+  //   const fetchPostDetail = async () => {
+  //     try {
+  //       const response = await fetch(`/api/posts/${id}`)
+  //       const data = await response.json()
+  //       setPost(data)
+  //     } catch (err) {
+  //       setError('Failed to fetch post details: ')
+  //     } finally {
+  //       setLoading(false)
+  //     }
+  //   }
 
-    fetchPostDetail()
-  }, [id])
+  //   fetchPostDetail()
+  // }, [id])
 
-  if (loading) return <Typography>Loading...</Typography>
-  if (error) return <Typography color="error">{error}</Typography>
-  if (!post) return <Typography>No post found</Typography>
+  // if (loading) return <Typography>Loading...</Typography>
+  // if (error) return <Typography color="error">{error}</Typography>
+  // if (!post) return <Typography>No post found</Typography>
 
   return (
     <>
-      <Box sx={{ bgcolor: '#010715', color: 'white' }}>
+      <Navbar />
+
+      <Box sx={{ bgcolor: '#010715', color: 'white',pt:9 }}>
         <Box
           sx={{
             position: 'relative',
@@ -58,9 +61,11 @@ const BlogDetail = () => {
               direction="row"
               sx={{ display: 'flex', alignItems: 'center', width: '75%' }}
             >
-              <Avatar sx={{ mr: 2 }}>
-                <WestIcon />
-              </Avatar>
+              <Link href={`/blog`} passHref>
+                <Avatar sx={{ mr: 2 }}>
+                  <WestIcon />
+                </Avatar>
+              </Link>
               <Typography variant="h4">
                 Lorem ipsum dolor sit amet consectetur diam
               </Typography>
@@ -107,54 +112,21 @@ const BlogDetail = () => {
           </Box>
         </Box>
 
+        <Contents id={id} />
 
-        <Box sx={{ width: '85%', mx: 'auto', px: 4, my: 3 }}>
-          <Typography variant="body1">
-            {/* Lorem ipsum dolor sit amet consectetu Diam bibendum ut diam tempus
-            sociis lectus luctus in? Lorem ipsum dolor sit amet consectetur Diam
-            bibendum ut diam tempus sociis lectus luctus in?Lorem ipsum dolor
-            sit amet consectetu Diam bibendum ut diam tempus sociis lectus
-            luctus in? Lorem ipsum dolor sit amet consectetur Diam bibendum ut
-            diam tempus sociis lectus luctus in?Lorem ipsum dolor sit amet
-            consectetu Diam bibendum ut diam tempus sociis lectus luctus in? rem
-            ipsum dolor sit amet consectetur Diam bibendum ut diam tempus sociis
-            lectus luctus in?Lorem ipsum dolor sit amet consectetu Diam bibendum
-            ut diam tempus sociis lectus luctus in? Lorem ipsum dolor sit amet
-            consectetur Dibibendum ut diam tempus sociis lectus luctus in?Lorem
-            ipsum dolor sit amet consectetu Diam bibendum ut diam tempus sociis
-            lectus luctus in? Lorem ipsum dolor sit amet consectetur Diam
-            bibendum ut diam tempus sociis lectus luctus in?Lorem ipsum dolor
-            sit amet coctetu Diam bibendum ut diam tempus sociis lectus luctus
-            in? Lorem ipsum dolor sit amet consectetur Diam bibendum ut diam
-            tempus sociis lectus luctus in?Lorem ipsum dolor sit amet consectetu
-            Diam bibendum ut diam tempus sociis lectus luctus in? Lorem ipsum
-            dolor sit amet consectetur Diam bibendum ut diam tempus sociis
-            lectus luctus in?Lorem ipsum dolor sit amet consectetu Diam bibendum
-            ut diam tempus sociis lectus luctus in? Lorem ipsum dolor sit amet
-            consectetur Diam bibendum ut diam tempus sociis lectus luctus
-            in?Lorem ipsum dolor sit amet consectetu Diam bibendum ut diam
-            tempus sociis lectus luctus in? Lorem ipsum dolor sit amet
-            consectetur Diam bibendum ut diam tempus sociis lectus luctus in? */}
-
-            {post?.translations?.[0]?.content}
-          </Typography>
-        </Box>
-
-
-        <RelatedTopics/>
-
+        <LeaveReply />
+        <RelatedTopics />
       </Box>
 
-      
+      {/* <Footer /> */}
 
-{/* ---------------------------------------------------------------------------------- */}
-      <Box sx={{ padding: 3 }}>
-        {/* <ArticlePage/> */}
+      {/* ---------------------------------------------------------------------------------- */}
+      {/* <Box sx={{ padding: 3 }}>
         <Typography variant="h4">{post?.translations?.[0]?.title}</Typography>
         <Typography variant="body1">
-          {/* {post?.translations?.[0]?.content} */}
+          {post?.translations?.[0]?.content}
         </Typography>
-      </Box>
+      </Box> */}
     </>
   )
 }
