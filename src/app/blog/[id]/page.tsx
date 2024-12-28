@@ -2,7 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import { Typography, Box } from '@mui/material'
+import { Typography, Box, Stack, Avatar, Button, IconButton,  } from '@mui/material';
+import WestIcon from '@mui/icons-material/West'
+
+import ArticlePage from '@/app/articlePage/page'
+import { DateRangeIcon } from '@mui/x-date-pickers';
+// import { ThumbUpIcon } from '@mui/icons-material/ThumbUp';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import RelatedTopics from '@/app/component/RelatedTopics/RelatedTopics';
+import Footer from '@/app/component/Footer/Footer';
 
 const BlogDetail = () => {
   const { id } = useParams()
@@ -33,12 +41,121 @@ const BlogDetail = () => {
   if (!post) return <Typography>No post found</Typography>
 
   return (
-    <Box sx={{ padding: 3 }}>
-      <Typography variant="h4">{post?.translations?.[0]?.title}</Typography>
-      <Typography variant="body1">
-        {post?.translations?.[0]?.content}
-      </Typography>
-    </Box>
+    <>
+      <Box sx={{ bgcolor: '#010715', color: 'white' }}>
+        <Box
+          sx={{
+            position: 'relative',
+            height: '100vh',
+            backgroundImage: 'url(/image12.png)',
+            backgroundSize: 'cover',
+          }}
+        >
+          <Box
+            sx={{ position: 'absolute', bottom: 90, left: 90, color: 'white' }}
+          >
+            <Stack
+              direction="row"
+              sx={{ display: 'flex', alignItems: 'center', width: '75%' }}
+            >
+              <Avatar sx={{ mr: 2 }}>
+                <WestIcon />
+              </Avatar>
+              <Typography variant="h4">
+                Lorem ipsum dolor sit amet consectetur diam
+              </Typography>
+            </Stack>
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <DateRangeIcon />
+                <Typography sx={{ ml: 1 }}>21-08-2024</Typography>
+
+                <Box sx={{ my: 2 }}>
+                  <Button
+                    sx={{ bgcolor: '#fff', borderRadius: '25px', px: 3, mx: 2 }}
+                  >
+                    Investment
+                  </Button>
+
+                  <Button sx={{ bgcolor: '#fff', borderRadius: '25px', px: 3 }}>
+                    Fundraising
+                  </Button>
+                </Box>
+              </Box>
+
+              <Stack
+                direction="row"
+                sx={{ alignItems: 'center' }}
+                role="img"
+                aria-label="like"
+              >
+                <IconButton size="small" color="inherit">
+                  <ThumbUpIcon fontSize="small" />
+                </IconButton>
+                <Typography variant="body1" sx={{ pr: 2 }}>
+                  like
+                </Typography>
+              </Stack>
+            </Box>
+          </Box>
+        </Box>
+
+
+        <Box sx={{ width: '85%', mx: 'auto', px: 4, my: 3 }}>
+          <Typography variant="body1">
+            {/* Lorem ipsum dolor sit amet consectetu Diam bibendum ut diam tempus
+            sociis lectus luctus in? Lorem ipsum dolor sit amet consectetur Diam
+            bibendum ut diam tempus sociis lectus luctus in?Lorem ipsum dolor
+            sit amet consectetu Diam bibendum ut diam tempus sociis lectus
+            luctus in? Lorem ipsum dolor sit amet consectetur Diam bibendum ut
+            diam tempus sociis lectus luctus in?Lorem ipsum dolor sit amet
+            consectetu Diam bibendum ut diam tempus sociis lectus luctus in? rem
+            ipsum dolor sit amet consectetur Diam bibendum ut diam tempus sociis
+            lectus luctus in?Lorem ipsum dolor sit amet consectetu Diam bibendum
+            ut diam tempus sociis lectus luctus in? Lorem ipsum dolor sit amet
+            consectetur Dibibendum ut diam tempus sociis lectus luctus in?Lorem
+            ipsum dolor sit amet consectetu Diam bibendum ut diam tempus sociis
+            lectus luctus in? Lorem ipsum dolor sit amet consectetur Diam
+            bibendum ut diam tempus sociis lectus luctus in?Lorem ipsum dolor
+            sit amet coctetu Diam bibendum ut diam tempus sociis lectus luctus
+            in? Lorem ipsum dolor sit amet consectetur Diam bibendum ut diam
+            tempus sociis lectus luctus in?Lorem ipsum dolor sit amet consectetu
+            Diam bibendum ut diam tempus sociis lectus luctus in? Lorem ipsum
+            dolor sit amet consectetur Diam bibendum ut diam tempus sociis
+            lectus luctus in?Lorem ipsum dolor sit amet consectetu Diam bibendum
+            ut diam tempus sociis lectus luctus in? Lorem ipsum dolor sit amet
+            consectetur Diam bibendum ut diam tempus sociis lectus luctus
+            in?Lorem ipsum dolor sit amet consectetu Diam bibendum ut diam
+            tempus sociis lectus luctus in? Lorem ipsum dolor sit amet
+            consectetur Diam bibendum ut diam tempus sociis lectus luctus in? */}
+
+            {post?.translations?.[0]?.content}
+          </Typography>
+        </Box>
+
+
+        <RelatedTopics/>
+
+      </Box>
+
+      
+
+{/* ---------------------------------------------------------------------------------- */}
+      <Box sx={{ padding: 3 }}>
+        {/* <ArticlePage/> */}
+        <Typography variant="h4">{post?.translations?.[0]?.title}</Typography>
+        <Typography variant="body1">
+          {/* {post?.translations?.[0]?.content} */}
+        </Typography>
+      </Box>
+    </>
   )
 }
 
