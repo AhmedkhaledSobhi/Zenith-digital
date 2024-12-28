@@ -33,8 +33,8 @@ export async function GET(request: Request) {
     //   }
     // `
     const query = gql`
-      query post_by_slug {
-        posts(filter: { slug: { _eq: "article-title" } }, limit: 1) {
+      query post_by_slug($slug: String) {
+        posts(filter: { slug: { _eq: $slug } }, limit: 1) {
           slug
           comments {
             comment
