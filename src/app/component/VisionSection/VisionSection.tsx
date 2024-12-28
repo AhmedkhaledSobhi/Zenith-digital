@@ -24,7 +24,7 @@ interface StaticContentTexts {
 
 interface Schema {
   vision: Vision[]
-  static_content_texts: StaticContentTexts[]
+  static_content_texts: StaticContentTexts
 }
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
@@ -48,10 +48,10 @@ async function HomeData(locale: string) {
 }
 
 export default async function VisionSection() {
-  const locale = getCookie('NEXT_LOCALES') || (await getLocale());
-  const lang = locale === 'ar' ? 'ar' : 'en';
-  let data = await HomeData(lang);
-  const staticContent = data?.static_content_texts?.translations?.[0] || {};
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
+  let data = await HomeData(lang)
+  const staticContent = data?.static_content_texts?.translations?.[0] || {}
 
   return (
     <Box

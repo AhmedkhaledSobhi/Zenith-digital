@@ -2,8 +2,8 @@
 // import { GetServerSideProps } from 'next'
 import { Box, Button, TextField, Typography } from '@mui/material'
 // import { createDirectus, graphql } from '@directus/sdk'
-import { useState } from 'react';
-import Grid from '@mui/material/Grid2';
+import { useState } from 'react'
+import Grid from '@mui/material/Grid2'
 
 // interface Post {
 //   contact_us_text: string
@@ -82,7 +82,7 @@ export default function ContactForm() {
             />
           </Grid>
 
-          <Grid size={{ xs: 12, md: 6}}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <TextField
               label="Last Name"
               fullWidth

@@ -5,13 +5,13 @@ import { useParams } from 'next/navigation'
 import { Typography, Box } from '@mui/material'
 
 const BlogDetail = () => {
-  const { id } = useParams() // Get the post ID from the URL params
+  const { id } = useParams()
   const [post, setPost] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!id) return // If no id, do nothing
+    if (!id) return
 
     const fetchPostDetail = async () => {
       try {
@@ -34,8 +34,10 @@ const BlogDetail = () => {
 
   return (
     <Box sx={{ padding: 3 }}>
-      <Typography variant="h4">{post.translations?.[0]?.title}</Typography>
-      <Typography variant="body1">{post.translations?.[0]?.content}</Typography>
+      <Typography variant="h4">{post?.translations?.[0]?.title}</Typography>
+      <Typography variant="body1">
+        {post?.translations?.[0]?.content}
+      </Typography>
     </Box>
   )
 }

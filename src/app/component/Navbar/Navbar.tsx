@@ -1,22 +1,22 @@
 'use client'
-import React, { useState, useEffect, MouseEvent, KeyboardEvent } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import { FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material';
-import { useRouter, usePathname } from 'next/navigation';
-import { useAppContext } from '@/context';
-import LocaleSwitcherSelect from './LocaleSwitcherSelect';
-import { useTranslations } from 'next-intl';
+import React, { useState, useEffect, MouseEvent, KeyboardEvent } from 'react'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import MenuIcon from '@mui/icons-material/Menu'
+import Container from '@mui/material/Container'
+import Button from '@mui/material/Button'
+import Drawer from '@mui/material/Drawer'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemText from '@mui/material/ListItemText'
+import { FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material'
+import { useRouter, usePathname } from 'next/navigation'
+import { useAppContext } from '@/context'
+import LocaleSwitcherSelect from './LocaleSwitcherSelect'
+import { useTranslations } from 'next-intl'
 
 const Navbar: React.FC = () => {
   const t = useTranslations()

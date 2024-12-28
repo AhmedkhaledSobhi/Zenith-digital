@@ -8,13 +8,10 @@ const client = new ApolloClient({
 
 export async function POST(req: Request) {
   try {
-    const { date } = await req.json() // Parse JSON request body
+    const { date } = await req.json()
 
     if (!date) {
-      return NextResponse.json(
-        { error: 'Date is required' },
-        { status: 400 } // Bad Request
-      )
+      return NextResponse.json({ error: 'Date is required' }, { status: 400 })
     }
 
     const query = gql`
@@ -26,6 +23,14 @@ export async function POST(req: Request) {
             id
           }
           date_created
+          categoryies: post_category {
+            data: posts_categories_id {
+              id
+              translations {
+                title
+              }
+            }
+          }
         }
       }
     `
@@ -35,12 +40,12 @@ export async function POST(req: Request) {
       variables: { date },
     })
 
-    return NextResponse.json({ posts: data.posts }) // Send posts as response
+    return NextResponse.json({ posts: data.posts })
   } catch (error) {
     console.error('Error in API:', error)
     return NextResponse.json(
       { error: 'Failed to fetch posts' },
-      { status: 500 } // Internal Server Error
+      { status: 500 }
     )
   }
 }

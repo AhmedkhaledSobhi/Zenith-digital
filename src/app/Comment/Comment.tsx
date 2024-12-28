@@ -1,19 +1,25 @@
-import React from 'react';
-import { Box, Typography, Stack, Avatar, IconButton, Divider } from '@mui/material';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { Avatar, Box, IconButton, Stack, Typography } from '@mui/material'
 
 interface CommentProps {
-  name: string;
-  date: string;
-  text: string;
-  likes: number;
-  replies: number;
-  nested?: boolean;
+  name: string
+  date: string
+  text: string
+  likes: number
+  replies: number
+  nested?: boolean
 }
 
-const Comment: React.FC<CommentProps> = ({ name, date, text, likes, replies, nested = false }) => {
+const Comment: React.FC<CommentProps> = ({
+  name,
+  date,
+  text,
+  likes,
+  replies,
+  nested = false,
+}) => {
   return (
     <Box
       sx={{
@@ -53,7 +59,7 @@ const Comment: React.FC<CommentProps> = ({ name, date, text, likes, replies, nes
         <Typography variant="caption">{replies}</Typography>
       </Stack>
     </Box>
-  );
-};
+  )
+}
 
-export default Comment;
+export default Comment

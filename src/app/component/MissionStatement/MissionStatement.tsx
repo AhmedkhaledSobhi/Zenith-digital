@@ -11,7 +11,7 @@ interface Translations {
   languages_code: { code: string }
   title: string
   text: string
-  contact_us_text:string
+  contact_us_text: string
 }
 
 interface Mission {
@@ -23,7 +23,7 @@ interface StaticContentTexts {
 
 interface Schema {
   mission: Mission[]
-  static_content_texts: StaticContentTexts[]
+  static_content_texts: StaticContentTexts
 }
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
@@ -45,7 +45,6 @@ async function HomeData(locale: string) {
     }
   `)
 }
-
 
 export default async function MissionStatement() {
   // console.log("ahmed", JSON.stringify(await HomeData(), null,2) );

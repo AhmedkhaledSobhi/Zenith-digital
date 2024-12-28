@@ -1,5 +1,6 @@
 'use client' // Add this at the top
 
+import { createTheme, ThemeProvider } from '@mui/material'
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 
 interface AppContextType {
@@ -17,9 +18,41 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
   const [user, setUser] = useState<string | null>(null)
   const [lang, setLang] = useState<string>('ar') // Default language
 
+  const themeObject = createTheme({
+    palette: {
+      primary: {
+        main: '#9D2F92',
+      },
+      secondary: {
+        main: '#FFFFFF',
+      },
+    },
+    typography: {
+      fontFamily: 'Poppins',
+      h1: {
+        fontFamily: 'Poppins',
+      },
+      h2: {
+        fontFamily: 'Poppins',
+      },
+      h3: {
+        fontFamily: 'Poppins',
+      },
+      h4: {
+        fontFamily: 'Poppins',
+      },
+      h5: {
+        fontFamily: 'Poppins',
+      },
+      h6: {
+        fontFamily: 'Poppins',
+      },
+    },
+  })
+
   return (
     <AppContext.Provider value={{ user, setUser, lang, setLang }}>
-      {children}
+      <ThemeProvider theme={themeObject}>{children}</ThemeProvider>
     </AppContext.Provider>
   )
 }

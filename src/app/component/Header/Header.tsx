@@ -1,37 +1,34 @@
-import { Box, Button, Typography } from '@mui/material';
-import React from 'react';
-import styles from '../Header/Header.module.css';
+import { Box, Button, Typography } from '@mui/material'
+import React from 'react'
+import styles from '../Header/Header.module.css'
 
-import {createDirectus, graphql} from '@directus/sdk';
-import { getCookie } from '@/app/utils/helper/helper';
-import { getLocale } from 'next-intl/server';
+import { createDirectus, graphql } from '@directus/sdk'
+import { getCookie } from '@/app/utils/helper/helper'
+import { getLocale } from 'next-intl/server'
 
 interface Hero {
-  languages_code: { code: string };
-  headline: string;
-  text: string;
-  sub_headline: string;
-  button_text: string;
+  languages_code: { code: string }
+  headline: string
+  text: string
+  sub_headline: string
+  button_text: string
 }
 
 interface Service {
-  icon: string;
-  user_updated: string;
+  icon: string
+  user_updated: string
 }
 
 interface Schema {
-  home_page: { 
-    hero: Hero[];
+  home_page: {
+    hero: Hero[]
     hero_button_url: string
-  };
+  }
 }
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
-const client = createDirectus<Schema>(BASE_URL).with(graphql());
+const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
-// const client = createDirectus<Schema>('https://cms-zenith.treasuredeal.com').with(graphql());
-
-async function HomeData(locale: string){
-
+async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       home_page {
@@ -51,12 +48,10 @@ async function HomeData(locale: string){
 }
 
 export default async function Header() {
-
   const locale = getCookie('NEXT_LOCALES') || (await getLocale())
   const lang = locale === 'ar' ? 'ar' : 'en'
-  // console.log("ahmed", JSON.stringify(await HomeData(), null,2) );
   let data = await HomeData(lang)
-// ==================================================
+  // ==================================================
 
   // useEffect(function () {
   //   client.query<Post[]>(`
@@ -79,14 +74,14 @@ export default async function Header() {
   //     `).then(console.log);
   // },[])
 
-// -------------------------
+  // -------------------------
 
   return (
     <Box
       display="flex"
       justifyContent="center"
       sx={{
-        pt: {xs:5},
+        pt: { xs: 5 },
         height: '100vh',
         textAlign: 'center',
         alignItems: { sx: 'end', md: 'center' },
@@ -108,9 +103,9 @@ export default async function Header() {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          {data?.home_page?.hero?.[0]?.headline ?? "" }
+          {data?.home_page?.hero?.[0]?.headline ?? ''}
         </Typography>
-       
+
         <Typography
           variant="h6"
           sx={{
@@ -121,7 +116,7 @@ export default async function Header() {
             lineHeight: '56px',
           }}
         >
-          {data?.home_page?.hero?.[0]?.sub_headline ?? ""}
+          {data?.home_page?.hero?.[0]?.sub_headline ?? ''}
         </Typography>
 
         <Typography
@@ -135,22 +130,22 @@ export default async function Header() {
             lineHeight: '33.6px',
           }}
         >
-          {data?.home_page?.hero?.[0]?.text ?? ""}
+          {data?.home_page?.hero?.[0]?.text ?? ''}
         </Typography>
 
         <Button
           sx={{
             backgroundColor: 'rgba(132, 17, 230, 1)',
             color: '#fff',
-            padding: { sx:'15px 25px', md: '15px 25px' },
+            padding: { sx: '15px 25px', md: '15px 25px' },
             fontWeight: { sx: '600', md: '600' },
             lineHeight: '22.4px',
             my: 5,
           }}
-          target='_blank'
+          target="_blank"
           href={data?.home_page?.hero_button_url}
         >
-          {data?.home_page?.hero?.[0]?.button_text ?? "" }
+          {data?.home_page?.hero?.[0]?.button_text ?? ''}
         </Button>
       </Box>
     </Box>

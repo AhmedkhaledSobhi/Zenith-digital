@@ -1,13 +1,13 @@
-import { Box, Link } from '@mui/material';
-import VisionSection from '../component/VisionSection/VisionSection';
-import MissionStatement from '../component/MissionStatement/MissionStatement';
-import Leadership from '../component/Leadership/Leadership';
-import styles from '../component/Header/Header.module.css';
-import Navbar from '../component/Navbar/Navbar';
-import Footer from '../component/Footer/Footer';
-import Innovation from '../component/Innovation/Innovation';
+import { Box, Link } from '@mui/material'
+import VisionSection from '../component/VisionSection/VisionSection'
+import MissionStatement from '../component/MissionStatement/MissionStatement'
+import Leadership from '../component/Leadership/Leadership'
+import styles from '../component/Header/Header.module.css'
+import Navbar from '../component/Navbar/Navbar'
+import Footer from '../component/Footer/Footer'
+import Innovation from '../component/Innovation/Innovation'
 
-import { createDirectus, graphql } from '@directus/sdk';
+import { createDirectus, graphql } from '@directus/sdk'
 
 interface Translations {
   languages_code: { code: string }
@@ -37,7 +37,7 @@ async function HomeData() {
 }
 
 export default async function About() {
-  let data = await HomeData();
+  let data = await HomeData()
 
   return (
     <>
@@ -128,7 +128,6 @@ export default async function About() {
         </Box>
       </Box> */}
 
-      
       <Innovation />
       <Leadership />
       <Footer />

@@ -25,7 +25,7 @@ interface StaticContentTexts {
 
 interface Schema {
   services: Service[]
-  static_content_texts: StaticContentTexts[]
+  static_content_texts: StaticContentTexts
 }
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
@@ -54,9 +54,9 @@ async function HomeData(locale: string) {
 }
 
 export default async function ServicesSection() {
-  const locale = getCookie('NEXT_LOCALES') || (await getLocale());
-  const lang = locale === 'ar' ? 'ar' : 'en';
-  let data = await HomeData(lang);
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
+  let data = await HomeData(lang)
   const staticContent = data?.static_content_texts?.translations?.[0] || {}
 
   const services = data?.services.map((item) => ({
@@ -69,6 +69,7 @@ export default async function ServicesSection() {
     <Box py={8} bgcolor="#010715" color="white" textAlign="center">
       <Box
         sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        marginBottom={4}
       >
         <Box mx={2}>
           <svg
@@ -84,15 +85,28 @@ export default async function ServicesSection() {
             />
           </svg>
         </Box>
-        <Typography variant="h4">{staticContent.our_services_title}</Typography>
+        <Typography
+          sx={{
+            fontSize: ['20px', '40px'],
+            fontWeight: 600,
+          }}
+          variant="h4"
+        >
+          {staticContent?.our_services_title}
+        </Typography>
       </Box>
 
       <Typography
         variant="body1"
         marginBottom={4}
-        sx={{ width: { xs: '90%', md: '42%' }, mx: 'auto' }}
+        sx={{
+          width: { xs: '90%', md: '50%' },
+          mx: 'auto',
+          color: '#B3B9C6',
+          fontSize: ['12px', '24px'],
+        }}
       >
-        {staticContent.our_services_text}
+        {staticContent?.our_services_text}
       </Typography>
 
       <Grid

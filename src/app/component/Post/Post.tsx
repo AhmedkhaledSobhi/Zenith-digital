@@ -90,7 +90,7 @@ export default function Posts() {
               width: '30%',
               '.MuiInputBase-root': {
                 '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'gray', 
+                  borderColor: 'gray',
                 },
                 '&:hover .MuiOutlinedInput-notchedOutline': {
                   borderColor: 'gray',
@@ -99,17 +99,17 @@ export default function Posts() {
                   borderColor: 'gray',
                 },
                 '& .MuiInputBase-input': {
-                  color: 'gray', 
+                  color: 'gray',
                 },
               },
               '& .MuiInputLabel-root': {
-                color: 'gray', 
+                color: 'gray',
               },
               '& .Mui-focused .MuiInputLabel-root': {
-                color: 'gray', 
+                color: 'gray',
               },
               '& .MuiSvgIcon-root': {
-                color: 'gray', 
+                color: 'gray',
               },
               '&:hover .MuiSvgIcon-root': {
                 color: 'blue',
@@ -133,72 +133,70 @@ export default function Posts() {
           </Typography>
         )}
         {posts.map((item, index) => (
-          <>
-            <Grid
-              size={{ xs: 12, sm: 6, md: 4 }}
-              key={index}
-              sx={{ borderRadius: 10 }}
+          <Grid
+            size={{ xs: 12, sm: 6, md: 4 }}
+            key={index}
+            sx={{ borderRadius: 10 }}
+          >
+            <Box
+              style={{
+                backgroundColor: 'transparent',
+                color: '#fff',
+                borderRadius: 2,
+                width: '350px',
+              }}
+              mx="auto"
             >
-              <Box
-                style={{
-                  backgroundColor: 'transparent',
-                  color: '#fff',
-                  borderRadius: 2,
-                  width: '350px',
-                }}
-                mx="auto"
-              >
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={`https://cms-zenith.treasuredeal.com/assets/${item.image?.id}`}
-                  alt="Article Image"
-                />
-                <CardContent sx={{ px: 0 }}>
-                  <Typography variant="h6">{item.slug}</Typography>
-                  <Typography variant="caption" color="white">
-                    {formatDate(item.date_created)}
+              <CardMedia
+                component="img"
+                height="140"
+                image={`https://cms-zenith.treasuredeal.com/assets/${item.image?.id}`}
+                alt="Article Image"
+              />
+              <CardContent sx={{ px: 0 }}>
+                <Typography variant="h6">{item.slug}</Typography>
+                <Typography variant="caption" color="white">
+                  {formatDate(item.date_created)}
+                </Typography>
+
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'end',
+                    justifyContent: 'start',
+                  }}
+                >
+                  <Typography variant="body2" sx={{ mt: 1 }}>
+                    {/* {truncateText(item.excerpt, 22)} */}
+                    {item.excerpt}
+
+                    {truncateText(
+                      'Lorem ipsum dolor sit amet consectetu Diam bibendum ut diam tempus sociis lectus ltus in? Lorem ipsum dolor sit amet consectetur Diam',
+                      22
+                    )}
                   </Typography>
 
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'end',
-                      justifyContent: 'start',
-                    }}
-                  >
-                    <Typography variant="body2" sx={{ mt: 1 }}>
-                      {/* {truncateText(item.excerpt, 22)} */}
-                      {item.excerpt}
-
-                      {truncateText(
-                        'Lorem ipsum dolor sit amet consectetu Diam bibendum ut diam tempus sociis lectus ltus in? Lorem ipsum dolor sit amet consectetur Diam',
-                        22
-                      )}
-                    </Typography>
-
-                    <Link href={`/blog/${item.id}`} passHref>
-                      <IconButton
-                        sx={{
-                          color: '#fff',
-                          backgroundColor: '#8411E6',
-                          borderRadius: '50%',
-                          width: '25px',
-                          height: '25px',
-                          ml: 1,
-                          '&:hover': {
-                            backgroundColor: '#0000C7',
-                          },
-                        }}
-                      >
-                        <ArrowForwardIcon fontSize="small" />
-                      </IconButton>
-                    </Link>
-                  </Box>
-                </CardContent>
-              </Box>
-            </Grid>
-          </>
+                  <Link href={`/blog/${item.id}`} passHref>
+                    <IconButton
+                      sx={{
+                        color: '#fff',
+                        backgroundColor: '#8411E6',
+                        borderRadius: '50%',
+                        width: '25px',
+                        height: '25px',
+                        ml: 1,
+                        '&:hover': {
+                          backgroundColor: '#0000C7',
+                        },
+                      }}
+                    >
+                      <ArrowForwardIcon fontSize="small" />
+                    </IconButton>
+                  </Link>
+                </Box>
+              </CardContent>
+            </Box>
+          </Grid>
         ))}
       </Grid>
     </Box>

@@ -1,5 +1,3 @@
-
-
 import Footer from '../component/Footer/Footer'
 import Posts from '../component/Post/Post'
 import Navbar from '../component/Navbar/Navbar'
@@ -9,9 +7,9 @@ function Blog() {
   return (
     <>
       <Navbar />
-      <HeadBlog/>
-      <Posts/>
-      <Footer/>
+      <HeadBlog />
+      <Posts />
+      <Footer />
     </>
   )
 }

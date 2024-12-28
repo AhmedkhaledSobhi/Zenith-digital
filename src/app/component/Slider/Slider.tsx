@@ -1,11 +1,10 @@
-
 'use client'
 import React from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import { Box, Button, Card, CardContent, TableFooter, Typography } from '@mui/material'
-import Grid from "@mui/material/Grid2"
+import { Box, Button, Card, CardContent, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 
 type Service = {
   icon: string
@@ -53,7 +52,7 @@ const Sliders: React.FC<SlidersProps> = ({ services }) => {
       }}
     >
       <Slider {...settings}>
-        {services.map((service, i) => (
+        {services?.map((service, i) => (
           <Grid size={{ xs: 12, md: 11 }} key={i}>
             <Card
               sx={{
@@ -67,7 +66,6 @@ const Sliders: React.FC<SlidersProps> = ({ services }) => {
                 mx: { xs: 2 },
                 boxSizing: 'border-box',
                 minHeight: { md: '320px' },
-                // maxHeight: {md: '290px'},
               }}
             >
               <Box>
@@ -76,36 +74,41 @@ const Sliders: React.FC<SlidersProps> = ({ services }) => {
                     width: '20%',
                     margin: '8px auto',
                   }}
-                  src={service.icon}
+                  src={service?.icon}
                   alt=""
                 />
               </Box>
               <CardContent sx={{ px: 0 }}>
-                <Typography variant="h6" gutterBottom sx={{ fontSize: '16px' }}>
-                  {service.title}
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {service?.title}
                 </Typography>
                 <Typography
                   variant="body2"
-                  sx={{ px: 2 }}
+                  sx={{ px: 2, fontWeight: 600 }}
                   color="gray"
                   gutterBottom
                 >
-                  {service.description}
+                  {service?.description}
                 </Typography>
                 <Button
                   sx={{
                     bgcolor: '#0000EF',
                     color: '#fff',
                     px: 3,
-                    // py: 1,
-                    // my: 3,
                     pt: 1,
                     mt: 3,
                     textTransform: 'none',
                   }}
                 >
                   Explore More
-                </Button>                
+                </Button>
               </CardContent>
             </Card>
           </Grid>
