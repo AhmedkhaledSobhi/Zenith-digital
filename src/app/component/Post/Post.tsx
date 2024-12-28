@@ -1,58 +1,84 @@
 'use client'
-import { useState } from 'react'
+
+import { useState, useEffect } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import {
   Box,
-  CardContent,
-  CardMedia,
-  IconButton,
+  Select,
+  MenuItem,
   Typography,
+  CircularProgress,
+  CardMedia,
+  CardContent,
+  IconButton,
 } from '@mui/material'
 import Grid from '@mui/material/Grid2'
-
 import dayjs, { Dayjs } from 'dayjs'
+
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import Link from 'next/link'
 
-const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
-
 export default function Posts() {
   const [filterDate, setFilterDate] = useState<Dayjs | null>(null)
+  const [categoryId, setCategoryId] = useState<string | null>(null)
+  const [categories, setCategories] = useState<any[]>([])
   const [posts, setPosts] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const handleDateChange = async (newValue: Dayjs | null) => {
-    setFilterDate(newValue)
-
-    if (newValue) {
-      const formattedDate = dayjs(newValue.toISOString()).format('YYYY-MM-DD')
-      setLoading(true)
-      setError(null)
-      try {
-        const res = await fetch('/api/getPosts', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ date: formattedDate }),
-        })
-
-        const data = await res.json()
-
-        if (res.ok) {
-          setPosts(data.posts)
-          console.log('ahmedss data', data)
-        } else {
-          setError(data.message || 'Error fetching posts')
-        }
-      } catch (err) {
-      } finally {
-        setLoading(false)
-      }
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch('/api/getCategory')
+      const data = await res.json()
+      setCategories(data.categories)
+    } catch (err) {
+      console.error('Error fetching categories:', err)
     }
+  }
+
+  const fetchPosts = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/getPosts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          date: filterDate
+            ? dayjs(filterDate.toISOString()).format('YYYY-MM-DD')
+            : null,
+          categoryId,
+        }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setPosts(data.posts)
+      } else {
+        setError(data.error || 'Error fetching posts')
+      }
+    } catch (err) {
+      setError('Error fetching posts')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories()
+  }, [])
+
+  useEffect(() => {
+    fetchPosts()
+  }, [filterDate, categoryId])
+
+  const handleCategoryChange = (event: any) => {
+    setCategoryId(event.target.value)
+  }
+
+  const handleDateChange = (newValue: Dayjs | null) => {
+    setFilterDate(newValue)
   }
 
   function truncateText(text: string, wordLimit: number): string {
@@ -83,7 +109,7 @@ export default function Posts() {
       >
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
-            label="Select a date"
+            label="Filter by Date"
             value={filterDate}
             onChange={handleDateChange}
             sx={{
@@ -117,91 +143,98 @@ export default function Posts() {
             }}
           />
         </LocalizationProvider>
+
+        <Select
+          value={categoryId || ''}
+          onChange={handleCategoryChange}
+          displayEmpty
+          sx={{ width: '200px' }}
+        >
+          <MenuItem value="">All Categories</MenuItem>
+          {categories.map((category) => (
+            <MenuItem key={category.id} value={category.id}>
+              {category.translations[0]?.title}
+            </MenuItem>
+          ))}
+        </Select>
       </Box>
 
-      {/* Card Grid Section */}
-      <Grid
-        container
-        m="auto"
-        width="83%"
-        sx={{ spacing: { md: 4 }, pl: { xs: 0 } }}
-      >
-        {loading && <Typography variant="h6">Loading...</Typography>}
-        {error && (
-          <Typography variant="h6" color="error">
-            Error: {error}
-          </Typography>
-        )}
-        {posts.map((item, index) => (
-          <Grid
-            size={{ xs: 12, sm: 6, md: 4 }}
-            key={index}
-            sx={{ borderRadius: 10 }}
-          >
-            <Box
-              style={{
-                backgroundColor: 'transparent',
-                color: '#fff',
-                borderRadius: 2,
-                width: '350px',
-              }}
-              mx="auto"
-            >
-              <CardMedia
-                component="img"
-                height="140"
-                image={`https://cms-zenith.treasuredeal.com/assets/${item.image?.id}`}
-                alt="Article Image"
-              />
-              <CardContent sx={{ px: 0 }}>
-                <Typography variant="h6">{item.slug}</Typography>
-                <Typography variant="caption" color="white">
-                  {formatDate(item.date_created)}
-                </Typography>
-
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'end',
-                    justifyContent: 'start',
-                  }}
-                >
-                  <Typography variant="body2" sx={{ mt: 1 }}>
-                    {/* {truncateText(item.excerpt, 22)} */}
-                    {item.excerpt}
-
-                    {truncateText(
-                      'Lorem ipsum dolor sit amet consectetu Diam bibendum ut diam tempus sociis lectus ltus in? Lorem ipsum dolor sit amet consectetur Diam',
-                      22
-                    )}
+      {/* Posts Section */}
+      {loading ? (
+        <CircularProgress />
+      ) : error ? (
+        <Typography color="error">{error}</Typography>
+      ) : posts.length === 0 ? (
+        <Typography>No posts available.</Typography>
+      ) : (
+        <Grid container spacing={4} justifyContent="center">
+          {posts.map((post) => (
+            <Grid key={post.id}>
+              <Box
+                style={{
+                  backgroundColor: 'transparent',
+                  color: '#fff',
+                  borderRadius: 2,
+                  width: '100%',
+                  maxWidth: '350px',
+                  margin: '0 auto',
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={`https://cms-zenith.treasuredeal.com/assets/${post.image?.id}`}
+                  alt="Article Image"
+                />
+                <CardContent sx={{ px: 0 }}>
+                  <Typography variant="h6">{post.slug}</Typography>
+                  <Typography variant="caption" color="white">
+                    {new Date(post.date_created).toLocaleDateString()}
                   </Typography>
 
-                  <Link href={`/blog/${item.id}`} passHref>
-                    <IconButton
-                      sx={{
-                        color: '#fff',
-                        backgroundColor: '#8411E6',
-                        borderRadius: '50%',
-                        width: '25px',
-                        height: '25px',
-                        ml: 1,
-                        '&:hover': {
-                          backgroundColor: '#0000C7',
-                        },
-                      }}
-                    >
-                      <ArrowForwardIcon fontSize="small" />
-                    </IconButton>
-                  </Link>
-                </Box>
-              </CardContent>
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      mt: 2,
+                    }}
+                  >
+                    <Typography variant="body2">
+                      {truncateText(
+                        post.excerpt || 'No excerpt available for this post.',
+                        100
+                      )}
+                    </Typography>
+
+                    <Link href={`/blog/${post.slug}`} passHref>
+                      <IconButton
+                        sx={{
+                          color: '#fff',
+                          backgroundColor: '#8411E6',
+                          borderRadius: '50%',
+                          width: '35px',
+                          height: '35px',
+                          ml: 1,
+                          '&:hover': {
+                            backgroundColor: '#0000C7',
+                          },
+                        }}
+                      >
+                        <ArrowForwardIcon fontSize="small" />
+                      </IconButton>
+                    </Link>
+                  </Box>
+                </CardContent>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Box>
   )
 }
+
 function formatDate(isoDateString: string): string {
   const date = new Date(isoDateString)
   const day = String(date.getDate()).padStart(2, '0')

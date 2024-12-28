@@ -8,17 +8,51 @@ const client = new ApolloClient({
 
 export async function POST(req: Request) {
   try {
-    const { date } = await req.json()
+    const { date, categoryId } = await req.json()
 
-    if (!date) {
-      return NextResponse.json({ error: 'Date is required' }, { status: 400 })
-    }
-
-    const query = gql`
-      query PostsFilter($date: String!) {
-        posts(filter: { date_created: { _gte: $date } }) {
+    const querys = gql`
+      query PostsFilter($gte: String, $lte: String, $id: String) {
+        posts(
+          filter: {
+            date_created: { _gte: $gte, _lte: $lte }
+            post_category: { posts_categories_id: { id: { _eq: $id } } }
+          }
+        ) {
           id
           slug
+          translations(filter: { languages_code: { code: { _eq: "ar" } } }) {
+            title
+            content
+            excerpt
+          }
+          image {
+            id
+          }
+          date_created
+          categoryies: post_category {
+            data: posts_categories_id {
+              id
+              translations(
+                filter: { languages_code: { code: { _eq: "ar" } } }
+              ) {
+                title
+              }
+            }
+          }
+        }
+      }
+    `
+
+    const filterQuery = gql`
+      query PostsFilter {
+        posts {
+          id
+          slug
+          translations {
+            title
+            content
+            excerpt
+          }
           image {
             id
           }
@@ -35,9 +69,35 @@ export async function POST(req: Request) {
       }
     `
 
+    let query = filterQuery
+    let variables = {}
+
+    if (date && categoryId) {
+      query = querys
+      variables = {
+        gte: `${date}T00:00:00Z`,
+        lte: `${date}T23:59:59Z`,
+        id: categoryId,
+      }
+    } else if (date) {
+      query = querys
+      variables = {
+        gte: `${date}T00:00:00Z`,
+        lte: `${date}T23:59:59Z`,
+        id: null,
+      }
+    } else if (categoryId) {
+      query = querys
+      variables = {
+        gte: null,
+        lte: null,
+        id: categoryId,
+      }
+    }
+
     const { data } = await client.query({
       query,
-      variables: { date },
+      variables,
     })
 
     return NextResponse.json({ posts: data.posts })
