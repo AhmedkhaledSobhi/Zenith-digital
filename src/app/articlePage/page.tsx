@@ -164,7 +164,8 @@ const ArticlePage = () => {
             </Box>
           ))}
         </Box>
-        <Box
+        
+        {/* <Box
           sx={{
             width: '55%',
             my: 5,
@@ -209,7 +210,7 @@ const ArticlePage = () => {
               Submit Comment
             </Button>
           </Stack>
-        </Box>
+        </Box> */}
 
         <Box sx={{ width: '85%', m: 'auto', px: 0 }}>
           <Typography variant="h6">Related Topics</Typography>
