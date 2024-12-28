@@ -136,7 +136,7 @@ const Navbar: React.FC = () => {
                   height: '100%',
                 }}
               >
-                {pages.map((page) => (
+                {pages?.map((page) => (
                   <ListItem
                     key={page.title}
                     onClick={() => handleNavClick(page)}
@@ -181,7 +181,7 @@ const Navbar: React.FC = () => {
               justifyContent: 'center',
             }}
           >
-            {pages.map((page) => (
+            {pages?.map((page) => (
               <Button
                 key={page.title}
                 onClick={() => handleNavClick(page)}
