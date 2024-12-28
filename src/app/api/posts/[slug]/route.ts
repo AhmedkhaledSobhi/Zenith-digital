@@ -35,6 +35,7 @@ export async function GET(request: Request) {
     const query = gql`
       query post_by_slug($slug: String) {
         posts(filter: { slug: { _eq: $slug } }, limit: 1) {
+          id
           slug
           comments {
             comment
