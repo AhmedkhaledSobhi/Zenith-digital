@@ -5,14 +5,12 @@ import {
   Mail,
   Phone,
   Twitter,
-} from '@mui/icons-material';
-import  Image from "next/image";
-import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
-import Link from 'next/link';
-import React from 'react';
-import {createDirectus, graphql} from '@directus/sdk';
-import { getCookie } from '@/app/utils/helper/helper';
-import { getLocale } from 'next-intl/server';
+} from '@mui/icons-material'
+import Image from 'next/image'
+import { Box, Button, IconButton, Stack, Typography } from '@mui/material'
+import Link from 'next/link'
+import React from 'react'
+import { createDirectus, graphql } from '@directus/sdk'
 
 interface Social {
   url: string
@@ -41,13 +39,12 @@ interface Page {
 
 interface Schema {
   site_settings: SiteSettings
-  pages: Page[];
+  pages: Page[]
 }
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
-
-async function HomeData(locale: string) {
+async function HomeData() {
   return await client.query<Schema>(`
     query{
       site_settings{
@@ -57,15 +54,16 @@ async function HomeData(locale: string) {
         phone
         email
         socials
-        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
+        translations{
           footer_statement
           contact_us_text
         }
       }
       pages{
-        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
           title
           content
+          
         }
       }
     }
@@ -73,9 +71,7 @@ async function HomeData(locale: string) {
 }
 
 export default async function Footer() {
-  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
-  const lang = locale === 'ar' ? 'ar' : 'en'
-  let data = await HomeData(lang) 
+  let data = await HomeData()
 
   function getSocialIcon(name: string) {
     switch (name.toLowerCase()) {
@@ -121,57 +117,22 @@ export default async function Footer() {
               textAlign="center"
             >
               {data?.site_settings?.translations[0]?.footer_statement}
-              {/* Providing Creative Ideas For Your Business */}
             </Typography>
           </Box>
 
           <Stack direction="row" spacing={1} justifyContent="center" mb={2}>
-            {data?.site_settings?.socials.map((social, index) => (
+            {data?.site_settings?.socials?.map((social, index) => (
               <Button
                 key={index}
-                href={social.url}
-                target='_blank'
+                href={social?.url ?? '#'}
+                target="_blank"
                 sx={{ color: 'white', padding: '0px', margin: '0px' }}
               >
-                <IconButton aria-label={social.name} color="inherit">
-                  {getSocialIcon(social.name)}
+                <IconButton aria-label={social?.name} color="inherit">
+                  {getSocialIcon(social?.name)}
                 </IconButton>
               </Button>
             ))}
-            
-            {/* <Button
-              href={`${data?.site_settings?.phone}`}
-              sx={{ color: 'white', padding: '0px', margin: '0px' }}
-            >
-              <IconButton aria-label="Twitter" color="inherit">
-                <Twitter />
-              </IconButton>
-            </Button>
-            <Button
-              href={`${data?.site_settings?.phone}`}
-              sx={{ color: 'white', padding: '0px', margin: '0px' }}
-            >
-              <IconButton aria-label="LinkedIn" color="inherit">
-                <LinkedIn />
-              </IconButton>
-            </Button>
-            <Button
-              href={`${data?.site_settings?.phone}`}
-              sx={{ color: 'white', padding: '0px', margin: '0px' }}
-            >
-              <IconButton aria-label="Instagram" color="inherit">
-                <Instagram />
-              </IconButton>
-            </Button>
-
-            <Button
-              href={`${data?.site_settings?.phone}`}
-              sx={{ color: 'white', padding: '0px', margin: '0px' }}
-            >
-              <IconButton aria-label="Facebook" color="inherit">
-                <Facebook />
-              </IconButton>
-            </Button> */}
           </Stack>
 
           <Box display="flex" flexDirection="column" alignItems="center">
@@ -204,7 +165,7 @@ export default async function Footer() {
           textAlign={{ xs: 'center', md: 'left' }}
         >
           <Typography variant="body2" sx={{ px: 3, mb: { xs: 2, md: 0 } }}>
-            Copyright &copy; 2024 Zenith Digital Space
+            Copyright &copy; {new Date().getFullYear()} Zenith Digital Space
           </Typography>
 
           <Typography
@@ -215,8 +176,7 @@ export default async function Footer() {
             }}
           >
             <Link href="#" style={{ textDecoration: 'none', color: '#fff' }}>
-              {data?.pages[1]?.translations?.[0]?.title}
-              {/* Terms & Conditions */}
+              {data?.pages?.[1]?.translations?.[0]?.title}
             </Link>
           </Typography>
 
@@ -229,7 +189,6 @@ export default async function Footer() {
           >
             <Link href="#" style={{ textDecoration: 'none', color: '#fff' }}>
               {data?.pages?.[0]?.translations[0]?.title}
-              {/* Privacy Policies */}
             </Link>
           </Typography>
 
@@ -241,8 +200,7 @@ export default async function Footer() {
             }}
           >
             <Link href="#" style={{ textDecoration: 'none', color: '#fff' }}>
-              {data?.pages[3]?.translations?.[0]?.title}
-              {/* Cookies Policy */}
+              {data?.pages?.[3]?.translations?.[0]?.title}
             </Link>
           </Typography>
         </Box>

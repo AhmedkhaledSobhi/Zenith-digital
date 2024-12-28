@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Typography, Button } from '@mui/material'
+import { Box, Typography, Link } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import VisionCard from '../VisionCard/VisionCard'
 
@@ -24,7 +24,7 @@ interface StaticContentTexts {
 
 interface Schema {
   vision: Vision[]
-  static_content_texts: StaticContentTexts[]
+  static_content_texts: StaticContentTexts
 }
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
@@ -47,11 +47,15 @@ async function HomeData(locale: string) {
   `)
 }
 
-export default async function VisionSection() {
-  const locale = getCookie('NEXT_LOCALES') || (await getLocale());
-  const lang = locale === 'ar' ? 'ar' : 'en';
-  let data = await HomeData(lang);
-  const staticContent = data?.static_content_texts?.translations?.[0] || {};
+interface VisionSectionProps {
+  btn?: boolean;
+}
+
+export default async function VisionSection({ btn = false }: VisionSectionProps) {
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
+  let data = await HomeData(lang)
+  const staticContent = data?.static_content_texts?.translations?.[0] || {}
 
   return (
     <Box
@@ -112,21 +116,27 @@ export default async function VisionSection() {
           ))}
         </Grid>
       </Box>
-      <Button
-        sx={{
-          backgroundColor: 'rgba(132, 17, 230, 1)',
-          color: '#fff',
-          padding: '15px 25px',
-          fontWeight: 600,
-          lineHeight: '22.4px',
-          borderRadius: '0px',
-          px: 5,
-          my: 5,
-        }}
-        // onClick={}
-      >
-        About Zenith
-      </Button>
+      {btn && (
+        <Link
+          href="/about"
+          underline="none"
+          // passHref
+          sx={{
+            backgroundColor: 'rgba(132, 17, 230, 1)',
+            color: '#fff',
+            padding: '15px 25px',
+            fontWeight: 600,
+            lineHeight: '22.4px',
+            borderRadius: '0px',
+            px: 5,
+            my: 5,
+            display: 'inline-block',
+            textAlign: 'center',
+          }}
+        >
+          About Zenith
+        </Link>
+      )}
     </Box>
   )
 }

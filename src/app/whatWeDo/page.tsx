@@ -22,12 +22,11 @@ interface StaticContentTexts {
 }
 
 interface Schema {
-  static_content_texts: StaticContentTexts[]
+  static_content_texts: StaticContentTexts
 }
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
-// const client = createDirectus<Schema>(BASE_URL).with(graphql({onrequset}))
 
 async function HomeData(locale: string) {
   return await client.query<Schema>(`
@@ -94,8 +93,7 @@ export default async function whatWeDo() {
               },
             }}
           >
-            {staticContent.what_we_do_title}
-            {/* What We Do */}
+            {staticContent?.what_we_do_title ?? ''}
           </Link>
           <Typography
             variant="body2"
@@ -109,12 +107,7 @@ export default async function whatWeDo() {
               lineHeight: '33.6px',
             }}
           >
-            {staticContent.what_we_do_text}
-            {/* At the Zenith digital space, we believe that every project starts
-            with a clear understanding of your vision. Thanks to our extensive
-            experience in programming, digital marketing, design, cybersecurity,
-            artificial intelligence and more, we specialize in helping our
-            clients bring their ideas to life. */}
+            {staticContent?.what_we_do_text ?? ''}
           </Typography>
         </Box>
       </Box>

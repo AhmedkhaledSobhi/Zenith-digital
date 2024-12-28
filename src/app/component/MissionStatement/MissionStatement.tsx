@@ -11,7 +11,7 @@ interface Translations {
   languages_code: { code: string }
   title: string
   text: string
-  our_mission_title: string
+  contact_us_text: string
 }
 
 interface Mission {
@@ -23,7 +23,7 @@ interface StaticContentTexts {
 
 interface Schema {
   mission: Mission[]
-  static_content_texts: StaticContentTexts[]
+  static_content_texts: StaticContentTexts
 }
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
@@ -39,13 +39,12 @@ async function HomeData(locale: string) {
       }
       static_content_texts {
         translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
-          our_mission_title
+          contact_us_text
         }
       }
     }
   `)
 }
-
 
 export default async function MissionStatement() {
   // console.log("ahmed", JSON.stringify(await HomeData(), null,2) );
@@ -77,7 +76,8 @@ export default async function MissionStatement() {
               color: '#fff',
             }}
           >
-            {staticContent.our_mission_title}
+            {/* {staticContent.contact_us_text} */}
+            OUR MISSION STATEMENT
           </Typography>
           <Grid
             container

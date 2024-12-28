@@ -1,17 +1,17 @@
-import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
-import Grid from "@mui/material/Grid2";
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-import {createDirectus, graphql} from '@directus/sdk';
-import { getLocale } from 'next-intl/server';
-import { getCookie } from '@/app/utils/helper/helper';
+import React from 'react'
+import { Box, Typography, Button } from '@mui/material'
+import Grid from '@mui/material/Grid2'
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
+import { createDirectus, graphql } from '@directus/sdk'
+import { getLocale } from 'next-intl/server'
+import { getCookie } from '@/app/utils/helper/helper'
 
 interface Video {
-  languages_code: { code: string };
-  headline: string;
-  text: string;
-  sub_headline: string;
-  button_text: string;
+  languages_code: { code: string }
+  headline: string
+  text: string
+  sub_headline: string
+  button_text: string
 }
 
 interface Schema {
@@ -19,9 +19,9 @@ interface Schema {
 }
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
-const client = createDirectus<Schema>(BASE_URL).with(graphql());
+const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
-async function HomeData(locale: string){
+async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       home_page {
@@ -41,7 +41,6 @@ async function HomeData(locale: string){
 }
 
 export default async function HeroSection() {
-  // console.log("ahmed", JSON.stringify(await HomeData(), null,2) );
   const locale = getCookie('NEXT_LOCALES') || (await getLocale())
   const lang = locale === 'ar' ? 'ar' : 'en'
   let data = await HomeData(lang)
@@ -55,10 +54,7 @@ export default async function HeroSection() {
         justifyContent="space-between"
       >
         <Grid size={{ xs: 12, sm: 6, md: 6 }} sx={{ px: 2 }}>
-          <Box
-            display="flex"
-            alignItems="center"
-          >
+          <Box display="flex" alignItems="center">
             <svg
               width="40"
               height="40"
@@ -81,7 +77,7 @@ export default async function HeroSection() {
             </Typography>
           </Box>
           <Typography sx={{ my: 3 }}>
-            {data?.home_page?.video?.[0]?.text ?? ""}
+            {data?.home_page?.video?.[0]?.text ?? ''}
           </Typography>
           <Typography variant="h5" component="h5">
             {data?.home_page?.video?.[0]?.sub_headline ?? ''}
@@ -92,7 +88,7 @@ export default async function HeroSection() {
             sx={{ py: 2 }}
             href="#contact"
           >
-            {data?.home_page?.video?.[0]?.button_text?? ""}
+            {data?.home_page?.video?.[0]?.button_text ?? ''}
           </Button>
         </Grid>
 

@@ -1,5 +1,3 @@
-import Image from 'next/image'
-import styles from './page.module.css'
 import Navbar from './component/Navbar/Navbar'
 import Footer from './component/Footer/Footer'
 import Header from './component/Header/Header'
@@ -10,7 +8,6 @@ import MissionStatement from './component/MissionStatement/MissionStatement'
 import VisionSection from './component/VisionSection/VisionSection'
 import { Box } from '@mui/material'
 import ContactFormText from './component/ContactFormText/ContactFormText'
-import Posts from './component/Post/Post'
 
 export default function Home() {
   return (
@@ -20,7 +17,7 @@ export default function Home() {
       <Header />
       <HeroSection />
       <ServicesSection />
-      <VisionSection />
+      <VisionSection btn={true} />
       <MissionStatement />
       <Box
         sx={{ width: { md: '60%' }, mx: 'auto' }}
@@ -30,8 +27,6 @@ export default function Home() {
         <ContactFormText />
         <ContactForm />
       </Box>
-
-      <Posts />
 
       <Footer />
     </>

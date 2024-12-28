@@ -85,7 +85,7 @@ export default function ContactForm() {
             />
           </Grid>
 
-          <Grid size={{ xs: 12, md: 6}}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <TextField
               label={t("form.LastName")}
               fullWidth

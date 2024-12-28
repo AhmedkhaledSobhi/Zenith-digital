@@ -15,7 +15,7 @@ interface StaticContentTexts {
 }
 
 interface Schema {
-  static_content_texts: StaticContentTexts[]
+  static_content_texts: StaticContentTexts
 }
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
@@ -40,7 +40,6 @@ export default async function MakesDifferent() {
   let data = await HomeData(lang);
   const staticContent = data?.static_content_texts?.translations?.[0] || {}
 
-
   return (
     <Box
       display="flex"
@@ -49,7 +48,7 @@ export default async function MakesDifferent() {
       alignItems="center"
       sx={{ height: { xs: 'auto', md: '80vh' }, textAlign: 'center' }}
     >
-      <Box>
+      <Box marginBottom={4}>
         <Typography
           variant="h6"
           display="flex"
@@ -58,7 +57,7 @@ export default async function MakesDifferent() {
           sx={{
             my: 4,
             color: '#fff',
-            fontSize: '35px',
+            fontSize: ['20px', '40px'],
             fontWeight: 600,
             lineHeight: '56px',
           }}
@@ -76,8 +75,7 @@ export default async function MakesDifferent() {
             />
           </svg>
           <Box sx={{ margin: { xs: '0px 5px', md: '0px 10px' } }}>
-            {staticContent.what_we_do_fields_content_title}
-            {/* What Makes Us Different */}
+            {staticContent?.what_we_do_fields_content_title}
           </Box>
           <svg
             width="48"
@@ -99,35 +97,13 @@ export default async function MakesDifferent() {
             width: { xs: '95%', md: '70%' },
             mx: 'auto',
             my: 4,
-            color: 'rgba(179,185,198,1)',
+            color: '#fff',
             fontSize: { xs: '18px', md: '24px' },
             fontWeight: 400,
             lineHeight: '33.6px',
           }}
         >
-          {staticContent.what_we_do_fields_content_text}
-          At Zenith Digital Space, we bring together the best in technical
-          expertise and a deep understanding of business needs. What sets us
-          apart is our ability to not only deliver exceptional solutions, but
-          also to tailor our expertise to your unique project requirements.
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{
-            width: { xs: '95%', md: '70%' },
-            mx: 'auto',
-            color: 'rgba(179,185,198,1)',
-            fontSize: { xs: '18px', md: '24px' },
-            fontWeight: 400,
-            lineHeight: '33.6px',
-          }}
-        >
-          We pride ourselves on being partners in your success. From
-          conceptualization to execution, we are with you every step of the way.
-          Whether it’s a complex AI project or a simple CRM integration, we use
-          our skills to ensure you receive a customized, functional, and
-          future-proof solution.
+          {staticContent?.what_we_do_fields_content_text}
         </Typography>
       </Box>
     </Box>

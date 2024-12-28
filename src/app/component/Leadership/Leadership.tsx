@@ -1,5 +1,5 @@
 import { Box, CardMedia, Typography } from '@mui/material'
-import Grid from "@mui/material/Grid2"
+import Grid from '@mui/material/Grid2'
 
 import React from 'react'
 import { createDirectus, graphql } from '@directus/sdk'
@@ -46,8 +46,8 @@ export default async function Leadership() {
   const lang = locale === 'ar' ? 'ar' : 'en'
   let data = await HomeData(lang)
   return (
-    <Box display="flex" sx={{ p: { xs: 2, md: 9 },}}>
-      <Box sx={{ width: '85%', mx: { xs: 'auto', md:'auto' } }}>
+    <Box display="flex" sx={{ p: { xs: 2, md: 9 } }}>
+      <Box sx={{ width: '85%', mx: { xs: 'auto', md: 'auto' } }}>
         <Typography
           variant="h5"
           sx={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}
@@ -67,10 +67,14 @@ export default async function Leadership() {
           <span style={{ marginLeft: '15px' }}>LEADERSHIP TEAM</span>
         </Typography>
 
-        <Grid container spacing={5} sx={{ mt: 2, justifyContent: 'center', mx:"auto",}}>
-          {data.team.map((member, index) =>{
-            const wrapColors = ['#DAFF23', '#8411E6', '#0000FE'];
-            const bgColor = wrapColors[index % wrapColors.length]; 
+        <Grid
+          container
+          spacing={5}
+          sx={{ mt: 2, justifyContent: 'center', mx: 'auto' }}
+        >
+          {data.team.map((member, index) => {
+            const wrapColors = ['#DAFF23', '#8411E6', '#0000FE']
+            const bgColor = wrapColors[index % wrapColors.length]
             return (
               <Grid
                 size={{ xs: 12, md: 4 }}
@@ -113,9 +117,7 @@ export default async function Leadership() {
                 </Box>
               </Grid>
             )
-
-          }
-          )}
+          })}
         </Grid>
 
         {/* <Grid container spacing={3} sx={{ mt: 2, justifyContent: 'center' }}>

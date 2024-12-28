@@ -1,5 +1,5 @@
-import { Box, CardContent, Typography, Button } from '@mui/material';
-import Grid from "@mui/material/Grid2"
+import { Box, CardContent, Typography, Button } from '@mui/material'
+import Grid from '@mui/material/Grid2'
 
 import { createDirectus, graphql } from '@directus/sdk';
 import { getLocale } from 'next-intl/server';
@@ -29,7 +29,7 @@ interface StaticContentTexts {
 
 interface Schema {
   fields: Service[]
-  static_content_texts: StaticContentTexts[]
+  static_content_texts: StaticContentTexts
 }
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
@@ -58,18 +58,18 @@ async function HomeData(locale: string) {
   `)
 }
 
-
 export default async function FieldsSection() {
   const locale = getCookie('NEXT_LOCALES') || (await getLocale())
   const lang = locale === 'ar' ? 'ar' : 'en'
   let data = await HomeData(lang) 
   const staticContent = data?.static_content_texts?.translations?.[0] || {}
 
-  const fields = data?.fields.map((item) => ({
-    icon: `${BASE_URL}/assets/${item.image?.id}`,
-    title: item.translations[0]?.title,
-    description: item.translations[0]?.excerpt,
-  }))
+  const fields =
+    data?.fields?.map((item) => ({
+      icon: `${BASE_URL}/assets/${item.image?.id}`,
+      title: item.translations[0]?.title,
+      description: item.translations[0]?.excerpt,
+    })) ?? []
 
   return (
     <Box display="flex" sx={{ my: 7 }}>
@@ -80,7 +80,8 @@ export default async function FieldsSection() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontWeight: 600,
+            fontSize: ['25px', '40px'],
+            fontWeight: '600',
           }}
         >
           <svg
@@ -95,8 +96,8 @@ export default async function FieldsSection() {
               fill="#0000FE"
             />
           </svg>
-          <span style={{ marginLeft: '15px' }}>
-            {staticContent.what_we_do_fields_title}
+          <span style={{ marginInlineStart: '15px' }}>
+            {staticContent?.what_we_do_fields_title}
           </span>
         </Typography>
 
@@ -106,16 +107,15 @@ export default async function FieldsSection() {
             my: 3,
             width: { xs: '95%', md: '70%' },
             mx: 'auto',
-            fontSize: { xs: '17px', md: '24px' },
-            fontWeight: 400,
             lineHeight: '33.6px',
+            fontSize: ['12px', '24px'],
+            fontWeight: '400',
           }}
         >
-          {staticContent.what_we_do_fields_text}
+          {staticContent?.what_we_do_fields_text}
         </Typography>
         <Grid
           container
-          // spacing={2}
           sx={{
             width: { xs: '90%' },
             spacing: { xs: 2, md: 9 },
@@ -125,7 +125,7 @@ export default async function FieldsSection() {
             my: 2,
           }}
         >
-          {fields.map((field, i) => (
+          {fields?.map((field, i) => (
             <Grid size={{ md: 4 }} key={i} sx={{ my: { xs: 5 } }}>
               <Box
                 sx={{
@@ -159,7 +159,7 @@ export default async function FieldsSection() {
                       width: '80%',
                       margin: 'auto',
                     }}
-                    src={field.icon}
+                    src={field?.icon}
                     alt=""
                   />
                 </Box>
@@ -167,17 +167,21 @@ export default async function FieldsSection() {
                   <Typography
                     variant="h5"
                     gutterBottom
-                    sx={{ fontSize: '18px', fontWeight: 600, color: '#000' }}
+                    sx={{
+                      fontSize: ['10px', '20px'],
+                      fontWeight: 600,
+                      color: '#000',
+                    }}
                   >
-                    {field.title}
+                    {field?.title}
                   </Typography>
                   <Typography
                     variant="body2"
-                    sx={{ px: 4 }}
+                    sx={{ px: 4, fontSize: ['7px', '16px'], fontWeight: 300 }}
                     color="gray"
                     gutterBottom
                   >
-                    {field.description}
+                    {field?.description}
                   </Typography>
                   <Button
                     sx={{
@@ -186,6 +190,8 @@ export default async function FieldsSection() {
                       px: 3,
                       py: 1,
                       my: 3,
+                      fontSize: ['7px', '16px'],
+                      fontWeight: 600,
                     }}
                   >
                     Explore More

@@ -12,7 +12,7 @@ const MissionCard: React.FC<MissionCardProps> = ({ title, description }) => {
   return (
     <Card
       sx={{
-        minHeight: {md:180},
+        minHeight: { md: 180 },
         backgroundColor: 'transparent',
         color: 'primary.contrastText',
       }}

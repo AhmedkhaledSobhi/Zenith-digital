@@ -139,8 +139,11 @@ const ArticlePage = () => {
           <Typography variant="h6">
             Comments : <span>(4)</span>
           </Typography>
-          {[1, 2, 3, 4].map(() => (
-            <Box sx={{ width: '90%', ml: 2, my: 2, py: 2, bgcolor: '#f5f5f5' }}>
+          {[1, 2, 3, 4].map((item, index) => (
+            <Box
+              key={index}
+              sx={{ width: '90%', ml: 2, my: 2, py: 2, bgcolor: '#f5f5f5' }}
+            >
               <Comment
                 name="Mohammad"
                 date="21-08-2024"
@@ -161,7 +164,8 @@ const ArticlePage = () => {
             </Box>
           ))}
         </Box>
-        <Box
+        
+        {/* <Box
           sx={{
             width: '55%',
             my: 5,
@@ -206,7 +210,7 @@ const ArticlePage = () => {
               Submit Comment
             </Button>
           </Stack>
-        </Box>
+        </Box> */}
 
         <Box sx={{ width: '85%', m: 'auto', px: 0 }}>
           <Typography variant="h6">Related Topics</Typography>

@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, Typography } from '@mui/material'
 interface VisionCardProps {
-  title: string,
-  description: string,
+  title: string
+  description: string
 }
 function VisionCard({ title, description }: VisionCardProps) {
   return (

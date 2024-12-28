@@ -14,7 +14,7 @@ interface StaticContentTexts {
 }
 
 interface Schema {
-  static_content_texts: StaticContentTexts[]
+  static_content_texts: StaticContentTexts
 }
 
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
