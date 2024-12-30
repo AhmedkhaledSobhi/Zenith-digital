@@ -12,7 +12,20 @@ export async function POST(req: Request) {
 
     const querys = gql`
       query PostsFilter($gte: String, $lte: String, $id: String) {
+        posts_aggregated(
+          filter: {
+            date_created: { _gte: $gte, _lte: $lte }
+            post_category: { posts_categories_id: { id: { _eq: $id } } }
+          }
+        ) {
+          count {
+            id
+          }
+        }
+
         posts(
+          page: 1
+          limit: 1
           filter: {
             date_created: { _gte: $gte, _lte: $lte }
             post_category: { posts_categories_id: { id: { _eq: $id } } }
@@ -45,7 +58,7 @@ export async function POST(req: Request) {
 
     const filterQuery = gql`
       query PostsFilter {
-        posts {
+        posts(page: 1) {
           id
           slug
           translations {
@@ -100,7 +113,10 @@ export async function POST(req: Request) {
       variables,
     })
 
-    return NextResponse.json({ posts: data.posts })
+    return NextResponse.json({
+      posts: data.posts,
+      aggregatedCount: data.posts_aggregated?.[0]?.count?.id || 0,
+    })
   } catch (error) {
     console.error('Error in API:', error)
     return NextResponse.json(
