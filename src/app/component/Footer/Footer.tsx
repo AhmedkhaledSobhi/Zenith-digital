@@ -5,9 +5,9 @@ import {
   Mail,
   Phone,
   Twitter,
-} from '@mui/icons-material'
+} from '@mui/icons-material';
 import Image from 'next/image'
-import { Box, Button, IconButton, Stack, Typography } from '@mui/material'
+import { Box, Button, IconButton, Stack, Typography} from '@mui/material'
 import Link from 'next/link'
 import React from 'react'
 import { createDirectus, graphql } from '@directus/sdk'
@@ -87,6 +87,8 @@ export default async function Footer() {
         return null
     }
   }
+
+
   return (
     <Box
       component="footer"

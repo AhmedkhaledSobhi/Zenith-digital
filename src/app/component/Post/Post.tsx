@@ -101,75 +101,102 @@ export default function Posts() {
       <Box
         sx={{
           display: 'flex',
-          width: '80%',
+          // width: '62%',
           mx: 'auto',
-          gap: { xs: 1, md: 1 },
+          gap: { xs: 1, md: 3 },
           mb: 4,
         }}
       >
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="Filter by Date"
-            value={filterDate}
-            onChange={handleDateChange}
-            sx={{
-              width: '30%',
-              '.MuiInputBase-root': {
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'gray',
+        <Grid container spacing={2} sx={{ width:'90%', mx: "auto" }}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Filter by Date"
+                value={filterDate}
+                onChange={handleDateChange}
+                sx={{
+                  width: '100%',
+                  '.MuiInputBase-root': {
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'gray',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'gray',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'gray',
+                    },
+                    '& .MuiInputBase-input': {
+                      color: 'gray',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'gray',
+                  },
+                  '& .Mui-focused .MuiInputLabel-root': {
+                    color: 'gray',
+                  },
+                  '& .MuiSvgIcon-root': {
+                    color: 'gray',
+                  },
+                  '&:hover .MuiSvgIcon-root': {
+                    color: 'blue',
+                  },
+                }}
+              />
+            </LocalizationProvider>
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Select
+              value={categoryId || ''}
+              onChange={handleCategoryChange}
+              displayEmpty
+              sx={{
+                width: '100%',
+                color: categoryId ? 'inherit' : 'gray',
+                '& .MuiSelect-icon': {
+                  color: categoryId ? 'gray' : 'gray', // Conditional icon color
                 },
-                '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'gray',
+                border: '1px solid', // Define border style
+                borderColor: categoryId ? 'gray' : 'gray', // Conditional border color
+                '&:hover': {
+                  borderColor: 'gray', // Border color on hover
                 },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'gray',
+                '&.Mui-focused': {
+                  borderColor: 'gray', // Border color when focused
                 },
-                '& .MuiInputBase-input': {
-                  color: 'gray',
-                },
-              },
-              '& .MuiInputLabel-root': {
-                color: 'gray',
-              },
-              '& .Mui-focused .MuiInputLabel-root': {
-                color: 'gray',
-              },
-              '& .MuiSvgIcon-root': {
-                color: 'gray',
-              },
-              '&:hover .MuiSvgIcon-root': {
-                color: 'blue',
-              },
-            }}
-          />
-        </LocalizationProvider>
-
-        <Select
-          value={categoryId || ''}
-          onChange={handleCategoryChange}
-          displayEmpty
-          sx={{ width: '200px' }}
-        >
-          <MenuItem value="">All Categories</MenuItem>
-          {categories.map((category) => (
-            <MenuItem key={category.id} value={category.id}>
-              {category.translations[0]?.title}
-            </MenuItem>
-          ))}
-        </Select>
+              }}
+            >
+              <MenuItem value="" sx={{ color: 'gray' }}>
+                {("All Categories")}
+              </MenuItem>
+              {categories.map((category) => (
+                <MenuItem key={category.id} value={category.id}>
+                  {category.translations[0]?.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+        </Grid>
       </Box>
 
       {/* Posts Section */}
       {loading ? (
-        <CircularProgress />
+        <Box display="flex"  justifyContent="center">
+          <CircularProgress />
+        </Box>
       ) : error ? (
-        <Typography color="error">{error}</Typography>
+        <Box display="flex"  justifyContent="center">
+          <Typography color="error">{error}</Typography>
+        </Box>
       ) : posts.length === 0 ? (
-        <Typography>No posts available.</Typography>
+        <Box display="flex"  justifyContent="center">
+          <Typography>No posts available.</Typography>
+        </Box>
       ) : (
-        <Grid container spacing={4} justifyContent="center">
+        <Grid container spacing={0} justifyContent="center" sx={{ mx: 'auto' }}>
           {posts.map((post) => (
-            <Grid key={post.id}>
+            <Grid size={{ xs: 12, md: 4 }} key={post.id}>
               <Box
                 style={{
                   backgroundColor: 'transparent',

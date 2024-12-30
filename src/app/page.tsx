@@ -1,5 +1,4 @@
 import Navbar from './component/Navbar/Navbar'
-import Footer from './component/Footer/Footer'
 import Header from './component/Header/Header'
 import HeroSection from './component/HeroSection/HeroSection'
 import ContactForm from './component/ContactForm/ContactForm'
@@ -12,7 +11,7 @@ import ContactFormText from './component/ContactFormText/ContactFormText'
 export default function Home() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <Header />
       <HeroSection />
@@ -27,8 +26,6 @@ export default function Home() {
         <ContactFormText />
         <ContactForm />
       </Box>
-
-      <Footer />
     </>
   )
 }

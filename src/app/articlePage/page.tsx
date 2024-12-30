@@ -1,6 +1,5 @@
 import React from 'react'
 import Navbar from '../component/Navbar/Navbar'
-import Footer from '../component/Footer/Footer'
 import {
   Box,
   Typography,
@@ -39,7 +38,7 @@ const WhiteBorderTextField = styled(TextField)({
 const ArticlePage = () => {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Box sx={{ bgcolor: '#010715', color: 'white' }}>
         <Box
           sx={{
@@ -251,7 +250,6 @@ const ArticlePage = () => {
           </Grid>
         </Box>
       </Box>
-      <Footer />
     </>
   )
 }

@@ -5,6 +5,8 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages } from 'next-intl/server'
 import { getCookie } from './utils/helper/helper'
 import { AppProvider } from '@/context'
+import Footer from './component/Footer/Footer'
+import Navbar from './component/Navbar/Navbar'
 
 const poppins = localFont({
   src: './fonts/poppins/poppins-regular-webfont.woff',
@@ -30,8 +32,13 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={DIR}>
       <body className={`${poppins.variable}`}>
+
         <NextIntlClientProvider messages={messages}>
-          <AppProvider>{children}</AppProvider>
+          <AppProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </AppProvider>
         </NextIntlClientProvider>
       </body>
     </html>

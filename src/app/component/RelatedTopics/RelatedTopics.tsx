@@ -6,12 +6,12 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 export default function RelatedTopics() {
   return (
 
-      <Box sx={{ width: '80%', mx: 'auto', px: 0 }}>
+      <Box sx={{ width: '70%', mx: 'auto', px: 0 }}>
         <Typography variant="h6">Related Topics</Typography>
-        <Grid container spacing={2} sx={{ width: '100%', mx: 'auto', }}>
+        <Grid container spacing={3} sx={{ mx: 'auto', }}>
           {[1, 2, 3, 4].map((item) => (
-            <Grid size={{ xs: 2, md:4 }} key={item}>
-              <Card sx={{ bgcolor: 'transparent', width: '330px' }}>
+            <Grid size={{ xs: 12, md:4 }} key={item}>
+              <Card sx={{ bgcolor: 'transparent' }}>
                 <Typography variant="h6" sx={{ color: '#fff', my: 2 }}>
                   Lorem ipsum dolor sit amet consectetur diam
                 </Typography>

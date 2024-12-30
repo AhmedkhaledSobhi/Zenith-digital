@@ -4,7 +4,6 @@ import MissionStatement from '../component/MissionStatement/MissionStatement'
 import Leadership from '../component/Leadership/Leadership'
 import styles from '../component/Header/Header.module.css'
 import Navbar from '../component/Navbar/Navbar'
-import Footer from '../component/Footer/Footer'
 import Innovation from '../component/Innovation/Innovation'
 
 import { createDirectus, graphql } from '@directus/sdk';
@@ -44,7 +43,7 @@ export default async function About() {
   let data = await HomeData(lang) 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Box
         display="flex"
         justifyContent="center"
@@ -132,7 +131,6 @@ export default async function About() {
 
       <Innovation />
       <Leadership />
-      <Footer />
     </>
   )
 }

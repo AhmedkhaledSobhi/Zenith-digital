@@ -2,16 +2,18 @@ import { Box, Button, Card, CardContent, Link, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 
 import Navbar from '../component/Navbar/Navbar'
-import Footer from '../component/Footer/Footer'
 import styles from '../component/Header/Header.module.css'
 
 import { createDirectus, graphql } from '@directus/sdk'
+import { getLocale } from 'next-intl/server'
+import { getCookie } from '../utils/helper/helper'
 
 interface Translations {
   languages_code: { code: string }
   title: string
   excerpt: string
   content: string
+  our_services_page_title: string
   our_services_title: string
   our_services_text: string
   our_services_page_discover_text_3: string
@@ -36,11 +38,12 @@ interface Schema {
 const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 const client = createDirectus<Schema>(BASE_URL).with(graphql())
 
-async function HomeData() {
+async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       static_content_texts{ 
-        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
+          our_services_page_title
           our_services_title
           our_services_text
           our_services_page_discover_text_3
@@ -49,7 +52,7 @@ async function HomeData() {
         }
       }
       services {
-        translations(filter: {languages_code: {code: {_eq: "ar"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           title
           excerpt
           content
@@ -63,7 +66,9 @@ async function HomeData() {
 }
 
 export default async function Technical() {
-  let data = await HomeData()
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
+  let data = await HomeData(lang)  
   const staticContent = data?.static_content_texts?.translations?.[0] || {}
 
   const service =
@@ -76,7 +81,7 @@ export default async function Technical() {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Box
         display="flex"
         justifyContent="center"
@@ -122,7 +127,7 @@ export default async function Technical() {
               },
             }}
           >
-            Technical expertise
+            {staticContent.our_services_page_title}
           </Link>
         </Box>
       </Box>
@@ -326,7 +331,6 @@ export default async function Technical() {
           </Typography>
         </Box>
       </Box>
-      <Footer />
     </>
   )
 }
