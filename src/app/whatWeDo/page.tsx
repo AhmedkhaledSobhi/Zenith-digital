@@ -1,6 +1,5 @@
 import { Box, Typography, Link } from '@mui/material'
 import Navbar from '../component/Navbar/Navbar'
-import Footer from '../component/Footer/Footer'
 import styles from '../component/Header/Header.module.css'
 
 import ServicesSection from '../component/ServicesSection/ServicesSection'
@@ -49,7 +48,7 @@ export default async function whatWeDo() {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <Box
         display="flex"
@@ -115,7 +114,6 @@ export default async function whatWeDo() {
       <FieldsSection />
       <MakesDifferent />
       <ServicesSection />
-      <Footer />
     </>
   )
 }

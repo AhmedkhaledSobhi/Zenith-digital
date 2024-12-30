@@ -26,7 +26,7 @@ async function HomeData(locale: string) {
   return await client.query<Schema>(`
     query{
       static_content_texts{ 
-        translations(filter: {languages_code: {code: {_eq: "${locale}}"}}}) {
+        translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
           contact_us_title
           contact_us_text
           contact_us_form_note
@@ -40,7 +40,10 @@ export default async function ContactFormText() {
   const locale = getCookie('NEXT_LOCALES') || (await getLocale())
   const lang = locale === 'ar' ? 'ar' : 'en'
   let data = await HomeData(lang)
-  const staticContent = data?.static_content_texts?.translations?.[0] || {}
+  const staticContent = data?.static_content_texts?.translations?.[0] || {};
+
+  console.log('ahmed data?.static_content_texts', data?.static_content_texts)
+  
 
   return (
     <>

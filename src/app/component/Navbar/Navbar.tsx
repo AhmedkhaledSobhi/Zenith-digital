@@ -12,7 +12,7 @@ import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
-import { FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material'
+import { FormControl, Select, MenuItem, SelectChangeEvent, Link } from '@mui/material'
 import { useRouter, usePathname } from 'next/navigation'
 import { useAppContext } from '@/context'
 import LocaleSwitcherSelect from './LocaleSwitcherSelect'
@@ -159,17 +159,32 @@ const Navbar: React.FC = () => {
                 ))}
                 <Box sx={{ flexGrow: 1 }} />{' '}
                 {/* Spacer to push Contact Us to bottom */}
-                <Button
+                <Link
+                  href="/contactUs"
                   sx={{
+                    textAlign:"center",
                     width: '70%',
                     color: '#fff',
                     border: '1px solid #0000FE',
-                    m: 1,
+                    my:2,
+                    py:1,
                     mx: 'auto',
                   }}
                 >
-                  Contact Us
-                </Button>
+                {/* <Button
+                  href="/contactUs"
+                  sx={{
+                    width: '70%',
+                    m: 1,
+                    mx: 'auto',
+                    color: '#fff',
+                    border: '1px solid #0000FE',
+                    display: { xs: 'none', md: 'flex' },
+                  }}
+                > */}
+                  Contact Usaa
+                {/* </Button> */}
+                </Link>
               </List>
             </Drawer>
           </Box>
@@ -205,6 +220,7 @@ const Navbar: React.FC = () => {
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Button
+              href="/contactUs"
               sx={{
                 color: '#fff',
                 border: '1px solid #0000FE',

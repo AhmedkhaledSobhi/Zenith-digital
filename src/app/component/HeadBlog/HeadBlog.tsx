@@ -3,6 +3,8 @@ import styles from '../../component/Header/Header.module.css'
 import { Box, Link } from '@mui/material';
 
 import { createDirectus, graphql } from '@directus/sdk'
+import { getCookie } from '@/app/utils/helper/helper';
+import { getLocale } from 'next-intl/server';
 
 interface Translations {
   languages_code: { code: string }
@@ -32,7 +34,12 @@ async function HomeData(locale: string) {
   `)
 }
 
-export default function HeadBlog() {
+export default async function HeadBlog() {
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
+  let data = await HomeData(lang)  
+  const staticContent = data?.static_content_texts?.translations?.[0] || {}
+
   return (
     <Box
       display="flex"
@@ -78,8 +85,7 @@ export default function HeadBlog() {
             },
           }}
         >
-          {/* {.posts_page_title} */}
-          Articles & News
+          {staticContent.posts_page_title}
         </Link>
       </Box>
     </Box>

@@ -11,7 +11,7 @@ interface Translations {
   languages_code: { code: string }
   title: string
   text: string
-  contact_us_text: string
+  our_mission_title: string
 }
 
 interface Mission {
@@ -39,7 +39,7 @@ async function HomeData(locale: string) {
       }
       static_content_texts {
         translations(filter: {languages_code: {code: {_eq: "${locale}"}}}) {
-          contact_us_text
+          our_mission_title
         }
       }
     }
@@ -76,8 +76,8 @@ export default async function MissionStatement() {
               color: '#fff',
             }}
           >
-            {/* {staticContent.contact_us_text} */}
-            OUR MISSION STATEMENT
+            {staticContent.our_mission_title}
+            {/* OUR MISSION STATEMENT */}
           </Typography>
           <Grid
             container
