@@ -1,11 +1,12 @@
 import React from 'react'
-import { Box, Typography, Link } from '@mui/material'
+import { Box, Typography, Link, Container } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import VisionCard from '../VisionCard/VisionCard'
 
 import { createDirectus, graphql } from '@directus/sdk'
 import { getCookie } from '@/app/utils/helper/helper'
 import { getLocale } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 
 interface Translations {
   languages_code: { code: string }
@@ -52,24 +53,21 @@ interface VisionSectionProps {
 }
 
 export default async function VisionSection({ btn = false }: VisionSectionProps) {
+  
+  
   const locale = getCookie('NEXT_LOCALES') || (await getLocale())
   const lang = locale === 'ar' ? 'ar' : 'en'
   let data = await HomeData(lang)
   const staticContent = data?.static_content_texts?.translations?.[0] || {}
+  // const {t} = useTranslations();
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        maxHeight: { md: '90vh' },
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        p: { xs: 4, md: 6 },
-      }}
-    >
-      <Box sx={{ width: '100%' }}>
+    <>
+      <Container
+        sx={{
+          py: { xs: 4, md: 5 },
+        }}
+      >
         <Box
           mb={4}
           sx={{
@@ -100,7 +98,7 @@ export default async function VisionSection({ btn = false }: VisionSectionProps)
           </Typography>
         </Box>
 
-        <Grid container sx={{ mx: 'auto', width: '85%' }} spacing={1}>
+        <Grid container spacing={2}>
           {data?.vision.map((item, i) => (
             <Grid
               size={{ xs: 12, md: 4 }}
@@ -115,28 +113,30 @@ export default async function VisionSection({ btn = false }: VisionSectionProps)
             </Grid>
           ))}
         </Grid>
-      </Box>
-      {btn && (
-        <Link
-          href="/about"
-          underline="none"
-          // passHref
-          sx={{
-            backgroundColor: 'rgba(132, 17, 230, 1)',
-            color: '#fff',
-            padding: '15px 25px',
-            fontWeight: 600,
-            lineHeight: '22.4px',
-            borderRadius: '0px',
-            px: 5,
-            my: 5,
-            display: 'inline-block',
-            textAlign: 'center',
-          }}
-        >
-          About Zenith
-        </Link>
-      )}
-    </Box>
+        <Box sx={{width: '100%', mx:'auto', textAlign:'center' }}>
+          {btn && (
+            <Link
+              href="/about"
+              underline="none"
+              sx={{
+                backgroundColor: 'rgba(132, 17, 230, 1)',
+                color: '#fff',
+                padding: '15px 25px',
+                fontWeight: 600,
+                lineHeight: '22.4px',
+                borderRadius: '0px',
+                px: 5,
+                my: 5,
+                mx: "auto",
+                display: 'inline-block',
+                textAlign: 'center',
+              }}
+            >
+              About Zenith
+            </Link>
+          )}
+        </Box>
+      </Container>
+    </>
   )
 }

@@ -1,12 +1,19 @@
+import { getCookie } from '@/app/utils/helper/helper'
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client'
+import { getLocale } from 'next-intl/server'
+
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 
 // Initialize Apollo Client
 const client = new ApolloClient({
-  uri: 'https://cms-zenith.treasuredeal.com/graphql',
+  // uri: 'https://cms-zenith.treasuredeal.com/graphql',
+  uri: `${BASE_URL}/graphql`,
   cache: new InMemoryCache(),
 })
 
 export async function GET(request: Request) {
+    const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+    const lang = locale === 'ar' ? 'ar' : 'en'
   try {
     const url = new URL(request.url)
     const slug = url.pathname.split('/').pop()
@@ -42,7 +49,7 @@ export async function GET(request: Request) {
             email
             name
           }
-          translations(filter: { languages_code: { code: { _eq: "ar" } } }) {
+          translations(filter: { languages_code: { code: { _eq: "${lang}" } } }) {
             title
             content
             excerpt
@@ -55,7 +62,7 @@ export async function GET(request: Request) {
             data: posts_categories_id {
               id
               translations(
-                filter: { languages_code: { code: { _eq: "ar" } } }
+                filter: { languages_code: { code: { _eq: "${lang}" } } }
               ) {
                 title
               }

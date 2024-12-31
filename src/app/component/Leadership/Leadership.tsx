@@ -1,4 +1,4 @@
-import { Box, CardMedia, Typography } from '@mui/material'
+import { Box, CardMedia, Container, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 
 import React from 'react'
@@ -46,79 +46,82 @@ export default async function Leadership() {
   const lang = locale === 'ar' ? 'ar' : 'en'
   let data = await HomeData(lang)
   return (
-    <Box display="flex" sx={{ p: { xs: 2, md: 9 } }}>
-      <Box sx={{ width: '85%', mx: { xs: 'auto', md: 'auto' } }}>
-        <Typography
-          variant="h5"
-          sx={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}
-        >
-          <svg
-            width="40"
-            height="40"
-            viewBox="0 0 58 58"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+    <Box display="flex" sx={{ p: { xs: 2,  } }}>
+      {/* <Box sx={{ width: '85%', mx: { xs: 'auto', md: 'auto' } }}> */}
+        <Container>
+          <Typography
+            variant="h5"
+            sx={{ display: 'flex', alignItems: 'center', fontWeight: 600 }}
           >
-            <path
-              d="M29 0C29.4371 15.8316 42.1684 28.5629 58 29C42.1684 29.4371 29.4371 42.1684 29 58C28.5629 42.1684 15.8316 29.4371 0 29C15.8316 28.5629 28.5629 15.8316 29 0Z"
-              fill="#8411E6"
-            />
-          </svg>
-          <span style={{ marginLeft: '15px' }}>LEADERSHIP TEAM</span>
-        </Typography>
+            <svg
+              width="40"
+              height="40"
+              viewBox="0 0 58 58"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M29 0C29.4371 15.8316 42.1684 28.5629 58 29C42.1684 29.4371 29.4371 42.1684 29 58C28.5629 42.1684 15.8316 29.4371 0 29C15.8316 28.5629 28.5629 15.8316 29 0Z"
+                fill="#8411E6"
+              />
+            </svg>
+            <span style={{ marginLeft: '15px' }}>LEADERSHIP TEAM</span>
+          </Typography>
 
-        <Grid
-          container
-          spacing={5}
-          sx={{ mt: 2, justifyContent: 'center', mx: 'auto' }}
-        >
-          {data.team.map((member, index) => {
-            const wrapColors = ['#DAFF23', '#8411E6', '#0000FE']
-            const bgColor = wrapColors[index % wrapColors.length]
-            return (
-              <Grid
-                size={{ xs: 12, md: 4 }}
-                sx={{ mx: 'auto', justifyContent: 'center' }}
-                key={index}
-              >
-                <Box sx={{ color: 'red' }}>
-                  <Box sx={{ position: 'relative' }}>
-                    <CardMedia
-                      component="img"
-                      image={`${BASE_URL}/assets/${member.image.id}`}
-                      alt={member.translations[0].name}
-                      // height="320"
-                      sx={{ width: '250px' }}
-                    />
-                    <Box
-                      sx={{
-                        width: '250px',
-                        height: '250px',
-                        bgcolor: bgColor,
-                        position: 'absolute',
-                        left: '-15px',
-                        bottom: '-15px',
-                        zIndex: '-1',
-                      }}
-                    ></Box>
-                  </Box>
+          <Grid
+            container
+            spacing={5}
+            sx={{ mt: 2, justifyContent: 'center', mx: 'auto' }}
+          >
+            {data.team.map((member, index) => {
+              const wrapColors = ['#DAFF23', '#8411E6', '#0000FE']
+              const bgColor = wrapColors[index % wrapColors.length]
+              return (
+                <Grid
+                  size={{ xs: 12, md: 4 }}
+                  sx={{ mx: 'auto', justifyContent: 'center' }}
+                  key={index}
+                >
+                  <Box sx={{ color: 'red' }}>
+                    <Box sx={{ position: 'relative' }}>
+                      <CardMedia
+                        component="img"
+                        image={`${BASE_URL}/assets/${member.image.id}`}
+                        alt={member.translations[0].name}
+                        // height="320"
+                        // sx={{ width: '250px' }}
+                      />
+                      <Box
+                        sx={{
+                          width: '100%',
+                          height: '100%',
+                   
+                          bgcolor: bgColor,
+                          position: 'absolute',
+                          left: '-15px',
+                          bottom: '-15px',
+                          zIndex: '-1',
+                        }}
+                      ></Box>
+                    </Box>
 
-                  <Box sx={{ mt: 5 }}>
-                    <Typography
-                      variant="h6"
-                      sx={{ fontWeight: 600, color: '#000' }}
-                    >
-                      {member.translations[0].name}
-                    </Typography>
-                    <Typography variant="body2" color="gray">
-                      {member.translations[0].position}
-                    </Typography>
+                    <Box sx={{ mt: 5 }}>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontWeight: 600, color: '#000' }}
+                      >
+                        {member.translations[0].name}
+                      </Typography>
+                      <Typography variant="body2" color="gray">
+                        {member.translations[0].position}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
-              </Grid>
-            )
-          })}
-        </Grid>
+                </Grid>
+              )
+            })}
+          </Grid>
+        </Container>
 
         {/* <Grid container spacing={3} sx={{ mt: 2, justifyContent: 'center' }}>
           {[
@@ -198,7 +201,7 @@ export default async function Leadership() {
             </Grid>
           ))}
         </Grid> */}
-      </Box>
+      {/* </Box> */}
     </Box>
   )
 }

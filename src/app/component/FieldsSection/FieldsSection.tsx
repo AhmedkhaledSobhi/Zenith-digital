@@ -1,4 +1,4 @@
-import { Box, CardContent, Typography, Button } from '@mui/material'
+import { Box, CardContent, Typography, Button, Container } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 
 import { createDirectus, graphql } from '@directus/sdk';
@@ -73,7 +73,8 @@ export default async function FieldsSection() {
 
   return (
     <Box display="flex" sx={{ my: 7 }}>
-      <Box sx={{ width: '85%', mx: 'auto', textAlign: 'center' }}>
+      {/* <Box sx={{ width: '85%', mx: 'auto', textAlign: 'center' }}> */}
+        <Container>
         <Typography
           variant="h5"
           sx={{
@@ -117,8 +118,8 @@ export default async function FieldsSection() {
         <Grid
           container
           sx={{
-            width: { xs: '90%' },
-            spacing: { xs: 2, md: 9 },
+            // width: { xs: '90%' },
+            spacing: { xs: 2, md: 5 },
             mx: 'auto',
             display: 'flex',
             justifyContent: 'center',
@@ -127,6 +128,7 @@ export default async function FieldsSection() {
         >
           {fields?.map((field, i) => (
             <Grid size={{ md: 4 }} key={i} sx={{ my: { xs: 5 } }}>
+            
               <Box
                 sx={{
                   position: 'relative',
@@ -145,7 +147,7 @@ export default async function FieldsSection() {
                 <Box
                   height="150px"
                   sx={{
-                    width: { xs: '300px', md: '350px' },
+                    // width: { xs: '300px', md: '350px' },
                     mx: { xs: 'auto' },
                   }}
                 >
@@ -201,7 +203,9 @@ export default async function FieldsSection() {
             </Grid>
           ))}
         </Grid>
-      </Box>
+
+        </Container>
+      {/* </Box> */}
     </Box>
   )
 }

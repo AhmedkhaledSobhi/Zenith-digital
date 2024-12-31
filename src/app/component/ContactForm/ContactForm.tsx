@@ -1,6 +1,6 @@
 'use client'
 // import { GetServerSideProps } from 'next'
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { Box, Button, Container, TextField, Typography } from '@mui/material'
 // import { createDirectus, graphql } from '@directus/sdk'
 import { useState } from 'react';
 import Grid from '@mui/material/Grid2';
@@ -64,7 +64,7 @@ export default function ContactForm() {
   }
 
   return (
-    <Box>
+    <Container>
       <form onSubmit={handleSubmit}>
         <Grid
           container
@@ -72,11 +72,12 @@ export default function ContactForm() {
           sx={{
             display: 'flex',
             justifyContent: 'center',
+            textAlign:'center'
           }}
         >
           <Grid size={{ xs: 12, md: 6 }}>
             <TextField
-              label={t("form.FirstName")}
+              label={t('form.FirstName')}
               fullWidth
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
@@ -87,7 +88,7 @@ export default function ContactForm() {
 
           <Grid size={{ xs: 12, md: 6 }}>
             <TextField
-              label={t("form.LastName")}
+              label={t('form.LastName')}
               fullWidth
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
@@ -95,34 +96,42 @@ export default function ContactForm() {
               sx={{ mb: 2 }}
             />
           </Grid>
-        </Grid>
-        <TextField
-          label={t("form.Email")}
-          fullWidth
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label={t("form.Message")}
-          fullWidth
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          required
-          multiline
-          rows={4}
-          sx={{ mb: 2 }}
-        />
 
-        <Button
-          variant="contained"
-          type="submit"
-          sx={{ backgroundColor: '#DAFF23', color: 'black', px: 4 }}
-        >
-          {t("form.Submit")}
-        </Button>
+          <Grid size={{ xs: 12, md: 12 }}>
+            <TextField
+              label={t('form.Email')}
+              fullWidth
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              sx={{ mb: 2 }}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, md: 12 }}>
+            <TextField
+              label={t('form.Message')}
+              fullWidth
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              required
+              multiline
+              rows={4}
+              sx={{ mb: 2 }}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 12 }}>
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ backgroundColor: '#DAFF23', color: 'black', px: 4 }}
+            >
+              {t('form.Submit')}
+            </Button>
+          </Grid>
+        </Grid>
+
       </form>
 
       {success && (
@@ -133,6 +142,6 @@ export default function ContactForm() {
       {error && (
         <Typography sx={{ mt: 2, color: 'red' }}>Error: {error}</Typography>
       )}
-    </Box>
+    </Container>
   )
 }

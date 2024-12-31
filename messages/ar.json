@@ -17,5 +17,16 @@
     "Message": "الرسالة",
     "Submit": "إرسال",
     "MessageSentSuccessfully": "تم إرسال الرسالة بنجاح!"
+  },
+  "about":{
+    "aboutZenith":"نبذة عن Zenith"
+  },
+  "leaveReply": {
+    "LeaveReply":"اترك ردًا",
+    "submitComment":"أرسل تعليق",
+    "Comment":"تعليق",
+    "Subject":"الموضوع",
+    "Email":"البريد الإلكتروني",
+    "Name":"الاسم"
   }
 }

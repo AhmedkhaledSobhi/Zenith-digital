@@ -1,12 +1,19 @@
 import { NextResponse } from 'next/server'
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client'
+import { getLocale } from 'next-intl/server'
+import { getCookie } from '@/app/utils/helper/helper'
+
+const BASE_URL = process.env.NEXT_APP_API_BASE_URL as string
 
 const client = new ApolloClient({
-  uri: 'https://cms-zenith.treasuredeal.com/graphql',
+  // uri: 'https://cms-zenith.treasuredeal.com/graphql',
+  uri: `${BASE_URL}/graphql`,
   cache: new InMemoryCache(),
 })
 
 export async function POST(req: Request) {
+  const locale = getCookie('NEXT_LOCALES') || (await getLocale())
+  const lang = locale === 'ar' ? 'ar' : 'en'
   try {
     const { date, categoryId } = await req.json()
 
@@ -33,7 +40,7 @@ export async function POST(req: Request) {
         ) {
           id
           slug
-          translations(filter: { languages_code: { code: { _eq: "ar" } } }) {
+          translations(filter: { languages_code: { code: { _eq: "${lang}" } } }) {
             title
             content
             excerpt
@@ -46,7 +53,7 @@ export async function POST(req: Request) {
             data: posts_categories_id {
               id
               translations(
-                filter: { languages_code: { code: { _eq: "ar" } } }
+                filter: { languages_code: { code: { _eq: "${lang}" } } }
               ) {
                 title
               }
@@ -61,7 +68,9 @@ export async function POST(req: Request) {
         posts(page: 1) {
           id
           slug
-          translations {
+          translations(
+            filter: { languages_code: { code: { _eq: "${lang}" } } }
+          ) {
             title
             content
             excerpt
@@ -73,7 +82,9 @@ export async function POST(req: Request) {
           categoryies: post_category {
             data: posts_categories_id {
               id
-              translations {
+              translations(
+                filter: { languages_code: { code: { _eq: "${lang}" } } }
+              ) {
                 title
               }
             }

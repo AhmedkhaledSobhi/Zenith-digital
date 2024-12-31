@@ -16,23 +16,32 @@ import { getCookie } from '@/app/utils/helper/helper'
 const items = [
   {
     value: 'en',
-    label: 'English',
+    // label: 'English',
+    label: 'En',
+
   },
   {
     value: 'ar',
-    label: 'Arabic',
+    // label: 'Arabic',
+    label: 'Ar',
+
   },
   {
     value: 'fr',
-    label: 'French',
+    // label: 'French',
+    label: 'Fre',
   },
   {
     value: 'de',
-    label: 'German',
+    // label: 'German',
+    label: 'Ger',
+
   },
   {
     value: 'in',
-    label: 'India',
+    // label: 'India',
+    label: 'In',
+  
   },
   {
     value: 'pk',
@@ -63,7 +72,7 @@ export default function LocaleSwitcherSelect() {
         height: '39px',
         width: {
           xs: '85px',
-          sm: '150px',
+          // sm: '150px',
         },
       }}
       className="lang-form"

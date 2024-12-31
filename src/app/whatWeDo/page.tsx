@@ -1,5 +1,4 @@
 import { Box, Typography, Link } from '@mui/material'
-import Navbar from '../component/Navbar/Navbar'
 import styles from '../component/Header/Header.module.css'
 
 import ServicesSection from '../component/ServicesSection/ServicesSection'
@@ -48,8 +47,6 @@ export default async function whatWeDo() {
 
   return (
     <>
-      {/* <Navbar /> */}
-
       <Box
         display="flex"
         justifyContent="center"

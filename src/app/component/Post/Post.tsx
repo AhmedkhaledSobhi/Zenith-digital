@@ -13,6 +13,7 @@ import {
   CardMedia,
   CardContent,
   IconButton,
+  Container,
 } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import dayjs, { Dayjs } from 'dayjs'
@@ -92,22 +93,19 @@ export default function Posts() {
     <Box
       sx={{
         color: '#fff',
-        px: { xs: 1, sm: 6 },
         py: 9,
         backgroundColor: '#010715',
       }}
     >
       {/* Filter Section */}
-      <Box
+      <Container
         sx={{
-          display: 'flex',
-          // width: '62%',
-          mx: 'auto',
-          gap: { xs: 1, md: 3 },
+      
+          gap: { xs: 1, md: 2 },
           mb: 4,
         }}
       >
-        <Grid container spacing={2} sx={{ width:'90%', mx: "auto" }}>
+        <Grid container spacing={2} sx={{ width: '100%', mx: 'auto' }}>
           <Grid size={{ xs: 12, md: 6 }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
@@ -168,7 +166,7 @@ export default function Posts() {
               }}
             >
               <MenuItem value="" sx={{ color: 'gray' }}>
-                {("All Categories")}
+                {'All Categories'}
               </MenuItem>
               {categories.map((category) => (
                 <MenuItem key={category.id} value={category.id}>
@@ -178,86 +176,91 @@ export default function Posts() {
             </Select>
           </Grid>
         </Grid>
-      </Box>
+      </Container>
 
       {/* Posts Section */}
-      {loading ? (
-        <Box display="flex"  justifyContent="center">
-          <CircularProgress />
-        </Box>
-      ) : error ? (
-        <Box display="flex"  justifyContent="center">
-          <Typography color="error">{error}</Typography>
-        </Box>
-      ) : posts.length === 0 ? (
-        <Box display="flex"  justifyContent="center">
-          <Typography>No posts available.</Typography>
-        </Box>
-      ) : (
-        <Grid container spacing={0} justifyContent="center" sx={{ mx: 'auto' }}>
-          {posts.map((post) => (
-            <Grid size={{ xs: 12, md: 4 }} key={post.id}>
-              <Box
-                style={{
-                  backgroundColor: 'transparent',
-                  color: '#fff',
-                  borderRadius: 2,
-                  width: '100%',
-                  maxWidth: '350px',
-                  margin: '0 auto',
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={`https://cms-zenith.treasuredeal.com/assets/${post.image?.id}`}
-                  alt="Article Image"
-                />
-                <CardContent sx={{ px: 0 }}>
-                  <Typography variant="h6">{post.slug}</Typography>
-                  <Typography variant="caption" color="white">
-                    {new Date(post.date_created).toLocaleDateString()}
-                  </Typography>
-
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      mt: 2,
-                    }}
-                  >
-                    <Typography variant="body2">
-                      {truncateText(
-                        post.excerpt || 'No excerpt available for this post.',
-                        100
-                      )}
+      <Container>
+        {loading ? (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Box display="flex" justifyContent="center">
+            <Typography color="error">{error}</Typography>
+          </Box>
+        ) : posts.length === 0 ? (
+          <Box display="flex" justifyContent="center">
+            <Typography>No posts available.</Typography>
+          </Box>
+        ) : (
+          <Grid container spacing={0} justifyContent="center" sx={{ mx: 'auto' }}>
+            {posts.map((post) => (
+              <Grid size={{ xs: 12, md: 4 }} key={post.id}>
+                <Box
+                  style={{
+                    backgroundColor: 'transparent',
+                    color: '#fff',
+                    borderRadius: 2,
+                    width: '100%',
+                    maxWidth: '350px',
+                    margin: '0 auto',
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={`https://cms-zenith.treasuredeal.com/assets/${post.image?.id}`}
+                    alt="Article Image"
+                  />
+                  <CardContent sx={{ px: 0 }}>
+                    <Typography variant="h6">
+                      {post?.translations?.[0].title}
+                    </Typography>
+                    <Typography variant="caption" color="white">
+                      {new Date(post.date_created).toLocaleDateString()}
                     </Typography>
 
-                    <Link href={`/blog/${post.slug}`} passHref>
-                      <IconButton
-                        sx={{
-                          color: '#fff',
-                          backgroundColor: '#8411E6',
-                          borderRadius: '50%',
-                          width: '35px',
-                          height: '35px',
-                          ml: 1,
-                          '&:hover': {
-                            backgroundColor: '#0000C7',
-                          },
-                        }}
-                      >
-                        <ArrowForwardIcon fontSize="small" />
-                      </IconButton>
-                    </Link>
-                  </Box>
-                </CardContent>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      )}
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        mt: 2,
+                      }}
+                    >
+                      <Typography variant="body2">
+                        {truncateText(
+                          post?.translations?.[0]?.excerpt ||
+                            'No excerpt available for this post.',
+                          100
+                        )}
+                      </Typography>
+
+                      <Link href={`/blog/${post.slug}`} passHref>
+                        <IconButton
+                          sx={{
+                            color: '#fff',
+                            backgroundColor: '#8411E6',
+                            borderRadius: '50%',
+                            width: '35px',
+                            height: '35px',
+                            ml: 1,
+                            '&:hover': {
+                              backgroundColor: '#0000C7',
+                            },
+                          }}
+                        >
+                          <ArrowForwardIcon fontSize="small" />
+                        </IconButton>
+                      </Link>
+                    </Box>
+                  </CardContent>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Container>
     </Box>
   )
 }
@@ -266,7 +269,6 @@ function formatDate(isoDateString: string): string {
   const date = new Date(isoDateString)
   const day = String(date.getDate()).padStart(2, '0')
   const month = String(date.getMonth() + 1).padStart(2, '0')
-  const year = date.getFullYear()
-
+  const year = date.getFullYear();
   return `${day}-${month}-${year}`
 }

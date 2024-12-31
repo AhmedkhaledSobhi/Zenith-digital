@@ -4,9 +4,8 @@ import {
   LinkedIn,
   Twitter,
 } from '@mui/icons-material'
-import { Box, Typography, Link, CardMedia, Button, IconButton, Stack } from '@mui/material'
+import { Box, Typography, Link, CardMedia, Button, IconButton, Stack, Container } from '@mui/material'
 import React from 'react'
-import Navbar from '../component/Navbar/Navbar'
 import ContactForm from '../component/ContactForm/ContactForm'
 import ContactFormText from '../component/ContactFormText/ContactFormText'
 import styles from '../component/Header/Header.module.css';
@@ -86,7 +85,6 @@ export default async function ContactUs() {
     }
   return (
     <>
-      {/* <Navbar /> */}
       <Box
         display="flex"
         justifyContent="center"
@@ -172,14 +170,16 @@ export default async function ContactUs() {
         </Box>
       </Box>
 
-      <Box
+      {/* <Box
         sx={{ width: { md: '60%' }, mx: 'auto' }}
         padding={4}
         textAlign="center"
-      >
+      > */}
+      <Container sx={{ my: 5, textAlign: "center" }}>
         <ContactFormText />
         <ContactForm />
-      </Box>
+      </Container>
+      {/* </Box> */}
 
       <Box
         display="flex"

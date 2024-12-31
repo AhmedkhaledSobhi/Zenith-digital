@@ -1,7 +1,6 @@
 import { Box, Button, Card, CardContent, Link, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 
-import Navbar from '../component/Navbar/Navbar'
 import styles from '../component/Header/Header.module.css'
 
 import { createDirectus, graphql } from '@directus/sdk'
@@ -81,7 +80,6 @@ export default async function Technical() {
 
   return (
     <>
-      {/* <Navbar /> */}
       <Box
         display="flex"
         justifyContent="center"

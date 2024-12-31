@@ -1,4 +1,4 @@
-import { Box, Link, Typography } from '@mui/material'
+import { Box, Container, Link, Typography } from '@mui/material'
 import React from 'react'
 import { createDirectus, graphql } from '@directus/sdk'
 import { getLocale } from 'next-intl/server'
@@ -47,7 +47,9 @@ export default async function ContactFormText() {
 
   return (
     <>
-      <Box>
+      <Container
+        sx={{textAlign: 'center'}}
+      >
         <Typography variant="h3" gutterBottom sx={{ fontSize: { xs: '32px' } }}>
           {staticContent?.contact_us_title}
         </Typography>
@@ -66,7 +68,7 @@ export default async function ContactFormText() {
             {staticContent?.contact_us_form_note}
           </Link>
         </Typography>
-      </Box>
+      </Container>
     </>
   )
 }

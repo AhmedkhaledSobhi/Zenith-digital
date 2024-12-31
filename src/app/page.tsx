@@ -1,31 +1,25 @@
-import Navbar from './component/Navbar/Navbar'
 import Header from './component/Header/Header'
 import HeroSection from './component/HeroSection/HeroSection'
 import ContactForm from './component/ContactForm/ContactForm'
 import ServicesSection from './component/ServicesSection/ServicesSection'
 import MissionStatement from './component/MissionStatement/MissionStatement'
 import VisionSection from './component/VisionSection/VisionSection'
-import { Box } from '@mui/material'
+import { Container } from '@mui/material'
 import ContactFormText from './component/ContactFormText/ContactFormText'
 
 export default function Home() {
   return (
     <>
-      {/* <Navbar /> */}
-
       <Header />
       <HeroSection />
       <ServicesSection />
       <VisionSection btn={true} />
       <MissionStatement />
-      <Box
-        sx={{ width: { md: '60%' }, mx: 'auto' }}
-        padding={4}
-        textAlign="center"
-      >
+
+      <Container sx={{ my: 5, textAlign: "center" }}>
         <ContactFormText />
         <ContactForm />
-      </Box>
+      </Container>
     </>
   )
 }

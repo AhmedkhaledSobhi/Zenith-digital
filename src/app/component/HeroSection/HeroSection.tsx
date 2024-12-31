@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Typography, Button } from '@mui/material'
+import { Box, Typography, Button, Container } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
 import { createDirectus, graphql } from '@directus/sdk'
@@ -45,7 +45,7 @@ export default async function HeroSection() {
   const lang = locale === 'ar' ? 'ar' : 'en'
   let data = await HomeData(lang)
   return (
-    <Box sx={{ padding: { xs: '50px 20px', md: '50px 100px' } }}>
+    <Container  sx={{ py: { xs: '50px 20px', md: '50px'}, }}>
       <Grid
         container
         sx={{ mx: 'auto' }}
@@ -53,7 +53,7 @@ export default async function HeroSection() {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Grid size={{ xs: 12, sm: 6, md: 6 }} sx={{ px: 2 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 6 }} sx={{  }}>
           <Box display="flex" alignItems="center">
             <svg
               width="40"
@@ -114,6 +114,6 @@ export default async function HeroSection() {
           </Box>
         </Grid>
       </Grid>
-    </Box>
+    </Container>
   )
 }

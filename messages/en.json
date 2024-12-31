@@ -17,5 +17,16 @@
     "Message": "Message",
     "Submit": "Submit",
     "MessageSentSuccessfully": "Message sent successfully!"
+  },
+  "about":{
+    "aboutZenith":"About Zenith"
+  },
+  "leaveReply": {
+    "LeaveReply":"Leave a Reply",
+    "submitComment":"Submit Comment",
+    "Comment":"Comment",
+    "Subject":"Subject",
+    "Email":"Email",
+    "Name":"Name"
   }
 }

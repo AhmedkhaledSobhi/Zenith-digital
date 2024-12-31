@@ -48,6 +48,13 @@ export default function Contents({slug}: ContentsProps ) {
         }}
       >
         <Box
+          sx={{
+            width:'100%',
+            height: '100%',
+            background:'rgba(0,0,0,0.6)'
+          }}
+        >
+        <Box
           sx={{ position: 'absolute', bottom: 90, left: 90, color: 'white' }}
         >
           <Stack
@@ -123,13 +130,18 @@ export default function Contents({slug}: ContentsProps ) {
             </Stack>
           </Box>
         </Box>
+        </Box>
+        
+
       </Box>
+
       <Box sx={{ width: '85%', mx: 'auto', px: 4, my: 3 }}>
         <Grid container spacing={3} sx={{ mx: 'auto' }}></Grid>
         <Typography variant="body1">
           {post?.translations?.[0]?.content}
         </Typography>
       </Box>
+
     </>
   )
 }
